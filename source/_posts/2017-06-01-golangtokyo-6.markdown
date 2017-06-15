@@ -15,10 +15,14 @@ categories: golang
 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集しているようです！
 サーバーのみならず、色んなフィールドで Go を使っているとのことです。
 
-[画像]
-
-出遅れて私はありつけなかったですが、開幕前からおビールとお寿司が振る舞われています！
+![golang.tokyo-6](/images/golang.tokyo-6/3.jpg)
 今日も大勢の方が参加されております。
+
+![golang.tokyo-6](/images/golang.tokyo-6/4.jpg)
+出遅れて私はありつけなかったですが、開幕前からお寿司が振る舞われていました！
+
+![golang.tokyo-6](/images/golang.tokyo-6/5.jpg)
+私はおビールいただきました。
 
 # Gopher Fest 2017 に参加した話 by tenntenn さん
 
@@ -198,4 +202,7 @@ https://paper.dropbox.com/doc/Crypto-in-Go-cWLX9XxHQm6bAPqrZYkjt
 ということで今回も参加させていただきました、ありがとうございました。
 失敗談というかアンチパターンというか、そういう話が聞けたのは大きな収穫でした。
 
-また次回開催も楽しみにしています。 
+2017.06.15 現在、既に次の golang.tokyo が企画されています。
+[golang.tokyo #7](https://techplay.jp/event/624712)
+気になる方は要チェックです！
+
