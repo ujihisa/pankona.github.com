@@ -6,8 +6,6 @@ comments: true
 categories: golang 
 ---
 
-(画像をあとから追加します。)
-
 2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。
 
 [golang.tokyo #6 - connpass](https://golangtokyo.connpass.com/event/57168/)
