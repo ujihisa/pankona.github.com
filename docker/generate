@@ -1,11 +1,5 @@
 #!/bin/bash -e
 
-docker run \
-    -it \
-    -v `pwd`/..:/workspace \
-    -u docker \
-    -e HOME=/home/docker \
-    -p 4000:4000 \
-    pankona/octopress "cd /workspace && bundle exec rake generate"
+./.docker_run.sh "cd /workspace && bundle exec rake generate"
 
 

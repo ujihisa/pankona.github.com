@@ -1,12 +1,6 @@
 #!/bin/bash -e
 
-docker run \
-    -it \
-    -v `pwd`/..:/workspace \
-    -u docker \
-    -e HOME=/home/docker \
-    -p 4000:4000 \
-    pankona/octopress "cd /workspace && \
+./.docker_run.sh "cd /workspace && \
       git config --global user.email yosuke.akatsuka@gmail.com && \
       git config --global user.name pankona && \
       bundle exec rake gen_deploy"
