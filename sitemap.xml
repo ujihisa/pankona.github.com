@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pankona.github.io/blog/2018/01/06/my-first-post-2018/</loc>
+    <lastmod>2018-01-06T23:09:05+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2018/01/02/my-first-post-by-hugo/</loc>
     <lastmod>2018-01-02T13:32:34+09:00</lastmod>
   </url>
@@ -221,7 +226,7 @@
   
   <url>
     <loc>https://pankona.github.io/posts/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <lastmod>2018-01-06T23:09:05+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -238,13 +243,13 @@
   
   <url>
     <loc>https://pankona.github.io/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <lastmod>2018-01-06T23:09:05+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <lastmod>2018-01-06T23:09:05+09:00</lastmod>
     <priority>0</priority>
   </url>
   

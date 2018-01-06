@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroidKaigi 2018 に向けて &middot; make clean; make</title>
+
+    <meta name="description" content="">
+
+    <meta name="generator" content="Hugo 0.32" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="DroidKaigi 2018 に向けて &middot; make clean; make">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="DroidKaigi 2018 に向けて &middot; make clean; make">
+    <meta property="og:description" content="">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="make clean; make" href="https://pankona.github.io/atom.xml" />
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
+            <h2 class="brand-tagline"></h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/@gohan_pan_gohan"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/pankona "><i class="fa fa-github-alt"></i> github</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/atom.xml"><i class="fa fa-rss"></i> rss</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">06 Jan 2018, 23:09</h1>
+                <section class="post">
+                    <header class="post-header">
+                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/" class="post-title">DroidKaigi 2018 に向けて</a>
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
+
+<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br />
+以下、準備しておこうと思う内容のメモ。</p>
+
+<ul>
+<li>ネタは gomobile でゲーム作った話。<br />
+<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。<br /></li>
+<li>DroidKaigi なので、主に Android 向けの開発について触れる。<br /></li>
+<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。<br />
+
+<ul>
+<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。<br /></li>
+<li>特に SharedPreference 使ったデータの保存を盛り込む。<br />
+(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)<br /></li>
+</ul></li>
+<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。<br />
+
+<ul>
+<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
+
+<ul>
+<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。<br /></li>
+<li>召喚可能なユニット数に上限を設ける。<br /></li>
+<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。<br /></li>
+<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。<br /></li>
+<li>そもそもちゃんと Android 端末上で動くようにしとく…。<br />
+<br /></li>
+</ul>
+
+<p>その他、可能であれば行いたい細かい点の改善。</p>
+
+<ul>
+<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。<br /></li>
+<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。<br />
+<br /></li>
+</ul>
+
+<p>DroidKaigi までもう残り一ヶ月程度。<br />
+コツコツやっていくぞー。今年も頑張るぞー。</p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            
+                            
+                            
+                            <a href="#" data-type="twitter" data-url="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/" data-description="" data-via="" class="prettySocial fa fa-twitter"></a>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://pankona.github.io/js/all.min.js"></script>
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-48476608-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

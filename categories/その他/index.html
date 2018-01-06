@@ -65,6 +65,74 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">06 Jan 2018, 23:09</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/" class="post-title">DroidKaigi 2018 に向けて</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
+
+<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br />
+以下、準備しておこうと思う内容のメモ。</p>
+
+<ul>
+<li>ネタは gomobile でゲーム作った話。<br />
+<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。<br /></li>
+<li>DroidKaigi なので、主に Android 向けの開発について触れる。<br /></li>
+<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。<br />
+
+<ul>
+<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。<br /></li>
+<li>特に SharedPreference 使ったデータの保存を盛り込む。<br />
+(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)<br /></li>
+</ul></li>
+<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。<br />
+
+<ul>
+<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
+
+<ul>
+<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。<br /></li>
+<li>召喚可能なユニット数に上限を設ける。<br /></li>
+<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。<br /></li>
+<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。<br /></li>
+<li>そもそもちゃんと Android 端末上で動くようにしとく…。<br />
+<br /></li>
+</ul>
+
+<p>その他、可能であれば行いたい細かい点の改善。</p>
+
+<ul>
+<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。<br /></li>
+<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。<br />
+<br /></li>
+</ul>
+
+<p>DroidKaigi までもう残り一ヶ月程度。<br />
+コツコツやっていくぞー。今年も頑張るぞー。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">02 Jan 2018, 13:32</h1>
                 <section class="post">
                     <header class="post-header">
@@ -383,66 +451,20 @@ MVVM でいうところの VM 部分で、共通するGenericな部分 + 型ス�
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">19 May 2014, 21:21</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/19/about-google-search/" class="post-title">Google Japanの検索にgithubがヒットしないかと思ったがそんなことはなかった</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<h2 id="自分のページがgoogle検索にヒットしない理由">自分のページがGoogle検索にヒットしない理由</h2>
-
-<p>なかなか自分のページ（ここのブログのこと）がGoogle検索に引っかからないので、<br />
-いや、大層なことを書いているわけでもないから引っかからなくても怒ったりはしないが、<br />
-いやでもなんで引っかからないんだろう、と思って調査をしていたところ、</p>
-
-<h3 id="githubのリポジトリはgoogle日本の検索に引っかからない">GithubのリポジトリはGoogle日本の検索に引っかからない</h3>
-
-<p>といった記事を見つけた。ほんまかいな？<br />
-もしかしてそのせいでうちのページはGoogleに引っかからないんじゃああるまいか？<br />
-（Github pagesを使って公開しているページなので）</p>
-
-<p>等と考えつつ、調査を続行していったところ、、、</p>
-
-<h3 id="結論からすると-githubのリポジトリはgoogle日本の検索にちゃんと引っかかる">結論からすると、GithubのリポジトリはGoogle日本の検索にちゃんと引っかかる。</h3>
-
-<p>ただし条件がある模様。それは（おそらく）、</p>
-
-<p><strong>ページ（リポジトリの場合はREADMEかな？）に日本語が含まれていること</strong></p>
-
-<p>つまり、Google日本の検索に引っかからない、というよりは、<br />
-<strong>&ldquo;日本語のページを検索&rdquo;</strong>に引っかからない、ということである模様。<br />
-全編英語で書いてたら英語のページと判断して、&rdquo;日本語のページを検索&rdquo;には載せない、ってことかなー。<br />
-そして、Google日本の検索は、おそらくデフォルトは&rdquo;日本語のページを検索&rdquo;になってる。という話。</p>
-
-<p>加えて、GithubのリポジトリのREADMEなんかは、英語だけで書かれているケースが多い。<br />
-だからGoogle日本を使ってそのまま検索をしていると、Githubのページがあんまり出てこないという現象が。</p>
-
-<p>だので、英語だけで書かれたGithubのページも、検索オプションで言語に依らない検索にしてあげれば、Google日本の検索でも出てきます。</p>
-
-<h3 id="じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか">じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか？</h3>
-
-<p>自分のGithubのリポジトリに日本人を呼び込みたい！と思ったら、READMEに日本語をちょっと混ぜてあげればリーチできる人が増えるかも？<br />
-と思っているがどうか。たぶん、おそらく、きっと、効果あると思われる。つまり自信ない。<br />
-自分のリポジトリ使って実験してみます。そのうち調査結果を書きます。</p>
-
-                    </div>
-                </section>
-                
             </div>
             
+<div class="pagination">
+  <nav role="pagination" class="post-list-pagination">
+      
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 2</span>
+    
+      <a href="/categories/%E3%81%9D%E3%81%AE%E4%BB%96/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
+        Older&nbsp;<i class="fa fa-angle-double-right"></i>
+      </a>
+    
+  </nav>
+</div>
+
 
             <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
