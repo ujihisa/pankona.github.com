@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 06 Jan 2018 23:09:05 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jan 2018 23:10:33 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Droidkaigi 2018 に向けて (その2)</title>
+      <link>https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/</link>
+      <pubDate>Mon, 08 Jan 2018 23:10:33 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/</guid>
+      <description>DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ</description>
+    </item>
     
     <item>
       <title>DroidKaigi 2018 に向けて</title>

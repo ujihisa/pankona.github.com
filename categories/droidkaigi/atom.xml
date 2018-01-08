@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Droidkaigi on make clean; make</title>
+    <link>https://pankona.github.io/categories/droidkaigi/</link>
+    <description>Recent content in Droidkaigi on make clean; make</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 08 Jan 2018 23:10:33 +0900</lastBuildDate>
+    
+	<atom:link href="https://pankona.github.io/categories/droidkaigi/atom.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Droidkaigi 2018 に向けて (その2)</title>
+      <link>https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/</link>
+      <pubDate>Mon, 08 Jan 2018 23:10:33 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/</guid>
+      <description>DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ</description>
+    </item>
+    
+    <item>
+      <title>DroidKaigi 2018 に向けて</title>
+      <link>https://pankona.github.io/blog/2018/01/06/my-first-post-2018/</link>
+      <pubDate>Sat, 06 Jan 2018 23:09:05 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/01/06/my-first-post-2018/</guid>
+      <description>DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの</description>
+    </item>
+    
+  </channel>
+</rss>

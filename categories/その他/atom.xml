@@ -5,19 +5,10 @@
     <link>https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96/</link>
     <description>Recent content in その他 on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 06 Jan 2018 23:09:05 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jan 2018 13:32:34 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96/atom.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>DroidKaigi 2018 に向けて</title>
-      <link>https://pankona.github.io/blog/2018/01/06/my-first-post-2018/</link>
-      <pubDate>Sat, 06 Jan 2018 23:09:05 +0900</pubDate>
-      
-      <guid>https://pankona.github.io/blog/2018/01/06/my-first-post-2018/</guid>
-      <description>DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの</description>
-    </item>
     
     <item>
       <title>ブログ生成を Octopress から Hugo に移行</title>
