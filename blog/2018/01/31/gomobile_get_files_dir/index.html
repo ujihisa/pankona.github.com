@@ -112,7 +112,9 @@ Go から Android SDK の API に触れるのである。</p>
 <p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br />
 以下のようになる。</p>
 
-<h3 id="jni-を呼び出すパッケージと関数">jni を呼び出すパッケージと関数</h3>
+<h3 id="jni-パッケージ-go言語-c言語">jni パッケージ (Go言語 + C言語)</h3>
+
+<p>指定した関数を JNI 上で実行する関数 <code>RunOnJVM</code> を定義しているパッケージ。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
 </span><span style="color:#75715e"></span>
 <span style="color:#f92672">package</span> <span style="color:#a6e22e">jni</span>
@@ -214,7 +216,9 @@ Go から Android SDK の API に触れるのである。</p>
 	}()
 	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errch</span>
 }</code></pre></div>
-<h3 id="jni-パッケージを使ってファイル保存領域を取得するメソッド">jni パッケージを使ってファイル保存領域を取得するメソッド</h3>
+<h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語-c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
+
+<p>上記 jni パッケージを使って、ファイル保存領域を取得するための関数を jni 上で実行する。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
 </span><span style="color:#75715e"></span>
 <span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
@@ -289,11 +293,16 @@ Go から Android SDK の API に触れるのである。</p>
 		})
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
 }</code></pre></div>
-<h3 id="directorypath-を呼び出す部分">DirectoryPath() を呼び出す部分</h3>
+<h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
+
+<p>上記で準備した関数を呼び出す部分。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
     <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">NewStorage</span>().<span style="color:#a6e22e">DirectoryPath</span>()
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage: %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
 }</code></pre></div>
+<p>これで、ファイル保存領域へのディレクトリパスを取得できる。<br />
+あとは、取得したディレクトリパス配下に保存したいものを保存する。</p>
+
 <h2 id="余談-キャッシュディレクトリの取得">(余談) キャッシュディレクトリの取得</h2>
 
 <p>上記のコードで永続保存が可能な領域へのパスが取得できるので、それはそれで良いのであるが、<br />
