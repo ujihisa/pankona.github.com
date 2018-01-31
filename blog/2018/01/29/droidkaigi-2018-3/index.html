@@ -115,7 +115,7 @@ gomobile 関連で色々調べて分かったことを書いておく。</p>
 </span><span style="color:#75715e">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
 </span><span style="color:#75715e">
 </span><span style="color:#75715e">    // String を生成 ... 3
-</span><span style="color:#75715e">    jstring jstr = env-&gt;NewStringUTF(&#34;hogehoge&#34;);
+</span><span style="color:#75715e">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
 </span><span style="color:#75715e">
 </span><span style="color:#75715e">    // makeText メソッドを呼び出し ... 4
 </span><span style="color:#75715e">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
@@ -154,21 +154,44 @@ gomobile 関連で色々調べて分かったことを書いておく。</p>
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 }</code></pre></div>
 <p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br />
-いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、<br />
-そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</p>
+<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br />
+<del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
 
-<p><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても<br />
-良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、<br />
-事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</p>
+<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del><br />
+<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del><br />
+<del>事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</del></p>
 
-<p>Java のレイヤでは書ける以下のような例は、<br />
-JNI のレイヤでは表現することができないと思われる。</p>
+<p><del>Java のレイヤでは書ける以下のような例は、</del><br />
+<del>JNI のレイヤでは表現することができないと思われる。</del></p>
 
-<p><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></p>
+<p><del><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></del></p>
 
-<p>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、<br />
-肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、<br />
-もう少し原因究明に届かなかった。</p>
+<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del><br />
+<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del><br />
+<del>もう少し原因究明に届かなかった。</del></p>
+
+<p>(2018/01/31 追記)</p>
+
+<p>上記は完全にウソだった。勘違いであった。申し訳ございません！</p>
+
+<p>ちゃんとどのようなエラーが (4) で吐かれているか補足してみたところ、以下の例外が投げられていた。</p>
+
+<pre><code>java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
+</code></pre>
+
+<p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで<br />
+Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
+
+<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br />
+定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity<span style="color:#f92672">.</span><span style="color:#a6e22e">runOnUiThread</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">});</span></code></pre></div>
+<p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br />
+無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br />
+とりあえず試みてみようとは思う。</p>
 
 <h2 id="java-のレイヤに-charsequence-をとらないメソッドを定義すればいけるが">Java のレイヤに CharSequence をとらないメソッドを定義すればいけるが…</h2>
 
