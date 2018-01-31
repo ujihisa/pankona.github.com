@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on make clean; make</title>
+    <link>https://pankona.github.io/categories/go/</link>
+    <description>Recent content in Go on make clean; make</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 31 Jan 2018 16:30:10 +0900</lastBuildDate>
+    
+	<atom:link href="https://pankona.github.io/categories/go/atom.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gomobile (build) で作るアプリでファイルを保存する</title>
+      <link>https://pankona.github.io/blog/2018/01/31/gomobile_get_files_dir/</link>
+      <pubDate>Wed, 31 Jan 2018 16:30:10 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/01/31/gomobile_get_files_dir/</guid>
+      <description>gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから</description>
+    </item>
+    
+  </channel>
+</rss>

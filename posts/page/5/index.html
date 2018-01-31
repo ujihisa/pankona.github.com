@@ -65,6 +65,81 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">28 Jan 2015, 21:10</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2015/01/28/raspi-autologin/" class="post-title">Raspberry Piでログインを自動化、ついでに現在のIP表示させてみる</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>しばらく愛用のVaio Proをいじる時間がとれなかったもんで、新しい記事をポストできずにおった。<br />
+実におよそ2ヶ月ぶりの新規記事。新年あけましておめでとうございます。<br />
+今年もぼちぼちでやっていきます。目指せ100記事。</p>
+
+<h3 id="raspberry-pi起動時に-pitftにipアドレスを表示させる">Raspberry Pi起動時に、PiTFTにIPアドレスを表示させる</h3>
+
+<p>いま自分のとこで扱っているRaspberry Piは、基本的に画面を接続せず、操作はネットワーク越し（SSH）に行う前提にしている。<br />
+そのため、SSHによるログインにあたってはRaspberry PiのIPアドレスを知る等してネットワーク的にリーチする必要がある。</p>
+
+<p>いままではarpをしてみたりpingをブロードキャストに投げてみたり、ホストネームを打ってみたり、色々やっていたのであるが、<br />
+いまひとつうまく行かないことがあって、そのたびにトラブルシューティングのために、結局画面を接続する必要が生じていた。<br />
+実に間抜け感を感じるわけである。</p>
+
+<p>PiTFTをくっつけた、というのはちょっと前の記事で書いたところなのであるが、<br />
+じゃあとりあえず、Raspberry Pi起動時にこいつに現在のIPアドレスを出力してみれば便利なのでは、と思ったのである。<br />
+IPアドレスさえわかれば、だいたいにおいてSSH接続できるしね。</p>
+
+<p>方法は、<br />
+* 自動でログインさせる<br />
+* ログイン時にifconfigし、IPアドレスの部分を抽出しつつ、コンソール（PiTFT）出力<br />
+といった感じ。以下、詳細。</p>
+
+<h3 id="自動ログインさせる">自動ログインさせる</h3>
+
+<p>ちなみに私が扱っているRaspberry PiにはArch Linuxが載っている。<br />
+Raspbian、Pidora等とは設定が違うと思われるので注意されたし。<br />
+Arch Linuxなので、現在のところ起動時の仕組みはSystemdが用いられている。</p>
+
+<p>Systemdにおける自動ログインの設定は、例によってArch Wikiに載っていたのでそれを参照した。<br />
+ここを参照。→  <a href="https://wiki.archlinux.org/index.php/Automatic_login_to_virtual_console_(日本語)]x">Automatic login to virtual console</a><br />
+仮想コンソールの章を、騙されたと思ってそのまま設定し、そんで再起動してやればもう自動ログインできているはずである。</p>
+
+<h3 id="ログイン時にifconfigし-ipアドレス部分を抽出">ログイン時にifconfigし、IPアドレス部分を抽出</h3>
+
+<p>自動ログインできたらあとは簡単で、.bashrcにでもIPアドレス出力用の何かを書いてあげればOKである。<br />
+{% codeblock .bashrc %}<br />
+ifconfig | grep inet<br />
+{% endcodeblock %}<br />
+これでいいや、という感じで書いておいた。</p>
+
+<p>ただ、起動と同時に自動ログイン → IPアドレス表示、だと、IPを取れてないことがあって具合が良くない。<br />
+そのため、上記IPアドレス取得の前に、ちょっとだけsleepなんかを入れてあげるとそのへんは心配がなくなる。<br />
+{% codeblock .bashrc %}<br />
+sleep 5<br />
+ifconfig | grep inet<br />
+{% endcodeblock %}<br />
+こんな具合である。</p>
+
+<h3 id="ipアドレスがわかるようになったがpitftがもったいない感">IPアドレスがわかるようになったがPiTFTがもったいない感</h3>
+
+<p>PiTFTだとちょっとやりすぎなので、もっと小さい画面モジュールでやってもいいと思う。<br />
+というか早く無線化しようね。次の目標は無線化です。それでは。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">25 Nov 2014, 22:16</h1>
                 <section class="post">
                     <header class="post-header">
@@ -355,138 +430,6 @@ evtestを起動したのちにタッチパネルをぐりぐり触ってみる�
 <li>ドライバロードのコマンドをちゃんと確認する。<br /></li>
 <li>キャリブレーション（回転した画面への対応）の方法。<br /></li>
 </ul>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">17 Jul 2014, 21:11</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/07/17/pitft-on-arch-linux/" class="post-title">PiTFTをArch Linux on Raspberry Piで動かすのに苦戦</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p><strong>2014/07/23/Wed 追記</strong></p>
-
-<p>以下のポストに誤りがあることがわかったので、訂正。<br />
-誤っている部分には打ち消し線を入れておく。</p>
-
-<hr />
-
-<p><a href="http://www.adafruit.com/products/1601">PiTFT</a>を購入。<br />
-さっそくRaspberry Piで動かそうとしてみたところ、これがなかなかうまくいかず。<br />
-3日程粘ってようやく動いた。やり方を記載しておく。</p>
-
-<p>Raspberry Piには、Arch Linuxが載っている前提です。</p>
-
-<h3 id="参考になるページ">参考になるページ</h3>
-
-<p><a href="https://github.com/notro/fbtft/wiki">notroさんのfbtftに関するWiki</a>。本当に感謝。Great。<br />
-ただ、ここに書いてある手順を踏んだだけではうまく動かなかった。<br />
-以下、顛末と動かすまでの手順。</p>
-
-<h4 id="rpi-updateが使える状態にする">rpi-updateが使える状態にする</h4>
-
-<p>以下、Raspberry Pi上でのコマンド入力。<br />
-以下のコマンドでrpi-updateを取得＆実行可能権限付与。</p>
-
-<p><code>$ wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update</code><br />
-<code>$ chmod +x ./rpi-update</code></p>
-
-<p>rpi-updateは適当な場所に移しておく。パスが通っているところに置いておくと便利。<br />
-以下、rpi-updateがある場所にパスが通っている前提で記載。</p>
-
-<h3 id="rpi-updateを使ってkernelをアップデート">rpi-updateを使ってKernelをアップデート</h3>
-
-<p>FBTFTドライバがビルトインされているとされるバージョンにしてみる。</p>
-
-<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code></p>
-
-<p>なんやかや起こったあと、リブート。</p>
-
-<p><code>$ sudo reboot</code></p>
-
-<p>これでFBTFTドライバが準備オッケーになっているはず、なのだが…？</p>
-
-<h3 id="fbtft-deviceがない"><del>fbtft_deviceがない</del></h3>
-
-<p><del>fbtft_deviceを有効にするために、modprobeしてみる。</del></p>
-
-<p><code>$ sudo modprobe fbtft_device name=adafruit22</code></p>
-
-<p><del>すると帰ってきた答えは、</del></p>
-
-<p><code>FATAL: Module fbtft_device not found.</code></p>
-
-<p><del>とのこと。実際に探してみたところ、fbtft_device.koというモジュールは存在していない様子。</del></p>
-
-<hr />
-
-<p><strong>2014/07/23/Wed 訂正</strong></p>
-
-<p>結論から言うと上記の挙動であっていた。<br />
-<code>BRANCH=builtin</code>を選択した場合はfbtft_deviceがloadableなモジュールとして現れない、<br />
-つまり modprobe で見つからないと言われるのは正しかった。</p>
-
-<p>上記の状態で、あとは /boot/cmdline.txt に然るべき内容を追記するだけでOK。<br />
-その後PiTFTを接続し、Raspberry Piを再起動すれば画面に何か映るはず。</p>
-
-<p>よって以下の手順はすべて無駄であるが、<br />
-以下の手順が誤りであることを示すために残しておく。。</p>
-
-<p>以下、無駄な手順メモ。全く不要。</p>
-
-<hr />
-
-<h3 id="いろいろやってfbtft-deviceを用意する"><del>いろいろやってfbtft_deviceを用意する</del></h3>
-
-<p><del>fbtft_deviceを求めて色々さまよったところ、上述のKernelアップデートの際に、</del></p>
-
-<p><code>sudo REPO_URI=https://github.com/notro/rpi-firmware rpi-update</code></p>
-
-<p><del>とビルトインではなく、loadable moduleとしてfbtft_deviceが現れるやつをチョイスしてみたところ、</del><br />
-<code>sudo modprobe fbtft_device name=adafruit22</code>がnot foundではなく、別のエラーになった。<br />
-<del>探してみたところ、実際にモジュールは存在した。ただし正常にmodprobeできていない。</del></p>
-
-<p><del>FBTFTのモジュールは、</del><br />
-<code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><br />
-<del>に置かれている。これをどこか別の場所にコピーしておく。後々使う。</del></p>
-
-<h3 id="rpi-updateを使ってfbtftビルトインバージョンに戻す"><del>rpi-updateを使ってFBTFTビルトインバージョンに戻す</del></h3>
-
-<p><del>上で一回やってるやつをやって、FBTFTビルトインバージョンのKernelに戻す。</del></p>
-
-<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code><br />
-<code>$ sudo reboot</code></p>
-
-<h3 id="戻したのち-コピーしておいたfbtftを所定の位置に戻す"><del>戻したのち、コピーしておいたfbtftを所定の位置に戻す</del></h3>
-
-<p><code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><del>の位置に戻す。</del></p>
-
-<h3 id="depmodする"><del>depmodする。</del></h3>
-
-<p><code>sudo depmod -a</code></p>
-
-<h3 id="fbtft-deviceをmodprobeする"><del>fbtft_deviceをmodprobeする</del></h3>
-
-<p><del>not foundとは言われなくなり、ちゃんとロードされる。はず。</del></p>
-
-<h3 id="あとはnotroさんのところの手順に従う">あとはnotroさんのところの手順に従う</h3>
-
-<p>/boot/cmdline.txtであるとか、もろもろ変更する。<br />
-PiTFTはきっと動き出す。</p>
 
                     </div>
                 </section>

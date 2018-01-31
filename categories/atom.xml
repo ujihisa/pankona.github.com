@@ -38,11 +38,29 @@
     </item>
     
     <item>
+      <title>Go</title>
+      <link>https://pankona.github.io/categories/go/</link>
+      <pubDate>Wed, 31 Jan 2018 16:30:10 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/categories/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Golang</title>
       <link>https://pankona.github.io/categories/golang/</link>
       <pubDate>Thu, 01 Jun 2017 19:34:21 +0900</pubDate>
       
       <guid>https://pankona.github.io/categories/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gomobile</title>
+      <link>https://pankona.github.io/categories/gomobile/</link>
+      <pubDate>Wed, 31 Jan 2018 16:30:10 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/categories/gomobile/</guid>
       <description></description>
     </item>
     
