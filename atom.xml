@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 16 Apr 2018 19:32:07 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 30 May 2018 19:39:48 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang.tokyo #15@DeNA</title>
+      <link>https://pankona.github.io/blog/2018/05/30/golangtokyo-15/</link>
+      <pubDate>Wed, 30 May 2018 19:39:48 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/05/30/golangtokyo-15/</guid>
+      <description>golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな</description>
+    </item>
     
     <item>
       <title>golang.tokyo #14@メルカリ</title>

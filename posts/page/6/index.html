@@ -65,6 +65,80 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">01 Oct 2014, 22:41</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2014/10/01/dokusho-meter/" class="post-title">Octopressカスタマイズで読書メーターのブログパーツを追加</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Octopressカスタマイズ" href="https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA">Octopressカスタマイズ</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>たまにはブログのカスタマイズをしてみる。<br />
+今回は読書メーターのブログパーツを追加してみた。</p>
+
+<p>サイドバーに「最近読んだ本」なんてのが現れるようにしてみた。<br />
+文字ばっかだったブログにちょっと賑やかし感があって良い。</p>
+
+<p>例によって備忘録的にやり方を残しておく。<br />
+Octopressに読書メーターのブログパーツを追加する方法。</p>
+
+<h3 id="読書メーターのアカウントを取得する">読書メーターのアカウントを取得する</h3>
+
+<p><a href="http://book.akahoshitakuya.com/">読書メーターのウェブページ</a>からどうぞ。</p>
+
+<h3 id="ブログパーツを選ぶ">ブログパーツを選ぶ</h3>
+
+<p>読書メーターにログイン後、マイページに行ってみると、<br />
+<strong>「ブログパーツ」</strong>と書いてあるところがある。<br />
+そこを見ると各種ブログパーツを見つけることが出来る。</p>
+
+<h3 id="octopressをカスタマイズして-サイドバーに出るように">Octopressをカスタマイズして、サイドバーに出るように</h3>
+
+<p>ここからはOctopress側の編集。</p>
+
+<h4 id="読書メーター用のhtmlを書く">読書メーター用のHTMLを書く。</h4>
+
+<p>中身は上記ブログパーツの内容をコピペしたものだが。<br />
+ブログパーツとして「最近読んだ本」をチョイス。</p>
+
+<pre><code>&lt;section&gt;
+&lt;a href=&quot;http://book.akahoshitakuya.com/u/{人によって違うID}&quot; title=&quot;{人の名前}の最近読んだ本&quot;&gt;&lt;img src=&quot;http://img.bookmeter.com/bp_image/640/509/{人によって違うID}.jpg&quot; border=&quot;0&quot; alt=&quot;{人の名前}の最近読んだ本&quot;&gt;&lt;/a&gt;
+&lt;/section&gt;
+</code></pre>
+
+<h4 id="config-ymlを編集して-サイドバーにパーツを追加">_config.ymlを編集して、サイドバーにパーツを追加</h4>
+
+<p>_config.ymlのdefault_asidesを変更。読書メーター用HTMLファイルを指定。</p>
+
+<pre><code>default_asides: [custom/asides/about.html, asides/recent_posts.html, asides/github.html, asides/delicious.html, 
+                 asides/pinboard.html, asides/googleplus.html, custom/asides/tag_cloud.html, custom/asides/category_list.html,
+                 custom/asides/dokusho_meter.html]
+</code></pre>
+
+<h4 id="deployしたら完了">deployしたら完了</h4>
+
+<p><code>bundle exec rake gen_deploy</code> 的なことをやってデプロイする。</p>
+
+<h3 id="ここまでで">ここまでで</h3>
+
+<p>最近読んだ本がサイドバーに表示されるように。<br />
+ITっぽい本を並べたりすると、なんとなく技術的なブログな雰囲気が出て、<br />
+とてもいいんではないでしょうか。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">15 Sep 2014, 00:30</h1>
                 <section class="post">
                     <header class="post-header">
@@ -417,81 +491,6 @@ mjpg-streamerにカメラデバイスを専有されてしまっているとか�
 </ul>
 
 <p>みたいなもの。テスト書いたりして改善していこう。。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">29 May 2014, 21:02</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/29/rails-on-raspi/" class="post-title">Raspberry PiでRailsを動かしてみたときのこと</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>Raspberry PiにRailsを入れたときのこと。<br />
-あまりすんなりとはいかなかったので、つまづいたところなんかをメモ。<br />
-（ちなみにRaspberry Piで動いているOSはArch Linuxです。）</p>
-
-<h2 id="第一の関門-railsのインストール">第一の関門 Railsのインストール</h2>
-
-<p>Raspberry Piにsshで接続し、<code>gem install rails</code> とやるだけでRailsのインストールが始まる。<br />
-簡単、、、なのだがこれがなかなか終わらない。しかしこれはただ単純に待てばいいので難しいことは何もない。<br />
-終わるまで3時間程度。</p>
-
-<p>sshで接続してる場合、ほっとくとタイムアウトしてしまうと思われる。<br />
-その場合は、screen というので対策できる。nohup というのもある。<br />
-とにかく長時間放置でタイムアウトしちゃってもいい（ログアウトしちゃってもいい）対策は必要。</p>
-
-<h2 id="第二の関門-bundle-install">第二の関門 bundle install</h2>
-
-<p>Railsアプリを動かす前準備で <code>bundle install</code> 。やると思います。<br />
-これがまた死ぬほど時間かかる上に、インストール中に、</p>
-
-<p>killed</p>
-
-<p>とだけ出て終了しちゃう。当然だが bundle install は終わってない。<br />
-こっちのが問題だった。</p>
-
-<h3 id="killed-されちゃうのはメモリ不足のため">killed されちゃうのはメモリ不足のため</h3>
-
-<p>bundle install で Killed になっちゃうのは、メモリ不足のための模様。<br />
-これは、スワップ領域を設定してあげることで回避できた。<br />
-スワップ領域設定の方法については、例によってArch LinuxのWikiを参照した。<br />
-何でも載ってるね！ちなみ参照したページは<a href="https://wiki.archlinux.org/index.php/Swap_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">これ - Swap （日本語） - ArchWiki</a>。</p>
-
-<h3 id="killed-されなくなったけど-超時間かかる">killed されなくなったけど、、、超時間かかる</h3>
-
-<p>killed されなくなったのはいいけど、Railsのインストールのときと同じく、やたら時間がかかる。。。<br />
-9000秒くらいかかったので、実に3時間弱くらい。</p>
-
-<p>なんで時間かかるかというと、まず、 <strong>therubyracer</strong> をインストールしようとしてるのが原因。<br />
-これ自体はいれたかったのでいいんだけど、どうやらこいつを入れるのに伴って、 <strong>libv8</strong> というのが入る模様。<br />
-そんでこれがどうやら <strong>ソースとってきてビルドしている</strong> ようなのである。Raspberry Piになんてことさせるんや。。。<br />
-最近の割とパワーのあるPCなら10分程度で終わるらしいのだが。</p>
-
-<h2 id="まとめると">まとめると</h2>
-
-<p>RailsをRaspberry Piにインストールするためには、</p>
-
-<ul>
-<li>スワップ領域を拡大する（bundle install 中に killed されちゃうならば）<br /></li>
-<li>あとはひたすら待つ。トータルで6時間くらい待つ。<br />
-<br /></li>
-</ul>
-
-<p>ちなみにRailsの起動がまたすっとろい。webrickじゃなくてthinにするとちょっとだけ早くなる気がする、とか。</p>
 
                     </div>
                 </section>

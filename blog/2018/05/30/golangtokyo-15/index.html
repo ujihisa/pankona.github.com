@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>golang.tokyo #15@DeNA &middot; make clean; make</title>
+
+    <meta name="description" content="">
+
+    <meta name="generator" content="Hugo 0.32" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="golang.tokyo #15@DeNA &middot; make clean; make">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="golang.tokyo #15@DeNA &middot; make clean; make">
+    <meta property="og:description" content="">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="make clean; make" href="https://pankona.github.io/atom.xml" />
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
+            <h2 class="brand-tagline"></h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/@pankona"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/pankona "><i class="fa fa-github-alt"></i> github</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/atom.xml"><i class="fa fa-rss"></i> rss</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">30 May 2018, 19:39</h1>
+                <section class="post">
+                    <header class="post-header">
+                        <a href="https://pankona.github.io/blog/2018/05/30/golangtokyo-15/" class="post-title">golang.tokyo #15@DeNA</a>
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<p><a href="https://golangtokyo.connpass.com/event/87064/">golang.tokyo #15</a>に参加してきた。<br />
+内容は以下。</p>
+
+<ul>
+<li>メインの30分セッションふたつ<br />
+
+<ul>
+<li>Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん<br /></li>
+<li>次世代のコンテナランタイム！？gVisorのコードを読みながら理解してみる by <a href="https://twitter.com/niconegoto">niconegoto</a> さん<br /></li>
+</ul></li>
+<li>ライトニングトークは発表予定の 2 人が都合が悪くなってしまったらしく、急遽代打を現地で 2 名補充<br />
+<br /></li>
+</ul>
+
+<h2 id="effective-streaming-in-golang-by-avvmoto-https-twitter-com-avvmoto-さん">Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん</h2>
+
+<iframe id="talk_frame_446760" src="//speakerdeck.com/player/3431ee80147b48b2beabf723612382e5" width="800" height="565" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/10.jpg><img src=/images/golang.tokyo-15/resized_10.jpg /></a>
+  <div class="caption">avvmoto さんの発表。io package を使いこなして無駄をなくそう！</div>
+</div>
+
+<p>何かデータを読み込んでそれを引き回そうというときに、<strong>読み取り時にメモリ上に確保し、 確保したメモリを引き回す</strong>とやってしまうと、関数をまたぐたびにコピーが発生してしまう (もしくはポインタで渡していくか) みたいなことが起きがちである。<br />
+io.Reader interface を引き回すことで、<strong>いざ実際に必要になった段で初めてメモリ上に読み込む</strong>ような動作にでき、メモリ効率、処理速度の向上に寄与できるんじゃない、という話だったと理解した。</p>
+
+<h2 id="次世代のコンテナランタイム-gvisor-を理解する-by-niconegoto-https-twitter-com-niconegoto-さん">次世代のコンテナランタイム gVisor を理解する by <a href="https://twitter.com/niconegoto">niconegoto</a> さん</h2>
+
+<iframe id="talk_frame_446448" src="//speakerdeck.com/player/648504c5f1724ee5b97d1f14ca12a4cb" width="850" height="463" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/08.jpg><img src=/images/golang.tokyo-15/resized_08.jpg /></a>
+  <div class="caption">noconegoto さん。</div>
+</div>
+
+<p>gVisor はよりセキュアにコンテナの仕組みを使おうということで出てきたプロダクトの模様。<br />
+Google においては、gVisor についていずれ論文で技術的な詳細をつまびらかにする予定があるらしく、出てきたら読んでみようかなと思う。<br />
+ちなみに、<a href="https://github.com/google/gvisor">gVisor のソースコード</a>は既に20万行くらいになっているらしく、なかなかゴツいっすね…。</p>
+
+<p>暫時休憩を挟み。</p>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/03.jpg><img src=/images/golang.tokyo-15/resized_03.jpg /></a>
+  <div class="caption">軽食のミニチキンカツサンド。本日も色々いただきました。ありがとうございました。</div>
+</div>
+
+<p>以下、ライトニングトーク。</p>
+
+<h2 id="lt-by-yoshi-xxxxxiiii-https-twitter-com-yoshi-xxxxxiiii-さん-from-cluex">LT by <a href="https://twitter.com/yoshi_xxxxxiiii">@yoshi_xxxxxiiii</a> さん from Cluex</h2>
+
+<iframe id="talk_frame_446461" src="//speakerdeck.com/player/e4a3aaa06df042cbbcd90cd215ec858d" width="800" height="596" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/04.jpg><img src=/images/golang.tokyo-15/resized_04.jpg /></a>
+  <div class="caption">yoshi_xxxxxiiii さん。アゴヒゲキンパツの二つ名があるとのこと。</div>
+</div>
+
+<ul>
+<li>「mamanoko」「ままのて」というサービスを運営されているとのこと。<br /></li>
+<li>せっかく実装したローディング画面について、サーバが JSON 返すの速くなりすぎてローディング画面が出ない、という苦情があったらしい。すごいね。<br />
+<br /></li>
+</ul>
+
+<p>しばしば Rails と Go は比較に上がる気がする。Go に一部変えたら速くなりました！みたいな。<br />
+Rails だから遅いってこともないという認識だけど、速くしようと思ったら大変ってことなのかなー。</p>
+
+<h2 id="lt-by-pospome-https-twitter-com-pospome-さん">LT by <a href="https://twitter.com/pospome">@pospome</a> さん</h2>
+
+<ul>
+<li>急遽代打で登壇。<br /></li>
+<li>技術書典で golang.tokyo が出した本に寄稿した内容の紹介<br />
+<br /></li>
+</ul>
+
+<h2 id="lt-by-karupanerura-https-twitter-com-karupanerura-さん">LT by <a href="https://twitter.com/karupanerura">@karupanerura</a> さん</h2>
+
+<ul>
+<li>こちらも急遽代打で登壇。<br /></li>
+<li>以下の記事について解説。<br />
+<a class="embedly-card" href="https://qiita.com/karupanerura/items/fa3b35dfdceb96730b03">Goで書いたMicroservicesな構成からWeb APIを叩くときに考えたこと - Qiita</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
+<br />
+<br /></li>
+</ul>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            
+                            
+                            
+                            <a href="#" data-type="twitter" data-url="https://pankona.github.io/blog/2018/05/30/golangtokyo-15/" data-description="golang.tokyo #15@DeNA - make clean; make" class="prettySocial fa fa-twitter"></a>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://pankona.github.io/js/all.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://pankona.github.io/js/jquery.oembed.js"></script>
+<script>
+$(function(){
+    $("a.embed").oembed();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-48476608-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

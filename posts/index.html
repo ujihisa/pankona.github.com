@@ -65,6 +65,109 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">30 May 2018, 19:39</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/05/30/golangtokyo-15/" class="post-title">golang.tokyo #15@DeNA</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><a href="https://golangtokyo.connpass.com/event/87064/">golang.tokyo #15</a>に参加してきた。<br />
+内容は以下。</p>
+
+<ul>
+<li>メインの30分セッションふたつ<br />
+
+<ul>
+<li>Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん<br /></li>
+<li>次世代のコンテナランタイム！？gVisorのコードを読みながら理解してみる by <a href="https://twitter.com/niconegoto">niconegoto</a> さん<br /></li>
+</ul></li>
+<li>ライトニングトークは発表予定の 2 人が都合が悪くなってしまったらしく、急遽代打を現地で 2 名補充<br />
+<br /></li>
+</ul>
+
+<h2 id="effective-streaming-in-golang-by-avvmoto-https-twitter-com-avvmoto-さん">Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん</h2>
+
+<iframe id="talk_frame_446760" src="//speakerdeck.com/player/3431ee80147b48b2beabf723612382e5" width="800" height="565" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/10.jpg><img src=/images/golang.tokyo-15/resized_10.jpg /></a>
+  <div class="caption">avvmoto さんの発表。io package を使いこなして無駄をなくそう！</div>
+</div>
+
+<p>何かデータを読み込んでそれを引き回そうというときに、<strong>読み取り時にメモリ上に確保し、 確保したメモリを引き回す</strong>とやってしまうと、関数をまたぐたびにコピーが発生してしまう (もしくはポインタで渡していくか) みたいなことが起きがちである。<br />
+io.Reader interface を引き回すことで、<strong>いざ実際に必要になった段で初めてメモリ上に読み込む</strong>ような動作にでき、メモリ効率、処理速度の向上に寄与できるんじゃない、という話だったと理解した。</p>
+
+<h2 id="次世代のコンテナランタイム-gvisor-を理解する-by-niconegoto-https-twitter-com-niconegoto-さん">次世代のコンテナランタイム gVisor を理解する by <a href="https://twitter.com/niconegoto">niconegoto</a> さん</h2>
+
+<iframe id="talk_frame_446448" src="//speakerdeck.com/player/648504c5f1724ee5b97d1f14ca12a4cb" width="850" height="463" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/08.jpg><img src=/images/golang.tokyo-15/resized_08.jpg /></a>
+  <div class="caption">noconegoto さん。</div>
+</div>
+
+<p>gVisor はよりセキュアにコンテナの仕組みを使おうということで出てきたプロダクトの模様。<br />
+Google においては、gVisor についていずれ論文で技術的な詳細をつまびらかにする予定があるらしく、出てきたら読んでみようかなと思う。<br />
+ちなみに、<a href="https://github.com/google/gvisor">gVisor のソースコード</a>は既に20万行くらいになっているらしく、なかなかゴツいっすね…。</p>
+
+<p>暫時休憩を挟み。</p>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/03.jpg><img src=/images/golang.tokyo-15/resized_03.jpg /></a>
+  <div class="caption">軽食のミニチキンカツサンド。本日も色々いただきました。ありがとうございました。</div>
+</div>
+
+<p>以下、ライトニングトーク。</p>
+
+<h2 id="lt-by-yoshi-xxxxxiiii-https-twitter-com-yoshi-xxxxxiiii-さん-from-cluex">LT by <a href="https://twitter.com/yoshi_xxxxxiiii">@yoshi_xxxxxiiii</a> さん from Cluex</h2>
+
+<iframe id="talk_frame_446461" src="//speakerdeck.com/player/e4a3aaa06df042cbbcd90cd215ec858d" width="800" height="596" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-15/04.jpg><img src=/images/golang.tokyo-15/resized_04.jpg /></a>
+  <div class="caption">yoshi_xxxxxiiii さん。アゴヒゲキンパツの二つ名があるとのこと。</div>
+</div>
+
+<ul>
+<li>「mamanoko」「ままのて」というサービスを運営されているとのこと。<br /></li>
+<li>せっかく実装したローディング画面について、サーバが JSON 返すの速くなりすぎてローディング画面が出ない、という苦情があったらしい。すごいね。<br />
+<br /></li>
+</ul>
+
+<p>しばしば Rails と Go は比較に上がる気がする。Go に一部変えたら速くなりました！みたいな。<br />
+Rails だから遅いってこともないという認識だけど、速くしようと思ったら大変ってことなのかなー。</p>
+
+<h2 id="lt-by-pospome-https-twitter-com-pospome-さん">LT by <a href="https://twitter.com/pospome">@pospome</a> さん</h2>
+
+<ul>
+<li>急遽代打で登壇。<br /></li>
+<li>技術書典で golang.tokyo が出した本に寄稿した内容の紹介<br />
+<br /></li>
+</ul>
+
+<h2 id="lt-by-karupanerura-https-twitter-com-karupanerura-さん">LT by <a href="https://twitter.com/karupanerura">@karupanerura</a> さん</h2>
+
+<ul>
+<li>こちらも急遽代打で登壇。<br /></li>
+<li>以下の記事について解説。<br />
+<a class="embedly-card" href="https://qiita.com/karupanerura/items/fa3b35dfdceb96730b03">Goで書いたMicroservicesな構成からWeb APIを叩くときに考えたこと - Qiita</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
+<br />
+<br /></li>
+</ul>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">16 Apr 2018, 19:32</h1>
                 <section class="post">
                     <header class="post-header">
@@ -707,90 +810,6 @@ CharSequence を取らずに Toast を出すメソッドを Java レイヤに準
 <span style="color:#f92672">}</span></code></pre></div>
 <p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br />
 Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">08 Jan 2018, 23:10</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/" class="post-title">DroidKaigi 2018 に向けて (その2)</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>DroidKaigi 2018 に向けての準備を改めて整理した。<br />
-プレゼンで伝えたいことは、<strong><code>gomobile build</code> で Android 向けゲームを作るときのTIPS集</strong> みたいなことなので、<br />
-そこまで Kokeshi Scramble はフィーチャーしないほうがいいよね、と思いを改め。</p>
-
-<h2 id="伝えたいこと">伝えたいこと</h2>
-
-<ul>
-<li>まず、開発の進め方を紹介。<br />
-
-<ul>
-<li>まず PC 版で作っていって → Android 上でテストする、みたいな流れ。<br /></li>
-<li>ついでに Mac 版、Windows 版、Linux 版も作れてお得、みたいな話もする。<br /></li>
-</ul></li>
-<li><code>gomobile build</code> でいきなり APK 吐けて楽なのは良いものの、いざ作っていくとこんなハマり事があるよ、っていう紹介。<br />
-
-<ul>
-<li>ハマり事の回避方法の紹介。<br /></li>
-<li>ハマり事をいちいち回避しなくても、うちのライブラリを使えばいいかもよ、という宣伝。<br />
-あわせて、よそのライブラリも紹介。<br /></li>
-</ul></li>
-<li>おまけで、Kokeshi Scramble の話を入れておく。<br />
-<br /></li>
-</ul>
-
-<p>みたいな感じの流れが良いかな、ということをうすらぼんやり考え。</p>
-
-<h2 id="本番までの作業">本番までの作業</h2>
-
-<p>だいたい残り 1 ヶ月であり、作業に使えない日もあるだろうことを考えると、<br />
-作業に使える日数は 20 日程度と考えるべきかと思う。<br />
-1 日 1 〜 2 時間捻出したら 20 〜 40 時間。だいたい 3 〜 6 人日ってところだろうか。<br />
-ここに収まる中で準備を進めないといけないが、以下のような対応をしておきたい。</p>
-
-<ul>
-<li>gomo-simra 拡張。以下の機能を加える (各々についてサンプルも追加) 。<br />
-
-<ul>
-<li>アイコンを設定する (これは gomo-simra 拡張は不要の予定なので設定方法を記載する)。<br /></li>
-<li>トーストを出す。<br /></li>
-<li>SharedPreference を使う。<br /></li>
-<li>指定の URL をブラウザで読み込む (広告クリック的な機能を想定) 。<br /></li>
-</ul></li>
-<li>以下の改善も予定。<br />
-
-<ul>
-<li>README.md をもう少し詳しく書く。使い方の例が分かるような。<br /></li>
-</ul></li>
-<li>その上で、スライドを更新。<br />
-
-<ul>
-<li>各ハマり事への解決策をコードを踏まえて紹介する。<br /></li>
-</ul></li>
-<li>あとは発表の練習。<br />
-<br /></li>
-</ul>
-
-<p>トータルで 5 人日くらいになりそうな作業見積だがどうか。<br />
-Kokeshi Scramble の改善まではちょっと手が付けられないだろうという感じかな。</p>
-
-<p>という感じで作業を何となくでも洗い出しておくと、いざ着手したときにスムーズに作業が進められるよね、という期待を込めて。<br />
-DroidKaigi、気合い入れていくぞ。</p>
 
                     </div>
                 </section>
