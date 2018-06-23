@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 05 Feb 2018 00:38:03 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 16 Apr 2018 19:32:07 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang.tokyo #14@メルカリ</title>
+      <link>https://pankona.github.io/blog/2018/04/16/golangtokyo-14/</link>
+      <pubDate>Mon, 16 Apr 2018 19:32:07 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/04/16/golangtokyo-14/</guid>
+      <description>golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by</description>
+    </item>
     
     <item>
       <title>DroidKaigi 2018 向け資料 - gomobile でゲームを作る</title>

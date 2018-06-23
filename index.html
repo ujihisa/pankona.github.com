@@ -65,6 +65,192 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">16 Apr 2018, 19:32</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/04/16/golangtokyo-14/" class="post-title">golang.tokyo #14@メルカリ</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><a href="https://golangtokyo.connpass.com/event/82723/">golang.tokyo #14</a> に参加してきたのでその内容メモ。<br />
+発表内容は以下。</p>
+
+<ul>
+<li>ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん<br /></li>
+<li>チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん<br /></li>
+<li>ライトニングトーク 3 つ<br />
+
+<ul>
+<li>vgo の話 by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん<br /></li>
+<li>プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん<br /></li>
+<li>linter を作る話<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<p>例によって軽食 (と言いつつかなり十分な量の食事が) 提供されており、ありがたくいただきました…！<br />
+ありがとうございました。ごちそうさまでした。</p>
+
+<h2 id="ホリネズミでもわかる-goroutine-入門-by-inukirom-https-twitter-com-inukirom-さん">ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん</h2>
+
+<iframe id="talk_frame_438844" src="//speakerdeck.com/player/5611568f65044914bb63fb0d787e0852" width="1000" height="575" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-14/05.jpg><img src=/images/golang.tokyo-14/resized_05.jpg /></a>
+  <div class="caption">inukirom さん発表の様子。とても丁寧でわかりやすかった。</div>
+</div>
+
+<h3 id="goroutine-と-chan-の基本的な使い方">goroutine と chan の基本的な使い方</h3>
+
+<p>goroutine と defer と panic を組み合わせて使う場合に注意すべき点があり、<br />
+たとえば以下のような場合、A 内で張った defer は呼び出されない<strong>場合がある</strong>。<br />
+(スライド内では&rdquo;呼び出されない&rdquo;と書かれているが、その限りではなさそうな)</p>
+
+<pre><code>func A() {
+    defer func(){}()
+    go B()
+}
+
+func B() {
+    panic(&quot;panic!!&quot;)
+}
+</code></pre>
+
+<p>状況としては、</p>
+
+<ul>
+<li><code>A()</code> が終わるよりも先に <code>B()</code> 内の <code>panic</code> が先に実行されたときは、<code>A()</code> 内の <code>defer</code> は呼び出されないまま終わる。<br /></li>
+<li><code>panic</code> よりも <code>A()</code> が終了するほうが先なのであれば、<code>defer</code> は実行される。<br />
+<br /></li>
+</ul>
+
+<h3 id="channel">channel</h3>
+
+<p>channel については以下のような話題がとりあげられた。</p>
+
+<ul>
+<li>close は結構デリケート (使い方を誤るとすぐに動かなくなる) なので注意<br /></li>
+<li>RW、R only、W only という属性を持たせられる<br /></li>
+<li>select. default で non-blocking にできる<br />
+<br /></li>
+</ul>
+
+<p>ところで、channel は close しないでほっとくような例もよく見るのであれが、close しなくて良いのだろうか？</p>
+
+<p><a href="https://groups.google.com/forum/#!msg/golang-nuts/pZwdYRGxCIk/qpbHxRRPJdUJ">golang-nuts でのやりとり</a> を見るにつけては、 使われなくなった channel は GC の対象になるため、あえて明示的に close する必要はないと言っている気がする。 channel を close すると受け手側にお知らせがいくので、どうやらそういう目的で使うらしい。</p>
+
+<h3 id="wait-処理">wait 処理</h3>
+
+<p>goroutine の終了を待ち合わせする例の紹介。</p>
+
+<ul>
+<li>channel で待つ<br />
+
+<ul>
+<li>単なるお知らせであってお知らせ内容に意味がないのであれば、<code>struct{}{}</code> を使うのがメモリ効率が良い。<br /></li>
+</ul></li>
+<li>sync.WaitGroup<br />
+
+<ul>
+<li><code>sync.WaitGroup</code> で、複数の goroutine を待ち合わせしやすくなる<br /></li>
+<li><code>sync.WaitGroup</code> にエラー処理を生やしたみたいな <code>errgroup</code> なんかもある<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h3 id="for-ループと-goroutine">for ループと goroutine</h3>
+
+<p>for 文の中で goroutine 立てる例。よくある罠。</p>
+
+<ul>
+<li>引数に渡して何とかする例<br /></li>
+<li>競合の解決<br />
+
+<ul>
+<li>直列でええやん、という場合もある<br /></li>
+<li>排他制御に <code>sync.Mutex</code> 使う例。<code>RWMutex</code> もあるぞ<br /></li>
+<li><code>sync/atomic</code> というパッケージもあるぞ<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h3 id="goroutine-のリーク">goroutine のリーク</h3>
+
+<ul>
+<li>goroutine の中でブロックしちゃうと goroutine がリークする<br />
+
+<ul>
+<li><code>context.Context</code> 等を用いると goroutine を終わらせる処理を書きやすい<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h3 id="便利ツールの紹介">便利ツールの紹介</h3>
+
+<ul>
+<li>gotrace<br />
+
+<ul>
+<li>goroutine と channel のやりとりを可視化できるぞ…！<br /></li>
+<li>docker image を使って動かしている<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h2 id="チャネルのしくみ-by-knsh14-https-twitter-com-knsh14-さん">チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん</h2>
+
+<iframe id="talk_frame_438853" src="//speakerdeck.com/player/3ca3b188d9904775b4281cfee7018c27" width="1000" height="575" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-14/03.jpg><img src=/images/golang.tokyo-14/resized_03.jpg /></a>
+  <div class="caption">knsh14 さん発表の様子。シュラスコと寿司で例えていく。</div>
+</div>
+
+<p>以下、LT</p>
+
+<h2 id="vgo-by-tanksuzuki-https-twitter-com-tanksuzuki-さん">vgo by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん</h2>
+
+<iframe id="talk_frame_438880" src="//speakerdeck.com/player/08cee61b8c56450d8ef618b378fcd6a0" width="1000" height="575" style="border:0; padding:0; margin:0; background:transparent;" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-14/02.jpg><img src=/images/golang.tokyo-14/resized_02.jpg /></a>
+  <div class="caption">tanksuzuki さん発表の様子。GOPATH なくなるのは胸熱。</div>
+</div>
+
+<p>vgo に関してはまだ使うのしんどい一面もあるものの、GOPATH、vendor が不要になるみたいな、Go を紹介するときに割と不評を買うところが改善されていくわけであり、今後に大いに期待である。</p>
+
+<h2 id="プロダクションに-go-を適用した話-by-kurikazu-https-twitter-com-kurikazu-さん">プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん</h2>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/lyY1i4CNbWM6jP" width="595" height="520" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"></div></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-14/04.jpg><img src=/images/golang.tokyo-14/resized_04.jpg /></a>
+  <div class="caption">kurikazu さん発表の様子。Go 導入してハッピーなのは良いね！</div>
+</div>
+
+<h2 id="linter-を作る話-by-dice-zu-https-twitter-com-dice-zu-さん">linter を作る話 by <a href="https://twitter.com/dice_zu">@dice_zu</a> さん</h2>
+
+<iframe src=https://daisuzu.github.io/golang-tokyo-14/#1 width="1000" height="600"></iframe>
+
+<div style="margin-bottom:24px">
+  <a href=/images/golang.tokyo-14/01.jpg><img src=/images/golang.tokyo-14/resized_01.jpg /></a>
+  <div class="caption">dice_zu さん発表の様子。lint を比較的容易に自作できるのも Go の良いところか。</div>
+</div>
+
+<p>プロジェクト独自のコーディングルールとかがあるのであれば、チームで lint を作って運用するのもありかもしれない。<br />
+個人的には named return value 禁止とかやりたいところであるが…？</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">05 Feb 2018, 00:38</h1>
                 <section class="post">
                     <header class="post-header">
@@ -609,80 +795,12 @@ DroidKaigi、気合い入れていくぞ。</p>
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">06 Jan 2018, 23:09</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/" class="post-title">DroidKaigi 2018 に向けて</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
-
-<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br />
-以下、準備しておこうと思う内容のメモ。</p>
-
-<ul>
-<li>ネタは gomobile でゲーム作った話。<br />
-<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。<br /></li>
-<li>DroidKaigi なので、主に Android 向けの開発について触れる。<br /></li>
-<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。<br />
-
-<ul>
-<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。<br /></li>
-<li>特に SharedPreference 使ったデータの保存を盛り込む。<br />
-(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)<br /></li>
-</ul></li>
-<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。<br />
-
-<ul>
-<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
-
-<ul>
-<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。<br /></li>
-<li>召喚可能なユニット数に上限を設ける。<br /></li>
-<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。<br /></li>
-<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。<br /></li>
-<li>そもそもちゃんと Android 端末上で動くようにしとく…。<br />
-<br /></li>
-</ul>
-
-<p>その他、可能であれば行いたい細かい点の改善。</p>
-
-<ul>
-<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。<br /></li>
-<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。<br />
-<br /></li>
-</ul>
-
-<p>DroidKaigi までもう残り一ヶ月程度。<br />
-コツコツやっていくぞー。今年も頑張るぞー。</p>
-
-                    </div>
-                </section>
-                
             </div>
             
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
-    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 8</span>
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 9</span>
     
       <a href="/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
         Older&nbsp;<i class="fa fa-angle-double-right"></i>
@@ -700,6 +818,14 @@ DroidKaigi、気合い入れていくぞ。</p>
     </div>
 </div>
 <script src="https://pankona.github.io/js/all.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://pankona.github.io/js/jquery.oembed.js"></script>
+<script>
+$(function(){
+    $("a.embed").oembed();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
     </div>
