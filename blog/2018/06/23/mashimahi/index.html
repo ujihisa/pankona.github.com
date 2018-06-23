@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>強いパスワードのためのフレーズジェネレータを作ってみた &middot; make clean; make</title>
+
+    <meta name="description" content="">
+
+    <meta name="generator" content="Hugo 0.32" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="強いパスワードのためのフレーズジェネレータを作ってみた &middot; make clean; make">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="強いパスワードのためのフレーズジェネレータを作ってみた &middot; make clean; make">
+    <meta property="og:description" content="">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="make clean; make" href="https://pankona.github.io/atom.xml" />
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
+            <h2 class="brand-tagline"></h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/@pankona"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/pankona "><i class="fa fa-github-alt"></i> github</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/atom.xml"><i class="fa fa-rss"></i> rss</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">23 Jun 2018, 17:00</h1>
+                <section class="post">
+                    <header class="post-header">
+                        <a href="https://pankona.github.io/blog/2018/06/23/mashimahi/" class="post-title">強いパスワードのためのフレーズジェネレータを作ってみた</a>
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<p>ふと思い立って、フレーズジェネレータなるものを作ってみた。</p>
+
+<p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS をあててちょっとオシャレにしといたぞ。無駄に日本語への自動翻訳もつけておきたかったが、翻訳部分は無料ではいまいち達成できなそうかなー。<a href="https://t.co/tThQl1mfSe">https://t.co/tThQl1mfSe</a></p>&mdash; パン粉 (@pankona) <a href="https://twitter.com/pankona/status/1010435240714633216?ref_src=twsrc%5Etfw">2018年6月23日</a></blockquote><br />
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>GAE/Go で作成。<a href="https://strongest-mashimashi.appspot.com/">ココ</a> にホスティング。PhraGen (ふらげん) と命名。</p>
+
+<h2 id="これは何か">これは何か</h2>
+
+<p>どこかで聞いた話であるが、いわゆる「強いパスワードというのはどうやって生成するのが良いのか」ということを考えた時に、<br />
+ひとつの手法として<strong>「英語の辞書からランダムで 3 単語ひっぱってきてつなげるのが良い」</strong>というのがあると小耳に挟んだわけである。</p>
+
+<p>なるほどなるほど、ということで、では試しに作ってみようということで作ってみたのがこれである。</p>
+
+<h2 id="ちょっとした工夫">ちょっとした工夫</h2>
+
+<p>完全にランダムな単語をチョイスしたほうがパスワード的には強いのだろうけど、きっとそれは覚えにくいフレーズになってしまうと思われる。<br />
+ということで、ちょっとでも覚えやすいフレーズを生成するために、完全にランダムなチョイスではなく<strong>「形容詞＋形容詞＋名詞」</strong>の順で現れるフレーズを生成するようにしてみた。<br />
+<strong>Super Great Goalkeeper</strong> 的なものが生成されることをイメージしている。</p>
+
+<h2 id="ジェネレータのしくみなど">ジェネレータのしくみなど</h2>
+
+<h3 id="oxford-dictionaries-api">Oxford Dictionaries API</h3>
+
+<p>そもそも英語の辞書のデータをどのように扱えば良いのか。出どころはどこか、ということを探していると以下を見つけた。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://developer.oxforddictionaries.com/">Oxford Dictionaries API</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<p>これは英語辞書で有名な Oxford が提供してくれている (と思われる)、Web API である。<br />
+REST API の形をしていて (なんと Swagger の定義までついている)、ドキュメントの記載通りに叩くことで単語とその意味などを得ることができる。<br />
+形容詞で、&rdquo;super で始まる&rdquo; 5字以上の単語、みたいなクエリでワードリストを取得できるような機能が提供されている。</p>
+
+<p>これを利用しようということで、まずは提供されている swagger の定義をありがたくお借りしてクライアントライブラリを生成した。<br />
+以下のリポジトリに置いておいた。またいつか使うかもしれない。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/oxford-dict-api-client-go">pankona/oxford-dict-api-client-go</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<h3 id="レスポンス遅いけどキャッシュは規約違反">レスポンス遅いけどキャッシュは規約違反</h3>
+
+<p>ただ、一回のクエリに数秒かかるようなところがあり、PhraGen の裏で動かすにはちょっとしんどい一面がある。<br />
+3 単語から構成されるフレーズを作るということは 3 回リクエストするということであり、つまり 1 フレーズ生成につき 5〜6 秒は待たされてしまう。</p>
+
+<p>問い合わせてみたところ、規約上、フリーのプランでは Oxford Dictionaries API が吐き出す結果をキャッシュしておくことは禁止とのこと。<br />
+お金を払えば制限つきでキャッシュしておけるということで、検討されたしとのお達しであった。うーむ…。<br />
+※ この点については、近日中にバイオレーションのない形に変更予定。</p>
+
+<h3 id="ホスティングは-gae-バックエンドは-go">ホスティングは GAE、バックエンドは Go</h3>
+
+<p>ジェネレータは GAE/Go で作った。ソースコードは以下のリポジトリに格納。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/strongest-mashimashi">pankona/strongest-mashimashi</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<p>リポジトリ名に深い意味はなく、なんとなく語呂が良いのでつけておいた。ストロンゲストマシマシ。</p>
+
+<h3 id="フロントエンドは色々">フロントエンドは色々</h3>
+
+<p>フロントエンド力がナメクジレベルのパン粉であるが、色々調べつつ、以下の技術要素の利用を試みている。<br />
+特に CSS フレームワーク Bulma のおかげで、PhraGen はまあまあしゃらくさい感じのキレイな見た目になったのではないかと思っている。</p>
+
+<ul>
+<li>TypeScript<br /></li>
+<li>React<br /></li>
+<li>CSS フレームワークとして Bulma<br />
+<br /></li>
+</ul>
+
+<h3 id="使えるのか">使えるのか</h3>
+
+<p>使えるかどうかよりもそもそも使わなそう。<br />
+でもせっかく作ったので、実際にパスワードの生成のために使ってみる所存。</p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            
+                            
+                            
+                            <a href="#" data-type="twitter" data-url="https://pankona.github.io/blog/2018/06/23/mashimahi/" data-description="強いパスワードのためのフレーズジェネレータを作ってみた - make clean; make" class="prettySocial fa fa-twitter"></a>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://pankona.github.io/js/all.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://pankona.github.io/js/jquery.oembed.js"></script>
+<script>
+$(function(){
+    $("a.embed").oembed();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-48476608-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

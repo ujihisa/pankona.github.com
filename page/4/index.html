@@ -65,6 +65,191 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">18 Apr 2016, 19:34</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2016/04/18/atte-fes/" class="post-title">atte fes@mercari</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p><img src="/images/attefes/title.jpg" alt="attefes" /></p>
+
+<p>2016.04.18 に、六本木は森タワーのメルカリさん宅にて、atte fes が行われました。<br />
+<a href="http://tech.mercari.com/entry/2016/04/20/130620">アッテの開発技術をお伝えする atte FeS【Go・Swift開発編】を開催しました - Mercari Engineering Blog</a><br />
+本イベントにブログ枠にて参加させていただきましたので、ひとつそのレポートをば、したためます。</p>
+
+<p>発表時に用いられた資料は、↑のリンク先にアップしていただいているので、参照されたし。<br />
+ちなみに、冒頭の画像は会場でいただいたデカールです。ねこかわいい。</p>
+
+<h2 id="最初にビールと軽食で乾杯">最初にビールと軽食で乾杯</h2>
+
+<p>いきなり技術的な話題ではないところからなんですが、実にシャレオツだったビールブースにふれないわけにはいかない。</p>
+
+<p><img src="/images/attefes/0.jpg" alt="attefes" /><br />
+図1. 三種類のビールが提供されている。しかも缶じゃない。感動。</p>
+
+<p><img src="/images/attefes/1.jpg" alt="attefes" /><br />
+図2. 軽食が提供されている。</p>
+
+<p>ビールは3種類とも一杯ずついただきましたが、とても美味でございました。<br />
+また夕飯食べずに駆けつけたものだったので、普通に空腹でありました。軽食もいただけて良かった！<br />
+おかげさまで集中して発表に耳を傾けることができました。ありがとうございました。</p>
+
+<p><img src="/images/attefes/2.jpg" alt="attefes" /><br />
+図3. 司会の方の音頭で乾杯。</p>
+
+<h2 id="アッテ開発の技術-br-golang-と-google-cloud-platform-鶴岡達也さん">アッテ開発の技術：<br>Golang と Google Cloud Platform (鶴岡達也さん)</h2>
+
+<p>さて、発表内容について。</p>
+
+<p><img src="/images/attefes/3.jpg" alt="attefes" /><br />
+図4. 鶴岡さん</p>
+
+<p>ひとつめは鶴岡達也さんによる「Golang と Google Cloud Platform」。</p>
+
+<p>発表の具体的な内容は実際に資料をご覧いただければ分かると思いますので、<br />
+本記事では私が印象に残った箇所について触れていくことにします。</p>
+
+<h3 id="なぜ-web-アプリ開発に-go-gae-を採用したか">なぜ Web アプリ開発に Go/GAE を採用したか？</h3>
+
+<p>さまざま理由があったようですが、個人的には、<br />
+<strong>「3年後にもエンジニアにとって魅力的な場所であるため」</strong> に、多様性と技術の開拓の意味もふくめての採用であったというのが印象的でした。<br />
+そういうふうな文化があると、エンジニアにとって満足感が高い職場になっていくんじゃないかなー、等と。<br />
+とてもいいと思いました。ええ、弊社でもぜひそうしていきたい…。</p>
+
+<h3 id="go言語はチームで開発しやすい">Go言語はチームで開発しやすい</h3>
+
+<p>私も個人的にちょいちょい Go 言語を触りますが、ほんとに周辺ツールの充実っぷりが凄まじい。<br />
+lint、コードフォーマッタ、変数名には Go 言語公式のポリシーが存在する、等。<br />
+チーム開発に採用すれば、やれインデントが〜とか、インポートの順番が〜、とかをソースレビューに持ち込むこともなくなる。<br />
+そういう点も学習コストを下げるのに役立っているかな。Go 言語、私もオススメです。</p>
+
+<h3 id="godoc-を有効に使う">GoDoc を有効に使う</h3>
+
+<p>GoDoc は概ね常に最新に保っているとのことで、つまり、<br />
+「API を使いたいひとはとりあえず GoDoc 見て」で済んでいる、らしいです。<br />
+チームで開発しやすい、効率化という面で GoDoc を有効に使えている例かな、と。<br />
+ドキュメントをおざなりにしないところ、素敵です。<br />
+またこういうドキュメンテーションのためのツールが提供されているのも Go 言語のいいところ。<br />
+Go 言語、私もオススメです。</p>
+
+<h3 id="gae-のインスタンスは-200-ms-で立ち上がる">GAE のインスタンスは 200 ms で立ち上がる</h3>
+
+<p>速い！この速さはオートスケール時にとっても活きてくる模様。<br />
+アクセス過多でスパイクしてもあっとうい間に平穏を取り戻す図は、私の心にも平穏と興奮を与えるものでありました。</p>
+
+<h3 id="その他の話題-rdb-vs-nosql-datastore-の良いところ-等">その他の話題、RDB vs NoSQL、DataStore の良いところ、等</h3>
+
+<p>他にも興味深いトピックについて話されていました。<br />
+ぜひ、スライドを直に見ていただければと。</p>
+
+<h2 id="アッテ開発の技術-br-swift-と-rxswift-大庭慎一郎さん">アッテ開発の技術：<br>Swift と RxSwift (大庭慎一郎さん)</h2>
+
+<p><img src="/images/attefes/4.jpg" alt="attefes" /><br />
+図5. 大庭さん</p>
+
+<p>正直に言うと Reactive Programming というものがほぼ分かってない私ですが、<br />
+発表は非常に興味深く聞かせていただきました。Reactive Programming ええな！</p>
+
+<h3 id="swift-の採用を決めた経緯">Swift の採用を決めた経緯</h3>
+
+<p>Swift を採用した経緯について。そもそも流用する資産がなかったとのことで、<br />
+だったら色々機能の豊富な Swift にしましょうよ、ということだったと思います。</p>
+
+<p>Objective-C は、それはそれで今まで蓄えられたノウハウが Web 上に豊富に転がっていたりして、いわゆる「ハマりにくさ」では Swift より上のような気はする。そういう意味では Objective-C にも良いところはあるだろう。<br />
+とはいえ、Swift と Objective-C、どっち採用したらテンションあがるかと言われれば、やはり Swift であるかなと。3年後もエンジニアにとって魅力的な場所を醸造しているひとつかもしれない、等と思いつつ。</p>
+
+<h3 id="リアクティブプログラミングに頼るとプログラミング能力が下がる">リアクティブプログラミングに頼るとプログラミング能力が下がる？</h3>
+
+<p>プログラミング能力が下がるは言い過ぎかも？<br />
+スライド上のサンプルコードは短く完結にわかりやすく書かれていて、いったん慣れてしまったら辞められない的なものを感じた。<br />
+なるほど、馴染んできたら普通のプログラミング (？) のやり方忘れちゃうかもしれないですね。</p>
+
+<p>とはいえ学習コストは高い模様。<br />
+質疑応答では「急に全部ではなく、部分的に採用していくこともできる」と。<br />
+データバインディングから始めるのがやりやすいのではないか、と仰っておられました。</p>
+
+<h3 id="リアクティブプログラミング-参考サイト">リアクティブプログラミング 参考サイト</h3>
+
+<p>スライド中でも触れられていますが、リアクティブプログラミングについては以下のサイトが理解の助けになったとのこと。<br />
+<a href="http://ninjinkun.hatenablog.com/entry/introrxja">【翻訳】あなたが求めていたリアクティブプログラミング入門 - ninjinkun&rsquo;s diary</a></p>
+
+<p>以下のページでは、Reactive な動き (Stream) を図で理解できるようになっています。<br />
+<a href="http://rxmarbles.com/">RxMarbles - Interactive diagrams of Rx Observables</a></p>
+
+<h2 id="アッテ開発の技術-br-アッテ-ios-の設計と開発フローの変遷-石川洋資さん">アッテ開発の技術：<br>アッテ iOS の設計と開発フローの変遷 (石川洋資さん)</h2>
+
+<p><img src="/images/attefes/7.jpg" alt="attefes" /><br />
+図6. 石川さん</p>
+
+<h3 id="同じ構造の実装の一元化">同じ構造の実装の一元化</h3>
+
+<p>よくある同じ構造のもの、 ページネーション、フォームのバリデーションであるとかの共通化の話。<br />
+MVVM でいうところの VM 部分で、共通するGenericな部分 + 型スペシフィックな部分は型パラメータもらって作る、という構造の紹介。<br />
+特にページネーションは、10回書いたら7回くらいバグってるくらいのバグを埋め込みやすい部分らしく、<br />
+共通化することで、「高速な開発で、かつ安全」な設計に近づくことができたとのこと。</p>
+
+<p>新しい設計を試すのは、場合によっては難しいことだと思う。<br />
+つい、いま動いているところは触りたくない、以前作ったものと同じような構造が出てきたら踏襲する、等と<br />
+してしまいがちな昨今（ですよね）、飽き足らず、より良いモノ作ろうぜという熱気にあふれている、等と感じておりました。<br />
+素敵だ。</p>
+
+<h3 id="自動デプロイの話">自動デプロイの話</h3>
+
+<p>ご多分にもれずというか、やはり iOS アプリも自動ビルド/自動デプロイをなさっている模様。<br />
+構成要素としては、<br />
+* Travis CI (CI 時間は7分くらい)<br />
+* agvtool でビルド番号を振る (Xcodeに付随)。<br />
+* DeployGate (dev) と TestFlight (prod) にデプロイ</p>
+
+<p>また、その他の作法として、<br />
+* 手元でのアーカイブはしない。<br />
+* QAが通ればそのまま審査へ</p>
+
+<p>というのが紹介されていました。</p>
+
+<p>ビルドとかデプロイ、あと審査もだと思いますが、ものすごく属人化しがちな部分であると思う。<br />
+<strong>「病気で倒れても誰でもデプロイできる」</strong> と仰っていましたが、これって本当に大事なこと。<br />
+作業をひとにロックインしない工夫をしていかないとね。属人化は不幸の始まり。</p>
+
+<p>ところで CI に掛かる時間が7分って結構早いような気がしている。<br />
+早さ、特に CI とかそういう常日頃から何度も繰り返し行われる事柄の早さは重要。</p>
+
+<p>何も考えずにそこそこの規模の iOS アプリビルドしたら、結構時間かかっちゃうと思うんだよね。それこそ10分くらい余裕で。<br />
+さらっと7分って言っていましたが、ここにはきっと色々な工夫がなされているんだと想像します。</p>
+
+<h2 id="その後">その後</h2>
+
+<p><img src="/images/attefes/8.jpg" alt="attefes" /><br />
+図7. 懇親会。みな思い思いの方を捕まえては話し込む。</p>
+
+<p><img src="/images/attefes/9.jpg" alt="attefes" /><br />
+図8. 懇親会。運営おつかれさまでした。</p>
+
+<h2 id="おわりに">おわりに</h2>
+
+<p>Mercari からスピンアウト (?) した SOUZOH という組織は、なんというか、<br />
+新しいやり方をどんどん取り入れていて、エンジニア的にはテンションあがる環境であるという印象でした。<br />
+それで実際うまいことやれているっていうのは、なお凄いことかな。</p>
+
+<p>そんな感じで、おいしいビールをいただきながら学ばせていただいた atte fes でございました。オススメは Tokyo White。<br />
+運営の方々、登壇の方々におかれましては、大変おつかれさまでございました！</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">31 Mar 2016, 00:36</h1>
                 <section class="post">
                     <header class="post-header">
@@ -365,140 +550,6 @@ Nexus 7 よりも若干薄いかな、と。</p>
 確かに、褒めるというかイイネというか＋１というか、をしていくことで、<br />
 いい空気、もっといいコード書いてやろう的なモチベーションアップ、とか そういう効果もあるんじゃないかと思ったりもする。<br />
 ギスギスしがちなコードレビューの現場にはオススメ。私もやっていきます。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">22 Apr 2015, 19:25</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2015/04/22/travis-ci-with-deploygate/" class="post-title">Cocos2d-x &#43; Travis CI &#43; DeployGate</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-cocos2d-x" href="https://pankona.github.io/categories/cocos2d-x">cocos2d-x</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p><a href="http://pankona.github.io/blog/2015/04/19/cocos-with-travisci/">前回</a>の記事にて、cocos2d-xでのアプリ作成とTravis CIを連携させるとこまでいった。<br />
-今回は成果物であるAPKをDeployGateにアップロードするところについて書き留めておく。</p>
-
-<h2 id="だいたいのやり方">だいたいのやり方</h2>
-
-<ul>
-<li>ビルドが成功したら<code>curl</code>コマンドにてDeployGateにAPKをアップロードする。<br /></li>
-<li>アップロードにあたってDeployGateのAPI Keyが必要になる。DeployGateにログインして個人設定的なところを見れば載っている。<br /></li>
-<li>API Keyは.travis.ymlに書くことになるが、そのまま載せちゃうとセキュリティ的に問題なので暗号化する。<br />
-
-<ul>
-<li>暗号化には<code>travis</code>コマンドを用いる。<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h2 id="ちょっと細かいやり方">ちょっと細かいやり方</h2>
-
-<p>まずはAPKアップロード成功後の.travis.ymlを載せておく。</p>
-
-<pre><code>language: android
-
-# Handle git submodules yourself
-git:
-    submodules: false
-
-env:
-  global:
-    secure: &quot;TeSR8JLJd2Z0erCxcgLinC+me5SfwpgcCNwiTsqXn09erOgos2+mUbVQaSyo7Bw4OF4TmNpejX+jETd/lL4fTiWRDw6NW/cqEelk57fXJ5mmf5ey+tB1EkMFwd8x7Fw2vBe4xtO8KeohI6D1Gtu1qTYU9t9x4bhAd4qL15Y5osE=&quot;
-
-install:
-# NDK configuration
-    - printenv
-    - echo `pwd`
-    - wget http://dl.google.com/android/ndk/android-ndk-r10d-linux-x86_64.bin
-    - chmod a+x android-ndk-r10d-linux-x86_64.bin
-    - ./android-ndk-r10d-linux-x86_64.bin -y | grep -v Extracting # because log will be too long!
-    - export NDK_ROOT=`pwd`/android-ndk-r10d
-    - echo $NDK_ROOT
-    - export PATH=$PATH:$NDK_ROOT
-    - echo $PATH
-
-# Android SDK configuration
-    - export ANDROID_SDK_ROOT=/usr/local/android-sdk
-    - export PATH=$PATH:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools
-
-# git submodule
-# Use sed to replace the SSH URL with the public URL, then initialize submodules
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    - git submodule update --init --recursive
-
-# cocos setup 
-    - cd ./cocos2d
-    - python download-deps.py --remove-download=yes
-    - python ./setup.py
-    - export COCOS_CONSOLE_ROOT=`pwd`/tools/cocos2d-console/bin
-    - export PATH=$PATH:$COCOS_CONSOLE_ROOT
-    - export COCOS_TEMPLATES_ROOT=`pwd`/templates
-    - export PATH=$PATH:$COCOS_TEMPLATES_ROOT
-    - export ANT_ROOT=/usr/share/ant/bin
-    - export PATH=$PATH:$ANT_ROOT
-    - printenv
-    - cd ..
-
-script:
-    - cocos compile -p android -j 8
-
-after_success:
-    - echo $TRAVIS_BRANCH
-    - echo $TRAVIS_PULL_REQUEST
-    - '[ &quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ] &amp;&amp; curl -F &quot;file=@./bin/debug/android/KonaReflection-debug.apk&quot; -F &quot;token=${DEPLOYGATE_TOKEN}&quot; -F &quot;message=Deploy from Travis CI&quot; https://deploygate.com/api/users/pankona/apps'
-</code></pre>
-
-<h3 id="前回からの変更点-apkアップロードのために追加した部分">前回からの変更点（APKアップロードのために追加した部分）</h3>
-
-<p>前回から増えたり変更したりしたのは以下。</p>
-
-<pre><code>env:
-  global:
-    secure: &quot;TeSR8JLJd2Z0erCxcgLinC+me5SfwpgcCNwiTsqXn09erOgos2+mUbVQaSyo7Bw4OF4TmNpejX+jETd/lL4fTiWRDw6NW/cqEelk57fXJ5mmf5ey+tB1EkMFwd8x7Fw2vBe4xtO8KeohI6D1Gtu1qTYU9t9x4bhAd4qL15Y5osE=&quot;
-</code></pre>
-
-<pre><code>    - '[ &quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ] &amp;&amp; curl -F &quot;file=@./bin/debug/android/KonaReflection-debug.apk&quot; -F &quot;token=${DEPLOYGATE_TOKEN}&quot; -F &quot;message=Deploy from Travis CI&quot; https://deploygate.com/api/users/pankona/apps'
-</code></pre>
-
-<p>後者の部分で、<code>${DEPLOYGATE_TOKEN}</code>という環境変数を参照しているが、これを設定しているのが前者の部分。</p>
-
-<h3 id="deploygate-tokenの暗号化">DEPLOYGATE_TOKENの暗号化</h3>
-
-<p>以下のコマンドでDeployGateのAPI Keyを暗号化する。</p>
-
-<p><code>$ gem install travis</code> # travisコマンドを使えるようにする。<br />
-<code>$ travis encrypt DEPLOYGATE_TOKEN={My DeployGate API Key}</code> # DeployGateで確認したAPI Keyを暗号化するコマンド（中括弧はいらない）。</p>
-
-<p>このコマンドで得られた文字列をそのまま.travis.ymlに貼っつければOKである。</p>
-
-<h3 id="いつアップロードするか">いつアップロードするか</h3>
-
-<p>以下の条件を満たした場合のみ、APKのアップロードを行うようにした。<br />
-これは、Pull Requestがmasterにマージされたとき、を意味している（つもり）。<br />
-<code>&quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ]</code></p>
-
-<p>これをやっとかないと、ブランチにコミットをPUSHしたタイミングだったりPull Requestを作ったタイミングだったり、でアップロードが走る。<br />
-個人的にはやり過ぎ感があったので、APKはmasterからだけ作ればいいやという制限を施した。</p>
-
-<h3 id="これがそこそこ楽だと思います">これがそこそこ楽だと思います</h3>
-
-<p>AndroidアプリにAPKをいちいち頑張って転送しなくても、開発中アプリをインストールすることができるようになった。<br />
-ちなみに、アップロードされたAPKはDeployGateアプリ経由で取得することになる。</p>
-
-<p>今回はここまで。</p>
 
                     </div>
                 </section>

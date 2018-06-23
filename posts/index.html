@@ -65,6 +65,98 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">23 Jun 2018, 17:00</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/06/23/mashimahi/" class="post-title">強いパスワードのためのフレーズジェネレータを作ってみた</a>
+
+                        <p class="post-meta">
+                            
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>ふと思い立って、フレーズジェネレータなるものを作ってみた。</p>
+
+<p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS をあててちょっとオシャレにしといたぞ。無駄に日本語への自動翻訳もつけておきたかったが、翻訳部分は無料ではいまいち達成できなそうかなー。<a href="https://t.co/tThQl1mfSe">https://t.co/tThQl1mfSe</a></p>&mdash; パン粉 (@pankona) <a href="https://twitter.com/pankona/status/1010435240714633216?ref_src=twsrc%5Etfw">2018年6月23日</a></blockquote><br />
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>GAE/Go で作成。<a href="https://strongest-mashimashi.appspot.com/">ココ</a> にホスティング。PhraGen (ふらげん) と命名。</p>
+
+<h2 id="これは何か">これは何か</h2>
+
+<p>どこかで聞いた話であるが、いわゆる「強いパスワードというのはどうやって生成するのが良いのか」ということを考えた時に、<br />
+ひとつの手法として<strong>「英語の辞書からランダムで 3 単語ひっぱってきてつなげるのが良い」</strong>というのがあると小耳に挟んだわけである。</p>
+
+<p>なるほどなるほど、ということで、では試しに作ってみようということで作ってみたのがこれである。</p>
+
+<h2 id="ちょっとした工夫">ちょっとした工夫</h2>
+
+<p>完全にランダムな単語をチョイスしたほうがパスワード的には強いのだろうけど、きっとそれは覚えにくいフレーズになってしまうと思われる。<br />
+ということで、ちょっとでも覚えやすいフレーズを生成するために、完全にランダムなチョイスではなく<strong>「形容詞＋形容詞＋名詞」</strong>の順で現れるフレーズを生成するようにしてみた。<br />
+<strong>Super Great Goalkeeper</strong> 的なものが生成されることをイメージしている。</p>
+
+<h2 id="ジェネレータのしくみなど">ジェネレータのしくみなど</h2>
+
+<h3 id="oxford-dictionaries-api">Oxford Dictionaries API</h3>
+
+<p>そもそも英語の辞書のデータをどのように扱えば良いのか。出どころはどこか、ということを探していると以下を見つけた。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://developer.oxforddictionaries.com/">Oxford Dictionaries API</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<p>これは英語辞書で有名な Oxford が提供してくれている (と思われる)、Web API である。<br />
+REST API の形をしていて (なんと Swagger の定義までついている)、ドキュメントの記載通りに叩くことで単語とその意味などを得ることができる。<br />
+形容詞で、&rdquo;super で始まる&rdquo; 5字以上の単語、みたいなクエリでワードリストを取得できるような機能が提供されている。</p>
+
+<p>これを利用しようということで、まずは提供されている swagger の定義をありがたくお借りしてクライアントライブラリを生成した。<br />
+以下のリポジトリに置いておいた。またいつか使うかもしれない。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/oxford-dict-api-client-go">pankona/oxford-dict-api-client-go</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<h3 id="レスポンス遅いけどキャッシュは規約違反">レスポンス遅いけどキャッシュは規約違反</h3>
+
+<p>ただ、一回のクエリに数秒かかるようなところがあり、PhraGen の裏で動かすにはちょっとしんどい一面がある。<br />
+3 単語から構成されるフレーズを作るということは 3 回リクエストするということであり、つまり 1 フレーズ生成につき 5〜6 秒は待たされてしまう。</p>
+
+<p>問い合わせてみたところ、規約上、フリーのプランでは Oxford Dictionaries API が吐き出す結果をキャッシュしておくことは禁止とのこと。<br />
+お金を払えば制限つきでキャッシュしておけるということで、検討されたしとのお達しであった。うーむ…。<br />
+※ この点については、近日中にバイオレーションのない形に変更予定。</p>
+
+<h3 id="ホスティングは-gae-バックエンドは-go">ホスティングは GAE、バックエンドは Go</h3>
+
+<p>ジェネレータは GAE/Go で作った。ソースコードは以下のリポジトリに格納。</p>
+
+<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/strongest-mashimashi">pankona/strongest-mashimashi</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<p>リポジトリ名に深い意味はなく、なんとなく語呂が良いのでつけておいた。ストロンゲストマシマシ。</p>
+
+<h3 id="フロントエンドは色々">フロントエンドは色々</h3>
+
+<p>フロントエンド力がナメクジレベルのパン粉であるが、色々調べつつ、以下の技術要素の利用を試みている。<br />
+特に CSS フレームワーク Bulma のおかげで、PhraGen はまあまあしゃらくさい感じのキレイな見た目になったのではないかと思っている。</p>
+
+<ul>
+<li>TypeScript<br /></li>
+<li>React<br /></li>
+<li>CSS フレームワークとして Bulma<br />
+<br /></li>
+</ul>
+
+<h3 id="使えるのか">使えるのか</h3>
+
+<p>使えるかどうかよりもそもそも使わなそう。<br />
+でもせっかく作ったので、実際にパスワードの生成のために使ってみる所存。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">30 May 2018, 19:39</h1>
                 <section class="post">
                     <header class="post-header">
@@ -653,164 +745,6 @@ Android 端末の状況によっては削除され得る領域であることに
     <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;TMPDIR&#34;</span>)
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage (for cache): %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
 }</code></pre></div>
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">29 Jan 2018, 08:41</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/29/droidkaigi-2018-3/" class="post-title">gomobile build で JNI から Toast を出せなかった話</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。<br />
-来週の木曜日である。ヤバイ。準備捗ってない…。</p>
-
-<p>とはいえ色々調査は進めている。<br />
-gomobile 関連で色々調べて分かったことを書いておく。</p>
-
-<h2 id="jni-だけで-toast-を出すのは無理な気がする">JNI だけで Toast を出すのは無理な気がする</h2>
-
-<p><code>Toast.makeText(this, &quot;hogehoge&quot;, Toast.LENGTH_SHORT);</code></p>
-
-<p>「Java でやるなら」、上のような書き方をすれば Toast は出る。実に簡単。</p>
-
-<p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。<br />
-(下記はエラーチェックを省略している)</p>
-
-<p>先に書いておくと、下記のコードは正しく動作しない。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">toast</span>
-
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static int
-</span><span style="color:#75715e">showToast(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx, char* text) {
-</span><span style="color:#75715e">    JNIEnv* env = (JNIEnv*)jni_env;
-</span><span style="color:#75715e">    jobject ctx = (jobject)jni_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // Toast クラスの取得 ... 1
-</span><span style="color:#75715e">    jclass toast = (*env)-&gt;FindClass(env, &#34;android/widget/Toast&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドの ID を取得 ... 2
-</span><span style="color:#75715e">    jmethodID makeText = (*env)-&gt;GetStaticMethodID(env, toast, &#34;makeText&#34;,
-</span><span style="color:#75715e">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // String を生成 ... 3
-</span><span style="color:#75715e">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドを呼び出し ... 4
-</span><span style="color:#75715e">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
-</span><span style="color:#75715e">        ctx, jstr, 0); // 0 = Toast.LENGTH_SHORT
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッド の IDの を取得 ... 5
-</span><span style="color:#75715e">    jmethodID methodShow = (*env)-&gt;GetMethodID(env, toastobj, &#34;show&#34;, &#34;()V&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッドを呼び出し ... 6
-</span><span style="color:#75715e">    (*env)-&gt;CallVoidMethod(env, toastobj, methodShow);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    return 0;
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
-
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-
-    <span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/jni&#34;</span>
-)
-
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">t</span> <span style="color:#66d9ef">struct</span>{}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewToaster</span>() <span style="color:#a6e22e">Toaster</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">t</span>{}
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">t</span>) <span style="color:#a6e22e">Show</span>(<span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
-    <span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
-        <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
-            <span style="color:#a6e22e">ret</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">showToast</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">CString</span>(<span style="color:#a6e22e">text</span>))
-            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;ret = %d\n&#34;</span>, <span style="color:#a6e22e">ret</span>)
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-        })
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}</code></pre></div>
-<p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br />
-<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br />
-<del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
-
-<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del><br />
-<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del><br />
-<del>事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</del></p>
-
-<p><del>Java のレイヤでは書ける以下のような例は、</del><br />
-<del>JNI のレイヤでは表現することができないと思われる。</del></p>
-
-<p><del><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></del></p>
-
-<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del><br />
-<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del><br />
-<del>もう少し原因究明に届かなかった。</del></p>
-
-<p>(2018/01/31 追記)</p>
-
-<p>上記は完全にウソだった。勘違いであった。申し訳ございません！</p>
-
-<p>ちゃんとどのようなエラーが (4) で吐かれているか補足してみたところ、以下の例外が投げられていた。</p>
-
-<pre><code>java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
-</code></pre>
-
-<p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで<br />
-Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
-
-<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br />
-定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity<span style="color:#f92672">.</span><span style="color:#a6e22e">runOnUiThread</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span></code></pre></div>
-<p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br />
-無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br />
-とりあえず試みてみようとは思う。</p>
-
-<h2 id="java-のレイヤに-charsequence-をとらないメソッドを定義すればいけるが">Java のレイヤに CharSequence をとらないメソッドを定義すればいけるが…</h2>
-
-<p>上記の原因の仮説を若干補強するものとして、<br />
-CharSequence を取らずに Toast を出すメソッドを Java レイヤに準備しておき、<br />
-それを JNI から呼び出すようなコードを書いた場合は無事に Toast が出力される。</p>
-
-<p>以下のようなコードをあらかじめ Java のレイヤに書いておき、<br />
-それを上記の JNI と同様のノリで呼び出すようにする。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// static Activity goNativeActivity;
-</span><span style="color:#75715e">// onCreate にて goNativeActivity = this;
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showToast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Handler h <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getApplication</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMainLooper</span><span style="color:#f92672">());</span>
-    h<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">,</span> message<span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-<span style="color:#f92672">}</span></code></pre></div>
-<p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br />
-Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
-
                     </div>
                 </section>
                 

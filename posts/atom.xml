@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/posts/</link>
     <description>Recent content in Posts on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 30 May 2018 19:39:48 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 23 Jun 2018 17:00:42 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/posts/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>強いパスワードのためのフレーズジェネレータを作ってみた</title>
+      <link>https://pankona.github.io/blog/2018/06/23/mashimahi/</link>
+      <pubDate>Sat, 23 Jun 2018 17:00:42 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/06/23/mashimahi/</guid>
+      <description>ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS</description>
+    </item>
     
     <item>
       <title>golang.tokyo #15@DeNA</title>
