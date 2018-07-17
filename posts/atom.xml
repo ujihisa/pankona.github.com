@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/posts/</link>
     <description>Recent content in Posts on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 23 Jun 2018 17:00:42 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 13 Jul 2018 19:15:16 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/posts/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang.tokyo #16 @メルペイ</title>
+      <link>https://pankona.github.io/blog/2018/07/13/golangtokyo-16/</link>
+      <pubDate>Fri, 13 Jul 2018 19:15:16 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2018/07/13/golangtokyo-16/</guid>
+      <description>golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org</description>
+    </item>
     
     <item>
       <title>強いパスワードのためのフレーズジェネレータを作ってみた</title>
