@@ -65,6 +65,49 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">05 Feb 2018, 00:38</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/02/05/droidkaigi_2018_material/" class="post-title">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>DroidKaigi 2018 では以下の枠で発表する予定。</p>
+
+<p>DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - <a href="https://droidkaigi.jp/2018/timetable?session=17012">gomobile でゲームを作る</a><br />
+資料はココ → <a href="http://pankona.github.io/slides/droidkaigi_2018.html">gomobile でゲームは作れる</a></p>
+
+<h2 id="発表内容についての徒然">発表内容についての徒然</h2>
+
+<p>DroidKaigi と言うからには Androider たちの集いであることは間違いないと思うんだけど、<br />
+さて、であればそもそも Go 言語が登場すること自体が結構レアな事態であり、ややもすれば<br />
+聴衆は Go 言語のこと全然知らないってこともありうるんじゃないかと想像したりしている。</p>
+
+<p>ということに鑑みて、「Go とは何か」みたいなところから話題を始めようと思っているが、<br />
+だとすると 30 分ではあまり細かい話 (JNI で Toast 出すのが何故困難か、とか) まで踏み込めない構成になってしまい、<br />
+なかなか悩ましいところである。ニッチ枠であるならば、もっとニッチにニッチを煮詰めたような内容にしたいのであるが…。</p>
+
+<p>ということで、ニッチにニッチを煮詰めたような内容はブログ記事に書いておき、<br />
+興味があったら見てね、みたいな感じにしとこうという結論に達した。<br />
+発表内容はライトに。リンク先はもう少し深く、みたいな。</p>
+
+<p>DroidKaigi は、実は見に行くのも初めてなので、他のセッションを聞いて廻るのも楽しみである。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">31 Jan 2018, 16:30</h1>
                 <section class="post">
                     <header class="post-header">
@@ -630,65 +673,6 @@ DroidKaigi、気合い入れていくぞ。</p>
 
 <p>DroidKaigi までもう残り一ヶ月程度。<br />
 コツコツやっていくぞー。今年も頑張るぞー。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">02 Jan 2018, 13:32</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/02/my-first-post-by-hugo/" class="post-title">ブログ生成を Octopress から Hugo に移行</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a><a class="post-category post-category-Octopress" href="https://pankona.github.io/categories/octopress">Octopress</a><a class="post-category post-category-Hugo" href="https://pankona.github.io/categories/hugo">Hugo</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>いままで本ブログは Octopress を使って生成していたのであるが、<br />
-久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレスであった。</p>
-
-<p>ということで、爆速サイトジェネレータとして高名な Hugo を使うように変えてみた。<br />
-なるほど、噂に違わぬ爆速サイトジェネレーティングである。しばらく使ってみよう。</p>
-
-<p>Octopress から Hugo への移行は概ねすんなり済んだ。以下のような作業を行った。<br />
-テーマ選びに大半の時間を費やしたものの、概ね丸一日の作業となった (7.5h くらい)</p>
-
-<ul>
-<li>Hugo の使い方確認 (ドキュメントを見る等して)<br /></li>
-<li>Hugo でサイトを生成し、Octopress 時代に生成したポスト一式をコピー<br />
-
-<ul>
-<li>ファイル名、各ポストのヘッダー等は若干適合しない部分があったので修正を加えた<br /></li>
-</ul></li>
-<li>各記事のパーマリンクを従来サイトと同じになるように設定<br /></li>
-<li>Hugo の設定 (config.toml) に各種サイトの設定を記載 (ブログ名、Twitter、GitHub へのリンク等)<br /></li>
-<li>BlackFriday をちょっとだけ設定し、hardLineBreak が有効になるように<br /></li>
-<li>テーマ選び。ここがめちゃめちゃ時間が掛かった。結局シンプルなの選んである程度カスタマイズする方針に<br />
-<br /></li>
-</ul>
-
-<p>以下はもう少しやっておきたいところ。</p>
-
-<ul>
-<li>フォントがダサい。というか見にくい。のでもうちょっと目に優しいやつを選ぶ<br /></li>
-<li>サイトマップというか記事一覧というか、みたいのが欲しい<br /></li>
-<li>favicon 設定<br /></li>
-<li>about.html 的なやつを置く<br /></li>
-<li>(あまり利用の実績がないが) SNS へのシェアボタンを追加。ツイッターだけ置いておいた。はてぶも欲しい。<br /></li>
-<li>(まったく利用の実績がないが) disqus を置く。利用実績がまったくないところからして置かなくていいかも。優先度低。<br />
-<br />
-<br /></li>
-</ul>
-
-<p>昨年は勉強会レポートと ZenPad レビューと、みたいなどちらかというと受動的な強いられポストが多かったため、<br />
-今年はもっと能動的に日常的に息を吐くように記事を更新していきたい所存。今年もやっていくぞー。</p>
 
                     </div>
                 </section>

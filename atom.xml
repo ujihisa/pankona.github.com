@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 13 Jul 2018 19:15:16 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 24 Apr 2019 14:52:59 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang.tokyo #23 @ DeNA</title>
+      <link>https://pankona.github.io/blog/2019/04/24/golangtokyo-23/</link>
+      <pubDate>Wed, 24 Apr 2019 14:52:59 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2019/04/24/golangtokyo-23/</guid>
+      <description>2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」</description>
+    </item>
     
     <item>
       <title>golang.tokyo #16 @メルペイ</title>
