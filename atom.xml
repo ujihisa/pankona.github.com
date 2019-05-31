@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 24 Apr 2019 14:52:59 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 31 May 2019 10:50:59 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quipper に転職した</title>
+      <link>https://pankona.github.io/blog/2019/05/31/job-change/</link>
+      <pubDate>Fri, 31 May 2019 10:50:59 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2019/05/31/job-change/</guid>
+      <description>2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程</description>
+    </item>
     
     <item>
       <title>golang.tokyo #23 @ DeNA</title>

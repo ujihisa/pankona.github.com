@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PiTFTをArch Linux on Raspberry Piで動かすのに苦戦 &middot; make clean; make</title>
+
+    <meta name="description" content="">
+
+    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="PiTFTをArch Linux on Raspberry Piで動かすのに苦戦 &middot; make clean; make">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PiTFTをArch Linux on Raspberry Piで動かすのに苦戦 &middot; make clean; make">
+    <meta property="og:description" content="">
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="make clean; make" href="https://pankona.github.io/atom.xml" />
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
+            <h2 class="brand-tagline"></h2>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/@pankona"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/pankona "><i class="fa fa-github-alt"></i> github</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/atom.xml"><i class="fa fa-rss"></i> rss</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">17 Jul 2014, 21:11</h1>
+                <section class="post">
+                    <header class="post-header">
+                        <a href="https://pankona.github.io/blog/2014/07/17/pitft-on-arch-linux/" class="post-title">PiTFTをArch Linux on Raspberry Piで動かすのに苦戦</a>
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        
+
+<p><strong>2014/07/23/Wed 追記</strong></p>
+
+<p>以下のポストに誤りがあることがわかったので、訂正。<br />
+誤っている部分には打ち消し線を入れておく。</p>
+
+<hr />
+
+<p><a href="http://www.adafruit.com/products/1601">PiTFT</a>を購入。<br />
+さっそくRaspberry Piで動かそうとしてみたところ、これがなかなかうまくいかず。<br />
+3日程粘ってようやく動いた。やり方を記載しておく。</p>
+
+<p>Raspberry Piには、Arch Linuxが載っている前提です。</p>
+
+<h3 id="参考になるページ">参考になるページ</h3>
+
+<p><a href="https://github.com/notro/fbtft/wiki">notroさんのfbtftに関するWiki</a>。本当に感謝。Great。<br />
+ただ、ここに書いてある手順を踏んだだけではうまく動かなかった。<br />
+以下、顛末と動かすまでの手順。</p>
+
+<h4 id="rpi-updateが使える状態にする">rpi-updateが使える状態にする</h4>
+
+<p>以下、Raspberry Pi上でのコマンド入力。<br />
+以下のコマンドでrpi-updateを取得＆実行可能権限付与。</p>
+
+<p><code>$ wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update</code><br />
+<code>$ chmod +x ./rpi-update</code></p>
+
+<p>rpi-updateは適当な場所に移しておく。パスが通っているところに置いておくと便利。<br />
+以下、rpi-updateがある場所にパスが通っている前提で記載。</p>
+
+<h3 id="rpi-updateを使ってkernelをアップデート">rpi-updateを使ってKernelをアップデート</h3>
+
+<p>FBTFTドライバがビルトインされているとされるバージョンにしてみる。</p>
+
+<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code></p>
+
+<p>なんやかや起こったあと、リブート。</p>
+
+<p><code>$ sudo reboot</code></p>
+
+<p>これでFBTFTドライバが準備オッケーになっているはず、なのだが…？</p>
+
+<h3 id="fbtft-deviceがない"><del>fbtft_deviceがない</del></h3>
+
+<p><del>fbtft_deviceを有効にするために、modprobeしてみる。</del></p>
+
+<p><code>$ sudo modprobe fbtft_device name=adafruit22</code></p>
+
+<p><del>すると帰ってきた答えは、</del></p>
+
+<p><code>FATAL: Module fbtft_device not found.</code></p>
+
+<p><del>とのこと。実際に探してみたところ、fbtft_device.koというモジュールは存在していない様子。</del></p>
+
+<hr />
+
+<p><strong>2014/07/23/Wed 訂正</strong></p>
+
+<p>結論から言うと上記の挙動であっていた。<br />
+<code>BRANCH=builtin</code>を選択した場合はfbtft_deviceがloadableなモジュールとして現れない、<br />
+つまり modprobe で見つからないと言われるのは正しかった。</p>
+
+<p>上記の状態で、あとは /boot/cmdline.txt に然るべき内容を追記するだけでOK。<br />
+その後PiTFTを接続し、Raspberry Piを再起動すれば画面に何か映るはず。</p>
+
+<p>よって以下の手順はすべて無駄であるが、<br />
+以下の手順が誤りであることを示すために残しておく。。</p>
+
+<p>以下、無駄な手順メモ。全く不要。</p>
+
+<hr />
+
+<h3 id="いろいろやってfbtft-deviceを用意する"><del>いろいろやってfbtft_deviceを用意する</del></h3>
+
+<p><del>fbtft_deviceを求めて色々さまよったところ、上述のKernelアップデートの際に、</del></p>
+
+<p><code>sudo REPO_URI=https://github.com/notro/rpi-firmware rpi-update</code></p>
+
+<p><del>とビルトインではなく、loadable moduleとしてfbtft_deviceが現れるやつをチョイスしてみたところ、</del><br />
+<code>sudo modprobe fbtft_device name=adafruit22</code>がnot foundではなく、別のエラーになった。<br />
+<del>探してみたところ、実際にモジュールは存在した。ただし正常にmodprobeできていない。</del></p>
+
+<p><del>FBTFTのモジュールは、</del><br />
+<code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><br />
+<del>に置かれている。これをどこか別の場所にコピーしておく。後々使う。</del></p>
+
+<h3 id="rpi-updateを使ってfbtftビルトインバージョンに戻す"><del>rpi-updateを使ってFBTFTビルトインバージョンに戻す</del></h3>
+
+<p><del>上で一回やってるやつをやって、FBTFTビルトインバージョンのKernelに戻す。</del></p>
+
+<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code><br />
+<code>$ sudo reboot</code></p>
+
+<h3 id="戻したのち-コピーしておいたfbtftを所定の位置に戻す"><del>戻したのち、コピーしておいたfbtftを所定の位置に戻す</del></h3>
+
+<p><code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><del>の位置に戻す。</del></p>
+
+<h3 id="depmodする"><del>depmodする。</del></h3>
+
+<p><code>sudo depmod -a</code></p>
+
+<h3 id="fbtft-deviceをmodprobeする"><del>fbtft_deviceをmodprobeする</del></h3>
+
+<p><del>not foundとは言われなくなり、ちゃんとロードされる。はず。</del></p>
+
+<h3 id="あとはnotroさんのところの手順に従う">あとはnotroさんのところの手順に従う</h3>
+
+<p>/boot/cmdline.txtであるとか、もろもろ変更する。<br />
+PiTFTはきっと動き出す。</p>
+
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            
+                            
+                            
+                            <a href="#" data-type="twitter" data-url="https://pankona.github.io/blog/2014/07/17/pitft-on-arch-linux/" data-description="PiTFTをArch Linux on Raspberry Piで動かすのに苦戦 - make clean; make" class="prettySocial fa fa-twitter"></a>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://pankona.github.io/js/all.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://pankona.github.io/js/jquery.oembed.js"></script>
+<script>
+$(function(){
+    $("a.embed").oembed();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-48476608-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

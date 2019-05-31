@@ -7,7 +7,7 @@
 
     <meta name="description" content="">
 
-    <meta name="generator" content="Hugo 0.32" />
+    <meta name="generator" content="Hugo 0.55.6" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="Posts &middot; make clean; make">
@@ -64,6 +64,224 @@
         <div>
             
             <div class="posts">
+                
+                <h1 class="content-subhead">12 Dec 2016, 19:24</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2016/12/12/golangtokyo-2/" class="post-title">golang.tokyo#2@はてな</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-golang" href="https://pankona.github.io/categories/golang">golang</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>2016.12.12 に表参道のはてなさんにて、golang.tokyo #2 が行われました。</p>
+
+<p><a href="https://golangtokyo.connpass.com/event/44807/">golang.tokyo #2 - connpass</a></p>
+
+<p>今回もまたブログ枠にて参加させていただきましたので、<br />
+その内容をレポートしていきます。</p>
+
+<p>発表内容の詳細はスライド (上記 connpass のページから辿れます) を参照いただくのが一番良いと思います。<br />
+本記事ではその他、イベントの雰囲気や私の感想を主にお伝えできればいいかなと思っています。<br />
+それでは行きます。</p>
+
+<hr />
+
+<p>今回の golang.tokyo は 2 回目の開催。<br />
+今後も色々目論まれているようです。楽しみ。</p>
+
+<p><img src="/images/golang.tokyo-2/02.jpg" alt="golang.tokyo-2" /><br />
+図1. golang.tokyo について</p>
+
+<p>golang.tokyo 2 回目のテーマは <strong>「テスト」</strong> について。</p>
+
+<hr />
+
+<h1 id="テストしやすいgoコードのデザイン-by-deeeet-さん">テストしやすいGoコードのデザイン by deeeet さん</h1>
+
+<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" data-card-type="article-full" href="https://talks.godoc.org/github.com/tcnksm/talks/2016/12/golang-tokyo/golang-tokyo.slide#1">テストしやすいGoコードのデザイン</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
+(↑のカードをクリックでスライドに飛びます。)</p>
+
+<p><img src="/images/golang.tokyo-2/07.jpg" alt="golang.tokyo-2" /><br />
+図2. 発表中の deeeet さん。</p>
+
+<p>以下、印象に残ったところを抜粋。</p>
+
+<h2 id="deeeet-さんはテストフレームワークを使わない派">deeeet さんはテストフレームワークを使わない派</h2>
+
+<p>テストのフレームワークは使わず、testing パッケージだけで十分であろうとの意見。<br />
+これは、フレームワークは「ミニDSL」であって、導入するひとはまだしも、<br />
+あとからプロジェクトに入ってくる人は学習する部分が増えてしんどくなってしまう、という一面があるからとのこと。<br />
+納得。</p>
+
+<h2 id="テストしやすいコードとは">テストしやすいコードとは</h2>
+
+<p><strong>「Table Driven Test」</strong> がおすすめ。<br />
+* 入出力が理解しやすい<br />
+* テストケース追加が容易<br />
+* 「Table Driven Test に落とし込めるコード」は入出力が明確でテストしやすいコード</p>
+
+<h2 id="テストしにくくなる要素とその対策">テストしにくくなる要素とその対策</h2>
+
+<p>テストしにくくなるというのは「Table Driven Test」がやりにくくなる状況を指す。<br />
+→ 入力以外の要素が出力影響を及ぼしてしまう状況。</p>
+
+<ul>
+<li>グローバル変数 (暗黙の入力)<br />
+
+<ul>
+<li>なるべく関数の引数に入れるようにしてテストしやすくする<br /></li>
+<li>もしくは「デフォルトの値」として <strong>のみ</strong> 使う<br /></li>
+<li>変わらないかもしれない定数っぽい値もなるべく設定可能にする<br /></li>
+<li>環境変数もグローバル変数と同じ<br /></li>
+</ul></li>
+<li>ユーザーの入力 (コマンドを入力→期待通りに動いたか、のテスト)<br />
+
+<ul>
+<li>入力の受取に os.Stdin を暗黙的に使わず io.Reader を使い、テスト時に仮想的な入力を行えるようにする。<br /></li>
+<li>入力に対する出力で、Table Driven にすることができるようになる。<br /></li>
+</ul></li>
+<li>ファイル出力 (ファイル出力された内容が正しいかどうか、のテスト)<br />
+
+<ul>
+<li>実際に書いたあとに開き直して中身を確認するのでもテストは可能だが、大量にやろうと思うと遅くなってしまう。<br /></li>
+<li>入力のときと考え方は同じで、io.Writer を出力先とし、テスト時はオンメモリのバッファに出力できるようにする。<br /></li>
+<li>バッファに出力された内容とその期待結果で、Table Driven することができるようになる。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h1 id="macherelにおけるgoのエコシステムとかテストとか-by-songmu-さん">MacherelにおけるGoのエコシステムとかテストとか by Songmu さん</h1>
+
+<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" data-card-image="https://mackerel.io/files/images/brand-assets/screenshot-service.png" data-card-type="article-full" href="http://songmu.github.io/slides/golangtokyo-2/">MackerelにおけるGoのエコシステムとかテストとか</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
+(↑のカードをクリックでスライドに飛びます。)</p>
+
+<p><img src="/images/golang.tokyo-2/09.jpg" alt="golang.tokyo-2" /><br />
+図3. 発表中の songmu さん</p>
+
+<h2 id="mackerel-のエコシステム周りの話">Mackerel のエコシステム周りの話</h2>
+
+<ul>
+<li>ソースをオープンにしてパッチ受け入れるようにした。<br />
+
+<ul>
+<li>ホスト先は GitHub。contribute してもらいやすい。<br /></li>
+<li>pull request に対するレビュー体制、CI が必要。<br /></li>
+<li>Travis CI、Circle CI を使っている。CI の内容は以下のようなもの。<br />
+
+<ul>
+<li>go vet、 golint go test<br /></li>
+<li>coverage 計測<br /></li>
+<li>cross build 可能か<br /></li>
+</ul></li>
+</ul></li>
+<li>ちなみに Changelog はプルリクエストの情報から自動生成している。<br />
+<br /></li>
+</ul>
+
+<h2 id="ミドルウェアのテスト">ミドルウェアのテスト</h2>
+
+<ul>
+<li>実際にテスト時に実行する<br />
+
+<ul>
+<li>DB ならばモックせずに実際に DB を立ててデータを入れて確認をする、のような。<br /></li>
+<li>モックや interface でのテストでは気づけない部分もあるので、実際にやってテストする。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<hr />
+
+<h1 id="休憩">休憩</h1>
+
+<p>deeeet さん、songmu さんの発表のあと、いったん休憩に。<br />
+休憩ではピザとビールが振る舞われまして、はてなさんにスポンサーしていただいたとのこと。<br />
+ありがたくいただきました。</p>
+
+<p><img src="/images/golang.tokyo-2/11_rotated.jpg" alt="golang.tokyo-2" /><br />
+図4. ピザとビールをはてなさんから振る舞っていただく。</p>
+
+<p><img src="/images/golang.tokyo-2/12.jpg" alt="golang.tokyo-2" /><br />
+図5. 会場遠景。芝生です。</p>
+
+<p><img src="/images/golang.tokyo-2/13.jpg" alt="golang.tokyo-2" /><br />
+図6. deeeet さんにむらがる Gophers (私もこのあとむらがりました) 。</p>
+
+<p>勉強会の真ん中にこういう親睦会的なノリの時間が設けられるのは珍しいかな？<br />
+なんだか新鮮でした。参加者の方とも少しだけお話できたりしました。<br />
+勉強会終わってからの親睦会だと参加できないケースが多い私のようなものにとっては、会の真ん中にこういうのやってもらうのもいいかもしれない。</p>
+
+<hr />
+
+<h1 id="ここから-lt-コーナー">ここから LT コーナー</h1>
+
+<p>ピザとビールで温まってきたところで LT 開始。</p>
+
+<h2 id="timakin-さん">timakin さん</h2>
+
+<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/timakin/plain-db-import-with-go">Plain db import with Go</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<ul>
+<li><a href="https://github.com/timakin/gopli">timakin/gopli</a><br />
+
+<ul>
+<li>開発環境を本番環境に近づけるやつ。本番データをローカルに簡単にもってくる。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<h2 id="osamingo-さん">osamingo さん</h2>
+
+<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/osamingo/go-deshi-meru-json-rpc-ru-men">Go で始める JSON-RPC 入門</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<ul>
+<li>JSON-RPC！<br />
+<br /></li>
+</ul>
+
+<h2 id="kazuhiratogo-さん">KazuhiraTogo さん</h2>
+
+<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/ktogo/continuous-deployment-with-go-on-aws-ecs">Continuous Deployment with Go on AWS ECS</a><br />
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
+
+<ul>
+<li>デプロイをとことん自動化した話。<br /></li>
+<li>本番とローカルで同じ環境を → Docker を使う。<br /></li>
+<li>Circle CI 上の docker は Ubuntu。本番は Alpine。環境の違いが問題に。 → Docker on Docker にして解決した。<br />
+<br /></li>
+</ul>
+
+<hr />
+
+<p>以上の内容でした。せめて雰囲気くらい伝わればいいですが。<br />
+いずれの発表もとても内容が濃くて、勉強になりっぱなしでした。感謝。<br />
+ひとまず Table Driven Test ですかね。取り入れてなかったのでやってみようか等と思い。</p>
+
+<p>感謝といえば、運営サイドのこと。<br />
+ほぼトラブルなしでスムーズに進んだのは、十分に準備してくれていたということだと思います。<br />
+だいたいマイクの電池が切れたりスライドがうまく映らなかったり、そういうの対策しようがなくてしょうがないところもあるんですが、<br />
+今回に関してはそういうのほぼほぼなくて、というかマイクの音量とか超ちょうど良くて、本当に細かい配慮を感じました。多謝。<br />
+他にも、アンケートを集めて次回のネタにしたりしていて (今回のテーマも、前回のアンケートでテストに関することを聞きたいという要望が多かったから、という理由で選んだとのこと)、golang.tokyo 運営すげーなという印象です。すげーな！</p>
+
+<p>次回もまた来年に予定されているようです。楽しみにしています！</p>
+
+                    </div>
+                </section>
                 
                 <h1 class="content-subhead">14 Nov 2016, 20:14</h1>
                 <section class="post">
@@ -835,100 +1053,6 @@ ZenClutch は渋め。「ASUS COLLECTION」と印字されている。渋め。<
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">29 Mar 2016, 23:53</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2016/03/29/z370c-good-point/" class="post-title">ASUS ZenPad 7.0 (Z370C) レビュー その二 : 良いところ編</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-ガジェット" href="https://pankona.github.io/categories/%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88">ガジェット</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>前回に引き続き、ZenPad 7.0 (Z370C) のレビューを書いていく。<br />
-今回は、1ヶ月程度使って分かってきた ZenPad 7.0 の使用感について。</p>
-
-<h2 id="性能はぶっちゃけいまいち">性能はぶっちゃけいまいち</h2>
-
-<p>1ヶ月使って、使わなくても分かることかもしれないが、性能は正直物足りないと感じる。<br />
-何かにつけて動作がモタモタするというか。Chrome 起動に0.5秒くらい掛かるとかそういうの。<br />
-ZenPad 7.0 のスペックそのものは<a href="https://www.asus.com/jp/Tablets/ASUS_ZenPad_70_Z370C/specifications/">公式ページ</a>を参照されたし。</p>
-
-<p>みんな大好き Antutu ベンチマーク的には、20000点弱くらい。これは Nexus 7 (2012) とドッコイな感じ。<br />
-そりゃーいまどきの OS 乗っけていまどきのアプリを動かせば、重たく感じるのも無理はないかな、と。</p>
-
-<p>とはいえ、1万円台で購入できるタブレットであることを考えると妥当とも思える。<br />
-逆に言えば、性能をそれほど必要としない使い方をする分には問題にならない。</p>
-
-<p>なので、 <strong>「この使い方をすれば快適」</strong> というのを今回は紹介していく。</p>
-
-<h2 id="web-ブラウジング">Web ブラウジング</h2>
-
-<p>いわゆるネットサーフィンをする分には、それほどストレスを感じることはなかった。<br />
-※ ページが重かったらキツイ。</p>
-
-<p>普段は 5 インチのスマートフォンを使っている私であるが、<br />
-やはり画面が大きいほうが文字も見やすいし、目にも優しい。</p>
-
-<p>スマートデバイスの主な用途がネットサーフィンの方はかなりいると思うが、<br />
-そういう用途では使用に耐えうる、むしろ快適、となるんじゃないかと。</p>
-
-<p><img src="/images/z370c/6.jpg" alt="Z370C" /><br />
-Yahoo を表示してみた様子。画面が広いため表示できる情報量は多い。</p>
-
-<h2 id="電子書籍">電子書籍</h2>
-
-<p>16:9 の画面なので電子書籍には若干不向きかもしれない（画面上下に黒帯が出てしまう）が、<br />
-これもやはりスマートフォンの 5 インチ前後の画面で見るのに比べれば、見やすさが雲泥の差である。</p>
-
-<p><img src="/images/z370c/9.jpg" alt="Z370C" /><br />
-漫画も読みやすい。スマートフォンだと読む気が起こらなかったが、これならイケる気がする。</p>
-
-<h2 id="フォトビューア">フォトビューア</h2>
-
-<p>写真をタブレットで見るのは定番かもしれないが、やはり大きめの画面で見るのは良い。<br />
-昨今のスマートフォンは高解像度な写真も取れるし、Google フォトの同期を活かして、<br />
-撮るのはスマホ、見るのはタブレット、みたいにしていくスタイルもオススメ。快適です。</p>
-
-<p><img src="/images/z370c/7.jpg" alt="Z370C" /><br />
-写真を表示してみた様子。とても見やすい。かわいい。</p>
-
-<h2 id="大きさが手頃なので電車内でも快適">大きさが手頃なので電車内でも快適</h2>
-
-<p>上記の用途は、私の場合は主に移動中に行うことになるのだが、<br />
-前回の記事で触れたように、7 インチという大きさが手頃で持ちやすく、電車のお供してとても優秀。<br />
-ついでに ZenClutch で滑りにくいこともあり、片手運用も可能。片手つり革でも大丈夫。</p>
-
-<h2 id="fep-は-atok">FEP は ATOK</h2>
-
-<p>実は ATOK がプリインである。常日頃から ATOK ユーザである私にとってこれは朗報。<br />
-というか ATOK 買っているのでプリインじゃなくても良かったんだけど。ATOK オススメ。<br />
-これは ZenPad のレビューではない気もするが、ATOK プリインの ZenPad オススメ、ということで。</p>
-
-<h2 id="電池のもちは普通">電池のもちは普通</h2>
-
-<p>そこかしこの記事で Z370C はバッテリーのもちが悪い、と言われているような気がするが、<br />
-やたら電池を食うような使い方をしない限り、充電しないで丸一日はもつ程度には動いてくれる。<br />
-私にとってこれは十分なので、バッテリー面で特に不満を感じることはなかった。</p>
-
-<h2 id="ということで">ということで</h2>
-
-<p>使い方が間違っていなければ（変な期待を持たなければ）、性能がいまいちとはいえ、<br />
-十分快適に使っていけるポテンシャルを持っているという印象でした。<br />
-今回はこのへんで。… 次回はだめな使い方を紹介していく。</p>
-
-                    </div>
-                </section>
-                
             </div>
             
 <div class="pagination">
@@ -938,7 +1062,7 @@ Yahoo を表示してみた様子。画面が広いため表示できる情報�
         <i class="fa fa-angle-double-left"></i>&nbsp;Newer
       </a>
       
-    <span class="post-list-pagination-item post-list-pagination-item-current">Page 4 of 9</span>
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 4 of 10</span>
     
       <a href="/posts/page/5/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
         Older&nbsp;<i class="fa fa-angle-double-right"></i>

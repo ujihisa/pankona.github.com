@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on make clean; make</title>
+    <title>go on make clean; make</title>
     <link>https://pankona.github.io/categories/go/</link>
-    <description>Recent content in Go on make clean; make</description>
+    <description>Recent content in go on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Wed, 31 Jan 2018 16:30:10 +0900</lastBuildDate>
     

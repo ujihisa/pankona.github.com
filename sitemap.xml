@@ -3,6 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pankona.github.io/posts/</loc>
+    <lastmod>2019-05-31T10:50:59+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/blog/2019/05/31/job-change/</loc>
+    <lastmod>2019-05-31T10:50:59+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/</loc>
+    <lastmod>2019-05-31T10:50:59+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2019/04/24/golangtokyo-23/</loc>
     <lastmod>2019-04-24T14:52:59+09:00</lastmod>
   </url>
@@ -28,8 +45,32 @@
   </url>
   
   <url>
+    <loc>https://pankona.github.io/categories/</loc>
+    <lastmod>2018-02-05T00:38:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/droidkaigi/</loc>
+    <lastmod>2018-02-05T00:38:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2018/02/05/droidkaigi_2018_material/</loc>
     <lastmod>2018-02-05T00:38:03+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/go/</loc>
+    <lastmod>2018-01-31T16:30:10+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/gomobile/</loc>
+    <lastmod>2018-01-31T16:30:10+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -53,8 +94,32 @@
   </url>
   
   <url>
+    <loc>https://pankona.github.io/categories/hugo/</loc>
+    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/octopress/</loc>
+    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96/</loc>
+    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2018/01/02/my-first-post-by-hugo/</loc>
     <lastmod>2018-01-02T13:32:34+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/golang/</loc>
+    <lastmod>2017-06-01T19:34:21+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -65,6 +130,12 @@
   <url>
     <loc>https://pankona.github.io/blog/2017/03/01/golangtokyo-4/</loc>
     <lastmod>2017-03-01T19:31:27+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/archlinux/</loc>
+    <lastmod>2016-12-14T11:12:31+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -98,6 +169,12 @@
   </url>
   
   <url>
+    <loc>https://pankona.github.io/categories/%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88/</loc>
+    <lastmod>2016-03-31T00:36:22+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2016/03/29/z370c-good-point/</loc>
     <lastmod>2016-03-29T23:53:19+09:00</lastmod>
   </url>
@@ -115,6 +192,12 @@
   <url>
     <loc>https://pankona.github.io/blog/2015/04/22/travis-ci-with-deploygate/</loc>
     <lastmod>2015-04-22T19:25:11+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/cocos2d-x/</loc>
+    <lastmod>2015-04-22T19:25:11+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -138,8 +221,20 @@
   </url>
   
   <url>
+    <loc>https://pankona.github.io/categories/raspberrypi/</loc>
+    <lastmod>2015-01-28T21:10:39+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/blog/2014/11/25/remote-ltika/</loc>
     <lastmod>2014-11-25T22:16:43+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA/</loc>
+    <lastmod>2014-10-01T22:41:26+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -228,97 +323,7 @@
   </url>
   
   <url>
-    <loc>https://pankona.github.io/categories/archlinux/</loc>
-    <lastmod>2016-12-14T11:12:31+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/</loc>
-    <lastmod>2016-12-14T11:12:31+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/cocos2d-x/</loc>
-    <lastmod>2015-04-22T19:25:11+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/droidkaigi/</loc>
-    <lastmod>2018-02-05T00:38:03+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/go/</loc>
-    <lastmod>2018-01-31T16:30:10+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/golang/</loc>
-    <lastmod>2017-06-01T19:34:21+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/gomobile/</loc>
-    <lastmod>2018-01-31T16:30:10+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/hugo/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/octopress/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA/</loc>
-    <lastmod>2014-10-01T22:41:26+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/posts/</loc>
-    <lastmod>2019-04-24T14:52:59+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/raspberrypi/</loc>
-    <lastmod>2015-01-28T21:10:39+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://pankona.github.io/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/</loc>
-    <lastmod>2019-04-24T14:52:59+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96/</loc>
-    <lastmod>2018-01-02T13:32:34+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88/</loc>
-    <lastmod>2016-03-31T00:36:22+09:00</lastmod>
     <priority>0</priority>
   </url>
   
