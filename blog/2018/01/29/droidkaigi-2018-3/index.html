@@ -7,7 +7,7 @@
 
     <meta name="description" content="">
 
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.0-DEV" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="gomobile build で JNI から Toast を出せなかった話 &middot; make clean; make">
@@ -184,11 +184,11 @@ Toast の出力に失敗しているようである。<code>CharSequence</code> 
 
 <p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br />
 定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity<span style="color:#f92672">.</span><span style="color:#a6e22e">runOnUiThread</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span></code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity.<span style="color:#a6e22e">runOnUiThread</span>(<span style="color:#66d9ef">new</span> Runnable() {
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
+        Toast.<span style="color:#a6e22e">makeText</span>(activity, <span style="color:#e6db74">&#34;Hello&#34;</span>, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
+    }
+});</code></pre></div>
 <p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br />
 無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br />
 とりあえず試みてみようとは思う。</p>
@@ -204,15 +204,15 @@ CharSequence を取らずに Toast を出すメソッドを Java レイヤに準
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// static Activity goNativeActivity;
 </span><span style="color:#75715e">// onCreate にて goNativeActivity = this;
 </span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showToast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Handler h <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getApplication</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMainLooper</span><span style="color:#f92672">());</span>
-    h<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> showToast(<span style="color:#66d9ef">final</span> <span style="color:#a6e22e">String</span> message) {
+    Handler <span style="color:#a6e22e">h</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler(goNativeActivity.<span style="color:#a6e22e">getApplication</span>().<span style="color:#a6e22e">getMainLooper</span>());
+    h.<span style="color:#a6e22e">post</span>(<span style="color:#66d9ef">new</span> Runnable() {
         <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">,</span> message<span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-<span style="color:#f92672">}</span></code></pre></div>
+        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
+            Toast.<span style="color:#a6e22e">makeText</span>(goNativeActivity, message, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
+        }
+    });
+}</code></pre></div>
 <p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br />
 Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
 

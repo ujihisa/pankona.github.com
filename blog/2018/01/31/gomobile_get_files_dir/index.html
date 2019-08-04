@@ -7,7 +7,7 @@
 
     <meta name="description" content="">
 
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.57.0-DEV" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="gomobile (build) で作るアプリでファイルを保存する &middot; make clean; make">
@@ -100,13 +100,13 @@ Go から Android SDK の API に触れるのである。</p>
 
 <p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、<br />
 ファイルを永続保存できる領域へのディレクトリパスを取得できる (アプリアンインストールと共に削除される) 。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">class</span> MyActivity <span style="color:#a6e22e">extends</span> AppCompatActivity {
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String dir <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheDir</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">void</span> onCreate(Bundle <span style="color:#a6e22e">savedInstanceState</span>) {
+        String <span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">getCacheDir</span>().<span style="color:#a6e22e">getAbsolutePath</span>();
         <span style="color:#75715e">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span></code></pre></div>
+</span><span style="color:#75715e"></span>    }
+}</code></pre></div>
 <h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
 
 <p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br />

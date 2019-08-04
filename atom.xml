@@ -5,10 +5,28 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 31 May 2019 10:50:59 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 04 Aug 2019 16:14:51 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Quipper に転職して三ヶ月が経った</title>
+      <link>https://pankona.github.io/blog/2019/08/04/join-in-quipper/</link>
+      <pubDate>Sun, 04 Aug 2019 16:14:51 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2019/08/04/join-in-quipper/</guid>
+      <description>さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期</description>
+    </item>
+    
+    <item>
+      <title>golang.tokyo #25 @ Wantedly</title>
+      <link>https://pankona.github.io/blog/2019/06/20/golangtokyo-25/</link>
+      <pubDate>Thu, 20 Jun 2019 14:52:59 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2019/06/20/golangtokyo-25/</guid>
+      <description>2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー</description>
+    </item>
     
     <item>
       <title>Quipper に転職した</title>
