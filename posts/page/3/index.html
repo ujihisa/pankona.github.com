@@ -65,6 +65,265 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">31 Jan 2018, 16:30</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/31/gomobile_get_files_dir/" class="post-title">gomobile (build) で作るアプリでファイルを保存する</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-go" href="https://pankona.github.io/categories/go">go</a><a class="post-category post-category-gomobile" href="https://pankona.github.io/categories/gomobile">gomobile</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<p>gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。<br />
+ページはココ → <a href="https://github.com/golang/go/wiki/Mobile">gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile</a></p>
+
+<p><code>gomobile build</code> コマンド一発で Go のソースから APK が生成されるというなかなか豪快なコマンドなのであるが、<br />
+いかんせん色々制限があって、いざ何か作ってみようとするとまあまあハマる。<br />
+どんな苦行があるかは <a href="https://qiita.com/pankona/items/11941a5cfb668e653b4a">手前味噌だが Qiita の記事</a> に何となく記しておいた。</p>
+
+<p>上記記事には書いてなかったハマりポイントとして、<strong>「ファイルを永続領域に保存する API がない」</strong>というのがある。<br />
+ファイルを保存できないということは、ゲーム作ってて何かセーブデータでも保存しよう、とかそういうことができないってことである。<br />
+割と致命的である。</p>
+
+<p>ただ、実は gomobile はパッケージ内に JNI を触る実装を持っていて (何故か internal パッケージなので外から触れないが) 、<br />
+それを参考にすれば、cgo 経由で JNI に触ることができる。<br />
+JNI に触れるということは、Java の API に触れるということで、それはすなわち Android SDK の API に触れるということである。<br />
+Go から Android SDK の API に触れるのである。</p>
+
+<h2 id="android-アプリ作成におけるファイル保存領域の取得">Android アプリ作成におけるファイル保存領域の取得</h2>
+
+<p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、<br />
+ファイルを永続保存できる領域へのディレクトリパスを取得できる (アプリアンインストールと共に削除される) 。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">class</span> MyActivity <span style="color:#a6e22e">extends</span> AppCompatActivity {
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">void</span> onCreate(Bundle <span style="color:#a6e22e">savedInstanceState</span>) {
+        String <span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">getCacheDir</span>().<span style="color:#a6e22e">getAbsolutePath</span>();
+        <span style="color:#75715e">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
+</span><span style="color:#75715e"></span>    }
+}</code></pre></div>
+<h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
+
+<p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br />
+以下のようになる。</p>
+
+<h3 id="jni-パッケージ-go言語-c言語">jni パッケージ (Go言語 + C言語)</h3>
+
+<p>指定した関数を JNI 上で実行する関数 <code>RunOnJVM</code> を定義しているパッケージ。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">package</span> <span style="color:#a6e22e">jni</span>
+
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">#cgo LDFLAGS: -landroid
+</span><span style="color:#75715e">#include &lt;jni.h&gt;
+</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">JavaVM* current_vm;
+</span><span style="color:#75715e">jobject current_ctx;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">static char *
+</span><span style="color:#75715e">_lockJNI(uintptr_t* envp, int* attachedp) {
+</span><span style="color:#75715e">	JNIEnv* env;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	if (current_vm == NULL) {
+</span><span style="color:#75715e">		return &#34;no current JVM&#34;;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	*attachedp = 0;
+</span><span style="color:#75715e">	switch ((*current_vm)-&gt;GetEnv(current_vm, (void**)&amp;env, JNI_VERSION_1_6)) {
+</span><span style="color:#75715e">	case JNI_OK:
+</span><span style="color:#75715e">		break;
+</span><span style="color:#75715e">	case JNI_EDETACHED:
+</span><span style="color:#75715e">		if ((*current_vm)-&gt;AttachCurrentThread(current_vm, &amp;env, 0) != 0) {
+</span><span style="color:#75715e">			return &#34;cannot attach to JVM&#34;;
+</span><span style="color:#75715e">		}
+</span><span style="color:#75715e">		*attachedp = 1;
+</span><span style="color:#75715e">		break;
+</span><span style="color:#75715e">	case JNI_EVERSION:
+</span><span style="color:#75715e">		return &#34;bad JNI version&#34;;
+</span><span style="color:#75715e">	default:
+</span><span style="color:#75715e">		return &#34;unknown JNI error from GetEnv&#34;;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	*envp = (uintptr_t)env;
+</span><span style="color:#75715e">	return NULL;
+</span><span style="color:#75715e">}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">static char *
+</span><span style="color:#75715e">_checkException(uintptr_t jnienv) {
+</span><span style="color:#75715e">	jthrowable exc;
+</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jnienv;
+</span><span style="color:#75715e">	if (!(*env)-&gt;ExceptionCheck(env)) {
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	exc = (*env)-&gt;ExceptionOccurred(env);
+</span><span style="color:#75715e">	(*env)-&gt;ExceptionClear(env);
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jclass clazz = (*env)-&gt;FindClass(env, &#34;java/lang/Throwable&#34;);
+</span><span style="color:#75715e">	jmethodID toString = (*env)-&gt;GetMethodID(env, clazz, &#34;toString&#34;, &#34;()Ljava/lang/String;&#34;);
+</span><span style="color:#75715e">	jobject msgStr = (*env)-&gt;CallObjectMethod(env, exc, toString);
+</span><span style="color:#75715e">	return (char*)(*env)-&gt;GetStringUTFChars(env, msgStr, 0);
+</span><span style="color:#75715e">}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">void
+</span><span style="color:#75715e">_unlockJNI() {
+</span><span style="color:#75715e">	(*current_vm)-&gt;DetachCurrentThread(current_vm);
+</span><span style="color:#75715e">}
+</span><span style="color:#75715e">*/</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;errors&#34;</span>
+	<span style="color:#e6db74">&#34;runtime&#34;</span>
+	<span style="color:#e6db74">&#34;unsafe&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RunOnJVM</span>(<span style="color:#a6e22e">fn</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span>) <span style="color:#66d9ef">error</span> {
+	<span style="color:#a6e22e">errch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">error</span>)
+	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">LockOSThread</span>()
+		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">UnlockOSThread</span>()
+
+		<span style="color:#a6e22e">env</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#ae81ff">0</span>)
+		<span style="color:#a6e22e">attached</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.int(<span style="color:#ae81ff">0</span>)
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_lockJNI</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">env</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">attached</span>); <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">errStr</span>))
+			<span style="color:#66d9ef">return</span>
+		}
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attached</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> {
+			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_unlockJNI</span>()
+		}
+
+		<span style="color:#a6e22e">vm</span> <span style="color:#f92672">:=</span> uintptr(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_vm</span>)) <span style="color:#75715e">// #nosec
+</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fn</span>(<span style="color:#a6e22e">vm</span>, uintptr(<span style="color:#a6e22e">env</span>), uintptr(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_ctx</span>)); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">err</span>
+			<span style="color:#66d9ef">return</span>
+		}
+
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_checkException</span>(<span style="color:#a6e22e">env</span>); <span style="color:#a6e22e">exc</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">exc</span>))
+			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">exc</span>)) <span style="color:#75715e">// #nosec
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span>
+		}
+		<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">nil</span>
+	}()
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errch</span>
+}</code></pre></div>
+<h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語-c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
+
+<p>上記 jni パッケージを使って、ファイル保存領域を取得するための関数を jni 上で実行する。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
+
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">#include &lt;jni.h&gt;
+</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">static const char *
+</span><span style="color:#75715e">getFilesDir(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx) {
+</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jni_env;
+</span><span style="color:#75715e">	jobject ctx = (jobject)jni_ctx;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jclass context = (*env)-&gt;FindClass(env, &#34;android/content/Context&#34;);
+</span><span style="color:#75715e">	if(context == NULL) {
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">	jmethodID getFilesDir = (*env)-&gt;GetMethodID(env, context, &#34;getFilesDir&#34;, &#34;()Ljava/io/File;&#34;);
+</span><span style="color:#75715e">	if(getFilesDir == NULL){
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jobject f = (*env)-&gt;CallObjectMethod(env, ctx, getFilesDir);
+</span><span style="color:#75715e">	if (f == NULL) {
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jclass file = (*env)-&gt;FindClass(env, &#34;java/io/File&#34;);
+</span><span style="color:#75715e">	if (file == NULL) {
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jmethodID getAbsolutePath = (*env)-&gt;GetMethodID(env, file, &#34;getAbsolutePath&#34;, &#34;()Ljava/lang/String;&#34;);
+</span><span style="color:#75715e">	if (getAbsolutePath == NULL) {
+</span><span style="color:#75715e">		return NULL;
+</span><span style="color:#75715e">	}
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">	jstring path = (jstring)(*env)-&gt;CallObjectMethod(env, f, getAbsolutePath);
+</span><span style="color:#75715e">	return (*env)-&gt;GetStringUTFChars(env, path, 0);
+</span><span style="color:#75715e">}
+</span><span style="color:#75715e">*/</span>
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;unsafe&#34;</span>
+
+	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/internal/jni&#34;</span>
+	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/simlog&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">storageAndroid</span> <span style="color:#66d9ef">struct</span>{}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewStorage</span>() <span style="color:#a6e22e">Storager</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">storageAndroid</span>{}
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">path</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">storageAndroid</span>) <span style="color:#a6e22e">DirectoryPath</span>() <span style="color:#66d9ef">string</span> {
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
+	}
+	<span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
+		<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
+			<span style="color:#a6e22e">cpath</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">getFilesDir</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>))
+			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cpath</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+				<span style="color:#a6e22e">simlog</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;failed to get FilesDir!&#34;</span>)
+			}
+			<span style="color:#a6e22e">path</span> = <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">cpath</span>)
+			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">cpath</span>)) <span style="color:#75715e">// #nosec
+</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+		})
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
+}</code></pre></div>
+<h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
+
+<p>上記で準備した関数を呼び出す部分。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
+    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">NewStorage</span>().<span style="color:#a6e22e">DirectoryPath</span>()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage: %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
+}</code></pre></div>
+<p>これで、ファイル保存領域へのディレクトリパスを取得できる。<br />
+あとは、取得したディレクトリパス配下に保存したいものを保存する。</p>
+
+<h2 id="余談-キャッシュディレクトリの取得">(余談) キャッシュディレクトリの取得</h2>
+
+<p>上記のコードで永続保存が可能な領域へのパスが取得できるので、それはそれで良いのであるが、<br />
+実はもっと手軽にファイル保存が可能な領域へのパスを取得できる方法があり、<br />
+それは環境変数 <code>TMPDIR</code> を参照することである。</p>
+
+<p>ただし、本値は Android SDK の API で言うところの <code>Context.getCacheDir</code> に相当し、<br />
+Android 端末の状況によっては削除され得る領域であることに気をつける必要がある。<br />
+が、ちょっと保存したいくらいの用途であれば耐えうるような気がする。<br />
+以下のようにして取得する。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
+    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;TMPDIR&#34;</span>)
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage (for cache): %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
+}</code></pre></div>
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">29 Jan 2018, 08:41</h1>
                 <section class="post">
                     <header class="post-header">
@@ -430,253 +689,6 @@ DroidKaigi、気合い入れていくぞ。</p>
 
 <p>昨年は勉強会レポートと ZenPad レビューと、みたいなどちらかというと受動的な強いられポストが多かったため、<br />
 今年はもっと能動的に日常的に息を吐くように記事を更新していきたい所存。今年もやっていくぞー。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">01 Jun 2017, 19:34</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2017/06/01/golangtokyo-6/" class="post-title">golang.tokyo#6@DeNA</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-golang" href="https://pankona.github.io/categories/golang">golang</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。</p>
-
-<p><a href="https://golangtokyo.connpass.com/event/57168/">golang.tokyo #6 - connpass</a></p>
-
-<p>開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集しているようです！<br />
-サーバーのみならず、色んなフィールドで Go を使っているとのことです。</p>
-
-<p><img src="/images/golang.tokyo-6/3.jpg" alt="golang.tokyo-6" /><br />
-今日も大勢の方が参加されております。</p>
-
-<p><img src="/images/golang.tokyo-6/4.jpg" alt="golang.tokyo-6" /><br />
-出遅れて私はありつけなかったですが、開幕前からお寿司が振る舞われていました！</p>
-
-<p><img src="/images/golang.tokyo-6/5.jpg" alt="golang.tokyo-6" /><br />
-私はおビールいただきました。</p>
-
-<h1 id="gopher-fest-2017-に参加した話-by-tenntenn-さん">Gopher Fest 2017 に参加した話 by tenntenn さん</h1>
-
-<ul>
-<li>mercari テックブログ にて既にまとめられている tenntenn さんの記事もあります。<br />
-(<a href="http://tech.mercari.com/entry/gopherfest2017_report">http://tech.mercari.com/entry/gopherfest2017_report</a>)<br />
-<br /></li>
-</ul>
-
-<p>今日は参加レポートをしてくれました。<br />
-主に 2017年8月上旬あたりにリリースされそうな Go 1.9 の話。</p>
-
-<p>スライドはこちら。<br />
-<a href="https://www.slideshare.net/takuyaueda967/gopher-fest-2017">https://www.slideshare.net/takuyaueda967/gopher-fest-2017</a></p>
-
-<p>以下、話の中で気になって点のピックアップ。</p>
-
-<h2 id="言語仕様の拡張-alias-の追加">言語仕様の拡張 - Alias の追加</h2>
-
-<p>型にエイリアスが張れるようになるとのこと。<br />
-以下のような書き方ができるようになる。</p>
-
-<pre><code>type Applicant = http.Client
-</code></pre>
-
-<p>この場合、Applicant と http.Client は等価。</p>
-
-<p>いつこれが役立つかというと、型をリネームするようなリファクタリングを行うとき。<br />
-以下の手法だとうまく行かない。</p>
-
-<p>(パターン1) 新しい型を作って順次移行する場合</p>
-
-<pre><code>type Applicant Client
-</code></pre>
-
-<ul>
-<li>Applicant は Client に生えていたメソッドを引き継げない。<br /></li>
-<li>キャストは可能。<br />
-<br /></li>
-</ul>
-
-<p>(パターン2) 埋め込みを使う場合</p>
-
-<pre><code>type Applicant struct { Client }
-</code></pre>
-
-<ul>
-<li>Applicant は Client に生えていたメソッドを引き継げる<br /></li>
-<li>しかしキャストはできない<br />
-<br /></li>
-</ul>
-
-<p>型エイリアスを用いると、</p>
-
-<ul>
-<li>両者等価なのでキャスト不要で交換可能<br /></li>
-<li>メソッドもそのまま使える、が、エイリアス側に生やすことはできない<br />
-<br /></li>
-</ul>
-
-<h4 id="参考">参考</h4>
-
-<ul>
-<li>安全にリファクタリングするには？<br />
-<a href="https://talks.golang.org/2016/refactor.article">codebase refactoring (with help from Go) by rsc</a><br />
-<br /></li>
-</ul>
-
-<h2 id="ライブラリへの変更">ライブラリへの変更</h2>
-
-<h3 id="ビット演算ライブラリ">ビット演算ライブラリ</h3>
-
-<p><a href="http://tip.golang.org/pkg/math/bits/">http://tip.golang.org/pkg/math/bits/</a><br />
-各種ビット演算用の某がそろっております。</p>
-
-<h3 id="sync-map">sync.Map</h3>
-
-<p>スレッドセーフなマップが追加に。<br />
-しかも make しないで 0 値のまま使えるらしく便利。</p>
-
-<h3 id="os-exec-環境変数をコードで上書きできるように">os.Exec 環境変数をコードで上書きできるように</h3>
-
-<p>環境変数で指定されている値をコード上で上書きできなかった。<br />
-Go 1.9 からは後勝ち。より直感的な動作になる。コードで上書きできるように！</p>
-
-<p>などなど。<br />
-スライドには出ていませんでしたが、個人的には mips32 向けの softfloat サポートがどうなったか気になります。Go 1.9 でサポートされるんだったような。</p>
-
-<p>次は DeNA の方。</p>
-
-<h1 id="初めて-golang-で大規模-microservices-を作り得た教訓-by-yuichi-murata">初めて Golang で大規模 Microservices を作り得た教訓 by Yuichi MURATA</h1>
-
-<p>DeNA の方です。<br />
-AndApp を作ったときに得られた教訓の話。</p>
-
-<p>Gin と Echo をさまよった話でさまざま苦労なさったそうな。<br />
-失敗談をメインに話してくださったので、そういうのは割と貴重と思います。</p>
-
-<p>スライドはこちら。<br />
-<a href="https://www.slideshare.net/yuichi1004/golangtokyo-6-in-japanese">https://www.slideshare.net/yuichi1004/golangtokyo-6-in-japanese</a></p>
-
-<h2 id="教訓1-go-でフレームワークに拘ることはない">教訓1. Go でフレームワークに拘ることはない。</h2>
-
-<ul>
-<li>Gin を使って開発を始める。<br /></li>
-<li>ちょっと困ったことがあって、一部で別のフレームワーク (Echo) を使い始める<br /></li>
-<li>両対応しつつ、また Echo 自身の開発がホットなせいで設計がどんどん変わってしまう<br />
-<br /></li>
-</ul>
-
-<p>というようなことで、聞いているだけでしんどい気持ちでいっぱいでしたが、<br />
-結論としては、フレームワークに頼らずに net/http 使っとくのが一番や、という話でした。<br />
-ツールに振り回されるとツライですね。納得。</p>
-
-<h2 id="教訓2-interface-を尊重する-エラーの型の話">教訓2. Interface を尊重する - エラーの型の話</h2>
-
-<p>独自エラー型と error インターフェースを混在させると起こり得る罠。<br />
-独自 error は nil 扱いされない問題。<br />
-素直に error インターフェースの利用に統一するべきだという結論。</p>
-
-<p>エラーの種類によって分岐したいとき等、結構ひとによってやり方がまちまちだという気がするので、<br />
-なにがしかデファクトスタンダードなやり方が示されていると良い気がしますね。</p>
-
-<p>ちなみに、自分が書くときの「エラーで分岐」については、<br />
-deeeet さんの <a href="http://deeeet.com/writing/2016/04/25/go-pkg-errors/">Golangのエラー処理とpkg/errors</a> で記載されているやり方に従っている。</p>
-
-<h2 id="regex-compile-reflection-の遅さ">regex compile / reflection の遅さ</h2>
-
-<p>JSON Schema でバリデーション。<br />
-OSS として扱った二種の速度の話。</p>
-
-<ul>
-<li>gojsonschema<br />
-
-<ul>
-<li>validation のたびに parse &amp; compile するので遅い<br /></li>
-</ul></li>
-<li>go-jsval<br />
-
-<ul>
-<li>こちらは速い<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<p>regex / reflection 等の処理は遅いので、使うときは意識しないといけない</p>
-
-<h2 id="結論">結論</h2>
-
-<ul>
-<li>Go の哲学。シンプルなアプローチを。<br /></li>
-<li>「コンパイルする言語だから速い」と過信せず、パフォーマンスに気を配ろう。<br />
-<br /></li>
-</ul>
-
-<p>以下、LT。</p>
-
-<h1 id="ゲーム開発で必要な-by-konboi">ゲーム開発で必要な by @konboi</h1>
-
-<p>カヤックの方。<br />
-<a href="https://speakerdeck.com/konboi/gemukai-fa-nihaqian-kasenai-arewosiyututojian-ru">スライドはこちら</a></p>
-
-<h2 id="csv-の話">CSV の話</h2>
-
-<p>データの形によっては非常に見にくいCSV。<br />
-いい感じに整形してくれるツールを作った！<br />
-<a href="github.com/Konboi/csviewer">csvviewer</a></p>
-
-<p>スターしておきました。</p>
-
-<h1 id="go-code-review-comments-を読もう-by-knsh14">Go code Review Comments を読もう by knsh14</h1>
-
-<p>KLabの方。スライドはこちら。<br />
-<a href="https://speakerdeck.com/knsh14/go-code-review-comment-wofan-yi-sitahua">https://speakerdeck.com/knsh14/go-code-review-comment-wofan-yi-sitahua</a></p>
-
-<p>こういう記事があって、Effective Go 簡易版というか、Go のお作法初級編みたく書かれている。<br />
-<a href="https://github.com/golang/go/wiki/CodeReviewComments">Go Code review comments</a></p>
-
-<p>それを日本語訳した！<br />
-* <a href="http://qiita.com/knsh14/items/8b73b31822c109d4c497">Qiita の記事はこちら</a></p>
-
-<p>初学者のみならず、ある程度経験がある人でも読んで損はないと思いました。<br />
-認識を改めるというかね。ちなみに社内勉強会で使わせていただきました、感謝！</p>
-
-<h1 id="scala-から-go-にきた話-by-james-さん">Scala から Go にきた話 by James さん</h1>
-
-<p>エウレカの方。<br />
-スライドは発見できませんでした…。</p>
-
-<p>Scala が好きということは分かりました。<br />
-悲しいアリクイかわいい。</p>
-
-<h1 id="crypto-in-go-by-suzuki-kengo-さん">Crypto in Go by suzuki kengo さん</h1>
-
-<p>マネーフォワードの方。</p>
-
-<p>資料はこちら。アライさんですね。<br />
-<a href="https://paper.dropbox.com/doc/Crypto-in-Go-cWLX9XxHQm6bAPqrZYkjt">https://paper.dropbox.com/doc/Crypto-in-Go-cWLX9XxHQm6bAPqrZYkjt</a></p>
-
-<p>難しい。</p>
-
-<h1 id="まとめ">まとめ</h1>
-
-<p>ということで今回も参加させていただきました、ありがとうございました。<br />
-失敗談というかアンチパターンというか、そういう話が聞けたのは大きな収穫でした。</p>
-
-<p>2017.06.15 現在、既に次の golang.tokyo が企画されています。<br />
-<a href="https://techplay.jp/event/624712">golang.tokyo #7</a><br />
-気になる方は要チェックです！</p>
 
                     </div>
                 </section>
