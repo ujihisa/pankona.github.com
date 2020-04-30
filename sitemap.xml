@@ -3,20 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://pankona.github.io/blog/2020/04/09/misc/</loc>
-    <lastmod>2020-04-09T10:50:55+09:00</lastmod>
+    <loc>https://pankona.github.io/blog/2020/04/23/em-dialy-2020-04-23/</loc>
+    <lastmod>2020-04-23T12:21:34+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://pankona.github.io/</loc>
-    <lastmod>2020-04-09T10:50:55+09:00</lastmod>
+    <lastmod>2020-04-23T12:21:34+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pankona.github.io/posts/</loc>
-    <lastmod>2020-04-09T10:50:55+09:00</lastmod>
+    <lastmod>2020-04-23T12:21:34+09:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/blog/2020/04/09/misc/</loc>
+    <lastmod>2020-04-09T10:50:55+09:00</lastmod>
   </url>
   
   <url>
