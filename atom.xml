@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 23 Apr 2020 12:21:34 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2020 12:30:16 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Engineering Manager とはやっぱりコマンダーバトルなのではないか</title>
+      <link>https://pankona.github.io/blog/2020/05/30/em-dialy-2020-05-29/</link>
+      <pubDate>Sat, 30 May 2020 12:30:16 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/05/30/em-dialy-2020-05-29/</guid>
+      <description>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。 引き続きもやもやしている 弊社 (Quipper) において EM が</description>
+    </item>
     
     <item>
       <title>Engineering Manager というものになったようだが何がなんだか分からない</title>

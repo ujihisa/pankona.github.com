@@ -65,6 +65,74 @@
             
             <div class="posts">
                 
+                <h1 class="content-subhead">06 Jan 2018, 23:09</h1>
+                <section class="post">
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/" class="post-title">DroidKaigi 2018 に向けて</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
+
+<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br />
+以下、準備しておこうと思う内容のメモ。</p>
+
+<ul>
+<li>ネタは gomobile でゲーム作った話。<br />
+<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。<br /></li>
+<li>DroidKaigi なので、主に Android 向けの開発について触れる。<br /></li>
+<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。<br />
+
+<ul>
+<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。<br /></li>
+<li>特に SharedPreference 使ったデータの保存を盛り込む。<br />
+(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)<br /></li>
+</ul></li>
+<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。<br />
+
+<ul>
+<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。<br />
+<br /></li>
+</ul></li>
+</ul>
+
+<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
+
+<ul>
+<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。<br /></li>
+<li>召喚可能なユニット数に上限を設ける。<br /></li>
+<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。<br /></li>
+<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。<br /></li>
+<li>そもそもちゃんと Android 端末上で動くようにしとく…。<br />
+<br /></li>
+</ul>
+
+<p>その他、可能であれば行いたい細かい点の改善。</p>
+
+<ul>
+<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。<br /></li>
+<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。<br />
+<br /></li>
+</ul>
+
+<p>DroidKaigi までもう残り一ヶ月程度。<br />
+コツコツやっていくぞー。今年も頑張るぞー。</p>
+
+                    </div>
+                </section>
+                
                 <h1 class="content-subhead">02 Jan 2018, 13:32</h1>
                 <section class="post">
                     <header class="post-header">
@@ -645,224 +713,6 @@ OSS として扱った二種の速度の話。</p>
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">12 Dec 2016, 19:24</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2016/12/12/golangtokyo-2/" class="post-title">golang.tokyo#2@はてな</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-golang" href="https://pankona.github.io/categories/golang">golang</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>2016.12.12 に表参道のはてなさんにて、golang.tokyo #2 が行われました。</p>
-
-<p><a href="https://golangtokyo.connpass.com/event/44807/">golang.tokyo #2 - connpass</a></p>
-
-<p>今回もまたブログ枠にて参加させていただきましたので、<br />
-その内容をレポートしていきます。</p>
-
-<p>発表内容の詳細はスライド (上記 connpass のページから辿れます) を参照いただくのが一番良いと思います。<br />
-本記事ではその他、イベントの雰囲気や私の感想を主にお伝えできればいいかなと思っています。<br />
-それでは行きます。</p>
-
-<hr />
-
-<p>今回の golang.tokyo は 2 回目の開催。<br />
-今後も色々目論まれているようです。楽しみ。</p>
-
-<p><img src="/images/golang.tokyo-2/02.jpg" alt="golang.tokyo-2" /><br />
-図1. golang.tokyo について</p>
-
-<p>golang.tokyo 2 回目のテーマは <strong>「テスト」</strong> について。</p>
-
-<hr />
-
-<h1 id="テストしやすいgoコードのデザイン-by-deeeet-さん">テストしやすいGoコードのデザイン by deeeet さん</h1>
-
-<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" data-card-type="article-full" href="https://talks.godoc.org/github.com/tcnksm/talks/2016/12/golang-tokyo/golang-tokyo.slide#1">テストしやすいGoコードのデザイン</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
-(↑のカードをクリックでスライドに飛びます。)</p>
-
-<p><img src="/images/golang.tokyo-2/07.jpg" alt="golang.tokyo-2" /><br />
-図2. 発表中の deeeet さん。</p>
-
-<p>以下、印象に残ったところを抜粋。</p>
-
-<h2 id="deeeet-さんはテストフレームワークを使わない派">deeeet さんはテストフレームワークを使わない派</h2>
-
-<p>テストのフレームワークは使わず、testing パッケージだけで十分であろうとの意見。<br />
-これは、フレームワークは「ミニDSL」であって、導入するひとはまだしも、<br />
-あとからプロジェクトに入ってくる人は学習する部分が増えてしんどくなってしまう、という一面があるからとのこと。<br />
-納得。</p>
-
-<h2 id="テストしやすいコードとは">テストしやすいコードとは</h2>
-
-<p><strong>「Table Driven Test」</strong> がおすすめ。<br />
-* 入出力が理解しやすい<br />
-* テストケース追加が容易<br />
-* 「Table Driven Test に落とし込めるコード」は入出力が明確でテストしやすいコード</p>
-
-<h2 id="テストしにくくなる要素とその対策">テストしにくくなる要素とその対策</h2>
-
-<p>テストしにくくなるというのは「Table Driven Test」がやりにくくなる状況を指す。<br />
-→ 入力以外の要素が出力影響を及ぼしてしまう状況。</p>
-
-<ul>
-<li>グローバル変数 (暗黙の入力)<br />
-
-<ul>
-<li>なるべく関数の引数に入れるようにしてテストしやすくする<br /></li>
-<li>もしくは「デフォルトの値」として <strong>のみ</strong> 使う<br /></li>
-<li>変わらないかもしれない定数っぽい値もなるべく設定可能にする<br /></li>
-<li>環境変数もグローバル変数と同じ<br /></li>
-</ul></li>
-<li>ユーザーの入力 (コマンドを入力→期待通りに動いたか、のテスト)<br />
-
-<ul>
-<li>入力の受取に os.Stdin を暗黙的に使わず io.Reader を使い、テスト時に仮想的な入力を行えるようにする。<br /></li>
-<li>入力に対する出力で、Table Driven にすることができるようになる。<br /></li>
-</ul></li>
-<li>ファイル出力 (ファイル出力された内容が正しいかどうか、のテスト)<br />
-
-<ul>
-<li>実際に書いたあとに開き直して中身を確認するのでもテストは可能だが、大量にやろうと思うと遅くなってしまう。<br /></li>
-<li>入力のときと考え方は同じで、io.Writer を出力先とし、テスト時はオンメモリのバッファに出力できるようにする。<br /></li>
-<li>バッファに出力された内容とその期待結果で、Table Driven することができるようになる。<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h1 id="macherelにおけるgoのエコシステムとかテストとか-by-songmu-さん">MacherelにおけるGoのエコシステムとかテストとか by Songmu さん</h1>
-
-<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" data-card-image="https://mackerel.io/files/images/brand-assets/screenshot-service.png" data-card-type="article-full" href="http://songmu.github.io/slides/golangtokyo-2/">MackerelにおけるGoのエコシステムとかテストとか</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
-(↑のカードをクリックでスライドに飛びます。)</p>
-
-<p><img src="/images/golang.tokyo-2/09.jpg" alt="golang.tokyo-2" /><br />
-図3. 発表中の songmu さん</p>
-
-<h2 id="mackerel-のエコシステム周りの話">Mackerel のエコシステム周りの話</h2>
-
-<ul>
-<li>ソースをオープンにしてパッチ受け入れるようにした。<br />
-
-<ul>
-<li>ホスト先は GitHub。contribute してもらいやすい。<br /></li>
-<li>pull request に対するレビュー体制、CI が必要。<br /></li>
-<li>Travis CI、Circle CI を使っている。CI の内容は以下のようなもの。<br />
-
-<ul>
-<li>go vet、 golint go test<br /></li>
-<li>coverage 計測<br /></li>
-<li>cross build 可能か<br /></li>
-</ul></li>
-</ul></li>
-<li>ちなみに Changelog はプルリクエストの情報から自動生成している。<br />
-<br /></li>
-</ul>
-
-<h2 id="ミドルウェアのテスト">ミドルウェアのテスト</h2>
-
-<ul>
-<li>実際にテスト時に実行する<br />
-
-<ul>
-<li>DB ならばモックせずに実際に DB を立ててデータを入れて確認をする、のような。<br /></li>
-<li>モックや interface でのテストでは気づけない部分もあるので、実際にやってテストする。<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<hr />
-
-<h1 id="休憩">休憩</h1>
-
-<p>deeeet さん、songmu さんの発表のあと、いったん休憩に。<br />
-休憩ではピザとビールが振る舞われまして、はてなさんにスポンサーしていただいたとのこと。<br />
-ありがたくいただきました。</p>
-
-<p><img src="/images/golang.tokyo-2/11_rotated.jpg" alt="golang.tokyo-2" /><br />
-図4. ピザとビールをはてなさんから振る舞っていただく。</p>
-
-<p><img src="/images/golang.tokyo-2/12.jpg" alt="golang.tokyo-2" /><br />
-図5. 会場遠景。芝生です。</p>
-
-<p><img src="/images/golang.tokyo-2/13.jpg" alt="golang.tokyo-2" /><br />
-図6. deeeet さんにむらがる Gophers (私もこのあとむらがりました) 。</p>
-
-<p>勉強会の真ん中にこういう親睦会的なノリの時間が設けられるのは珍しいかな？<br />
-なんだか新鮮でした。参加者の方とも少しだけお話できたりしました。<br />
-勉強会終わってからの親睦会だと参加できないケースが多い私のようなものにとっては、会の真ん中にこういうのやってもらうのもいいかもしれない。</p>
-
-<hr />
-
-<h1 id="ここから-lt-コーナー">ここから LT コーナー</h1>
-
-<p>ピザとビールで温まってきたところで LT 開始。</p>
-
-<h2 id="timakin-さん">timakin さん</h2>
-
-<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/timakin/plain-db-import-with-go">Plain db import with Go</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li><a href="https://github.com/timakin/gopli">timakin/gopli</a><br />
-
-<ul>
-<li>開発環境を本番環境に近づけるやつ。本番データをローカルに簡単にもってくる。<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h2 id="osamingo-さん">osamingo さん</h2>
-
-<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/osamingo/go-deshi-meru-json-rpc-ru-men">Go で始める JSON-RPC 入門</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li>JSON-RPC！<br />
-<br /></li>
-</ul>
-
-<h2 id="kazuhiratogo-さん">KazuhiraTogo さん</h2>
-
-<p><a class="embedly-card" data-card-key="ee29ed4b275e459483a608ca67084559" data-card-controls="0" href="https://speakerdeck.com/ktogo/continuous-deployment-with-go-on-aws-ecs">Continuous Deployment with Go on AWS ECS</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li>デプロイをとことん自動化した話。<br /></li>
-<li>本番とローカルで同じ環境を → Docker を使う。<br /></li>
-<li>Circle CI 上の docker は Ubuntu。本番は Alpine。環境の違いが問題に。 → Docker on Docker にして解決した。<br />
-<br /></li>
-</ul>
-
-<hr />
-
-<p>以上の内容でした。せめて雰囲気くらい伝わればいいですが。<br />
-いずれの発表もとても内容が濃くて、勉強になりっぱなしでした。感謝。<br />
-ひとまず Table Driven Test ですかね。取り入れてなかったのでやってみようか等と思い。</p>
-
-<p>感謝といえば、運営サイドのこと。<br />
-ほぼトラブルなしでスムーズに進んだのは、十分に準備してくれていたということだと思います。<br />
-だいたいマイクの電池が切れたりスライドがうまく映らなかったり、そういうの対策しようがなくてしょうがないところもあるんですが、<br />
-今回に関してはそういうのほぼほぼなくて、というかマイクの音量とか超ちょうど良くて、本当に細かい配慮を感じました。多謝。<br />
-他にも、アンケートを集めて次回のネタにしたりしていて (今回のテーマも、前回のアンケートでテストに関することを聞きたいという要望が多かったから、という理由で選んだとのこと)、golang.tokyo 運営すげーなという印象です。すげーな！</p>
-
-<p>次回もまた来年に予定されているようです。楽しみにしています！</p>
-
-                    </div>
-                </section>
-                
             </div>
             
 <div class="pagination">
@@ -872,7 +722,7 @@ OSS として扱った二種の速度の話。</p>
         <i class="fa fa-angle-double-left"></i>&nbsp;Newer
       </a>
       
-    <span class="post-list-pagination-item post-list-pagination-item-current">Page 4 of 10</span>
+    <span class="post-list-pagination-item post-list-pagination-item-current">Page 4 of 11</span>
     
       <a href="/posts/page/5/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
         Older&nbsp;<i class="fa fa-angle-double-right"></i>
