@@ -50,7 +50,7 @@
 
 
 <div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+  <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <hgroup>
             <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
@@ -81,304 +81,334 @@
 </div>
 
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
+  <div class="content pure-u-1 pure-u-md-3-4">
+    <div>
+      
+      <div class="posts">
+        
+          <article>
             
-            <div class="posts">
-                
-                <h1 class="content-subhead">30 May 2020, 12:30</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2020/05/30/em-dialy-2020-05-29/" class="post-title">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-EM" href="https://pankona.github.io/categories/em">EM</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
-
-<h2 id="引き続きもやもやしている">引き続きもやもやしている</h2>
-
-<p>弊社 (Quipper) において EM が最低限こなさなければならない「義務」のようなものは概ね把握してきた。<br />
-それは第一には「メンバーの評価」であり、第二には「採用活動」である。これらは将来変わるかもしれないが、いま時点においてはこれらが EM の仕事といって差し支えないように見えている。実際、業務時間のだいたいはこれらに関する何かで時間を使っている。</p>
-
-<p>さて、4 月に EM になってから 5 月末に至るまでずっと「もやもやした不安」を感じていた。<br />
-それは「EM になったはいいけど、EM ってどういう仕事する人なんだっけ」っていうのをよく分かっていなかったからだと思っていたのだけど、先述のようにそのへんが概ね明らかになってきたにも関わらず、やはりもやついた気持ちが晴れてこなかった。いったい僕は何を不安に思っているのか。天が落ちてくることでも心配しているんだろうか。</p>
-
-<p>そんな悩みとも何とも言えない晴れない気持ちを、たまたま目の前 (※ やりとりは Slack なので目の前というのは少し語弊がある) にいた <a href="https://github.com/ujihisa">@ujihisa</a> さんに相談してみた。<br />
-僕が思うに、ujihisa さんはもやもやした形の曖昧な気持ちや事象に「名前をつける」であるとか「モデル化して可視化してくれる」であるとかのチカラが凄いんである。けれどそれは本稿では割愛して、また別の機会に分析してみたいと思う。ほんと凄いんですよ、ええ。</p>
-
-<p>そんで、もやもやを五月雨式に ujihisa さんに向かってダンプしていくうちに、だんだんその不安の正体がつかめてきた気がしてきた。<br />
-端的に言うと、「プロダクトに対する貢献感が少ないことに対して焦っている」んじゃないか、ということであり、つまりもうちょっと砕いて言えば「あんまりコード書いてないから&rdquo;やってる感&rdquo;を感じない」ということでありそうな気がする。<br />
-確かに、僕が近頃こなしている数々のミーティングや採用活動は、直接プロダクトを良くしているわけではないと感じている節がある。EM になる以前はもっとプロダクトへの直接的な寄与をできていたと思うし、それといまとのギャップも相まって「こんな仕事してて良いんだろうか」って考えてしまうってことなんじゃなかろうか。</p>
-
-<p>しかし実際のところ、チームメンバーが鬼強い人たちばかりであるので、僕があんまりコードを書かなかったところで特に何も問題は起きないという一面がある。何もしなくて良いのである。<br />
-このシチュエーションはマネージャから見たらイージーモードと言えるのかもしれないが、ただ、そういう意味では「やっぱ自分はあんまりチームの役に立っていないなぁ」みたいなことも考えてしまうやつなのである。</p>
-
-<p>うだうだ書いたが、つまり一言で言って「プロダクトを作っている感がなくて虚無を感じている」ということかと思われる。うむ。</p>
-
-<h2 id="その虚無は本当に虚無か">その虚無は本当に虚無か</h2>
-
-<p>評価にせよ採用活動にせよ、はたまたコードを書くにせよ、それらは誰かがやらねばならないし、大きな価値のある尊い仕事であると思う。どっちの仕事が優れててどっちが劣っているという話ではない。<br />
-なので、僕が最近の自分自身の仕事に「やってる感を感じてない」とはいえ、それらには一定の価値があろうとも思う。断じて虚無ではない。</p>
-
-<p>問題は「自分が思い描く寄与の形と、現実にギャップがある」ことで、それがつまり「仕事がつまらん」みたいな感情に繋がりつつあることである。<br />
-とはいえこの構図は、「やりたいことをやりたいようにやることが寄与に繋がってきた」今までの体験が、ロールが変わることによって一部崩れてしまい、その変化に対してダダを捏ねているようにも見えなくもないね…。みたいなことにも気付きつつある。</p>
-
-<p>というわけで、目下は「どのようにやってる感を感じるか」というのがひとつ課題なのかと思う。自己効力感というか何というか。<br />
-ujihisa 曰く、「プロダクトに時間が割けない中でプロダクトへの効力感を感じるには、周囲に助けてもらって自分にプロダクトの仕事をさせてもらう」のが良いのではないか、である。<br />
-なるほど、何か難しそうであるが、これならメンバー評価の仕事をしつつ、自分もプロダクトに寄与していけるような気がしないでもない。助けてもらう前提 (ペアやモブ作業を行うという意味) であれば、たとえ割ける時間が少なかったとしても、多少なりとも自分が納得していけるような活動になっていく気がする。</p>
-
-<p>一方で、言わば「プロダクトへの間接的な寄与」(直接的な寄与、と先述したのでそれに対するものの表現) に対しても同様の尊みを自分自身が感じていくのも大事かなぁと思う。<br />
-コミットログや GitHub の草のように可視化されるものでもないし、どのように達成感を得たらいいんだろうか。ここはもう少し分析や考察がいるところ。</p>
-
-<h2 id="ロマサガ-3-のコマンダーバトル">ロマサガ 3 のコマンダーバトル</h2>
-
-<p>ところで、ロマンシングサガ 3 にはコマンダーバトルという戦闘モードがある。一言でいうと「主人公は直接戦わなくて後ろからざっくりとした指示を出す」モードである。<br />
-当時としては割と斬新な戦闘システムだったかと思う。二周目のプレイとかはコマンダーバトル縛りでやったような記憶がある。サラを主人公に選ぶとラスボスで強制的にコマンダーバトルになったりするけどあれはちょっとあんまりだと思った。少年も仲間だったんですけど没収されてしまうし。いま思うとホントひどいなこのゲーム&hellip;。好きだけど。</p>
-
-<p>ちょっと記憶が曖昧だけど、コマンダーバトルというのはたしか各位に細かい指示は出せないんだった気がする。全員戦うとか全員守るとかの方針を決定するのと、どんな陣形で戦うかっていうのと、陣形技っていう複数人が連携する技を指示するとか、あとは主人公が後ろからアイテムを使うことができる、くらいだった気がする。<br />
-不自由かと思いきや、いくらかメリットもあり、コマンダーバトルではパーティメンバーは毎ターン HP 回復するし (戦闘不能だったら HP 1 で復活する) 、陣形技は超強力。軌道に乗ってくると通常の戦闘モードよりもコマンダーバトルのほうが安定するまであるような気がするし、だんだん楽しくなってくる。あと楽。</p>
-
-<p>少々こじつけかもしれないが、EM の仕事というのはある意味コマンダーバトルみたいなところがあるのではないかと思う。 EM は直接敵と戦うわけではないが、戦況に鑑みて陣形と作戦指示だけしていく、みたいな。まさに同じ構図。そっくりじゃないか。俺はサラだったのか。まあなんというかね、コマンダーバトルはものすごい好きになることができたので、これもやはりこじつけかもしれないが EM の仕事も好きになれるんじゃないかと思っている。きっと僕の仕事は後ろから火星の砂とかを使って地相を変えることなんじゃないかな。どちらかと言うと寒い感じの地相にするほうが得意かもしれないが。</p>
-
-<h2 id="以上をふまえた-6-月の取り組み">以上をふまえた 6 月の取り組み</h2>
-
-<ul>
-<li>ペア/モブ作業を通してプロダクトに多少は寄与していく<br /></li>
-<li>ミーティングをコンパクションしてプロダクトへ寄与する時間を増やす<br /></li>
-<li>地相を変える仕事に尊みを見出す<br /></li>
-</ul>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">23 Apr 2020, 12:21</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2020/04/23/em-dialy-2020-04-23/" class="post-title">Engineering Manager というものになったようだが何がなんだか分からない</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-EM" href="https://pankona.github.io/categories/em">EM</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。</p>
-
-<p>これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一ヶ月くらい経過しているのであるが、未だに Engineering Manager というものが何をすべきロールなのかちゃんと分かっていない。というのも、メンバーに「Engineering Manager って何する仕事なんですか」って聞いても (これを僕から聞くのもあれなんだけども) 、割とみんな Engineering Manager に期待する動きというのがバラバラであり、「メンバーが開発に集中できるようにする」と言う方もあれば、「開発もそれ以外もなんでもやる人でしょ」等と言う方もあったりする。なんでもってなんだ。植木に水でもやるか。</p>
-
-<p>で、自分でも色々考えてみて、何をすべきかっていうよりは逆に「これは EM の仕事じゃなくてもいいよね」みたいのをちょいちょい集めていっている。</p>
-
-<ul>
-<li>こぼれ球拾っていくみたいな動きも別に EM じゃなくていい (権限が必要な場合は除いて気づいた人やればいい) 気がする<br /></li>
-<li>なんでもやるってのは土台無理な気がする<br />
-<br /></li>
-</ul>
-
-<p>最終的にメンバーの評価をするっていうのは EM しかやれないこと (これは弊社の立て付け上の事情だろうけども) なので、そのために 1on1 する等して色々な情報を収集する、みたいなのは自分がやらないといけないよね、というのは気づいたところ。<br />
-その情報収集を通して雑多に情報が集まってくると思うので、その情報を元に自分にしか見えない (あるいは他の人に比べて自分が気づきやすい) 問題っていうのはあるのかもしれない。ので、そのへんを意識して解決するように頑張っていくっていうのが EM として価値のでる仕事なのかなー等と考えていたところである。曖昧。</p>
-
-<p>あと比較的安価なものであれば決済する権限も与えられているようなので、精一杯濫用していきたいと思っているところ。<br />
-昨今はコロナの影響もあってリモートワークが盛り上がっているので、経費使ってリモートお茶会くらい開催してもいいんじゃないかなー。どうかなー。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">09 Apr 2020, 10:50</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2020/04/09/misc/" class="post-title">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなかどうして書くことが思いついてもそれをブログにしようと思わない、筆が進まない、というか筆をとらない、という日々が続いていた。</p>
-
-<p>これには何か理由があるんだろう、わかったぞ、さては「ブログを書く体験」が良くないんだな、仕組みを変えなきゃ、どのように変えるか、等とうだうだ考えていたら数ヶ月が経っていた。ウケる。</p>
-
-<p>しかし結局のところ「書くならちゃんとした記事を書こう」みたいに思っちゃうのがハードルなのかもしれないね、と思ったのである。<br />
-ということでいったんこのような雑な記事をポストしておいて、そういった「ちゃんと」の呪いから解き放たれていこうと思った。<br />
-目指せ、一年で 30 記事くらい (毎月 2.5 記事ペースね)。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">04 Aug 2019, 16:14</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2019/08/04/join-in-quipper/" class="post-title">Quipper に転職して三ヶ月が経った</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>さて、2019 年 5 月に <a href="https://www.quipper.com/">Quipper</a> に入り、3 ヶ月が過ぎた。<br />
-入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期間が終わった段階になる。</p>
-
-<p>試用期間が終わったからと言って何かすごい権限が付与されるとか、ただちにクビになる心配がなくなるとか (そもそも試用期間だからっていきなりクビを切るのは難しいよねきっと) っていう変化は特になく、これまで通りのルールでこれまで通り業務をしていくという感じではある。<br />
-とはいえ試用期間が終わったということで、公の見方としてはようやく正式に (？) 社のメンバーになったということなのではないか。<br />
-ということで転職エントリー地味たものを書き記しておこうという気になったわけである。</p>
-
-<h2 id="現職は-いくつか">現職は ☆ いくつか？</h2>
-
-<p>先日、「ところで Quipper どうよ？」みたいな往年の 2 ch を思わせるような質問をマネージャに投げかけられたわけである。1on1 で。☆ いくつよ？みたいな。</p>
-
-<p>そんな「☆ いくつ」みたいなどっかの料理ショーみたいな採点はひとくちには難しかったので即答はできなかったものの、自分が何をポジティブに、もしくはネガティブにとらえているのかを改めて考えてみた。</p>
-
-<h3 id="ポジティブポイント">ポジティブポイント</h3>
-
-<ul>
-<li>英語キーボードの PC が使えて嬉しい。設備繋がりで言えばキーボードもマウスもお気に入りのやつ買ってもらえて嬉しい (前職では毎日リアルフォースとスリムブレードを持ち運んでいたので腰が死んだ) 。<br /></li>
-<li>そういえば Go 書きたいと言って始めた転職活動だったのを思い出したが、Go をちょこちょこ書けてて嬉しい。言語繋がりで言えば、不慣れな Ruby に挑戦出来ていてこれはこれで楽しい。<br /></li>
-<li>ちゃんとしたスクラムをしている。受託ではないからスクラムやりやすいっていう一面はありそう (前職はしばしばスクラムもどきをしていた) 。<br /></li>
-<li>質問しやすい雰囲気があって仕事しやすい。Slack に雑に質問をすると (役に立つか立たないかは一旦置いといて) 何らかのリアクションがそれなりの速度で返ってくる。これは非常に良い体験。<br /></li>
-<li>同様の文脈で、Slack 上で雑談がしやすいというのもある。業務と無関係な呟きをする (関係あってもいいんだけど) 個人用のチャンネル (xxxx_times、みたいなやつ) がいくつも生えていて、連日賑わっている。<br /></li>
-<li>採用の透明さ。その気があれば採用に関わっていけるし、その気がなくても採用に関する情報はオープンになっていて「誰が応募してんのかな、どこまで行ってんのかな」とかが分かって嬉しい。<br /></li>
-<li>リモート多めの面々なので、リモートでのコミュニケーションをまあまあ前提にしてよいところは嬉しい。<br /></li>
-<li>コミュニケーションはほとんど Slack と GitHub で完結している。これはエンジニアに限らずである。人事からプルリクが飛んできてビビる日々。<br />
-
-<ul>
-<li>ビジネス上の意思決定とか組織の検討とかも Slack や GitHub 上で行われているので、月並みな言葉で言えば「情報がオープン」であろうか。暇なときに眺めてはへぇーへぇーって言ってるだけだけど。<br /></li>
-<li>社内情報を検索するときは、まず Slack、その次 GitHub、その後誰かに聞く、みたいな順番でやればだいたいヒットする。<br /></li>
-</ul></li>
-<li>組織がフラット。フラットというか、仕事をする上で組織をあまり意識しなくて良いと言ったほうが正しいかもしれない。サービスとそれをメンテするチームがあるだけ、って感じ。<br />
-
-<ul>
-<li>横のサービスが気になったら勝手に gofmt かけてプルリク出すと喜ばれる、みたいな。<br /></li>
-<li>すべてのサービスは一個のリポジトリで管理されているので、権限的に見れないみたいなことが起こらないのも大きいかもしれない。<br /></li>
-</ul></li>
-<li>数ヶ月に渡る結構長い育休とっている男性もそこそこの数いたりして、子育て的なところにも理解があるように見えるのも嬉しい。<br />
-<br /></li>
-</ul>
-
-<h3 id="ネガティブポイント">ネガティブポイント</h3>
-
-<ul>
-<li>謎の略語が多い (ATI、KSK、フィジビリ？) 。何度「それなんでしたっけ？」って聞き返してしまったことか…。<br /></li>
-<li>プロダクトがまあまあ大きいのに、ちゃんとメンテされたドキュメントみたいなものは皆無なのは新人にはツライと感じた。ER 図みたいなものとかモジュール構成図とかね。ドキュメントの面倒を見続けるのは大変だというのは分かりつつ…。<br /></li>
-<li>会議室が足りなくてフリースペース的なところで軽いミーティングをすることがしばしばあるが、周りでも同じことをやってるので騒音にさらされることを免れ得ない。もうミーティングは全部オンラインでやったらいいんだ…。<br /></li>
-<li>巨大なミーティング (キックオフみたいの) が何となく多い？これも YouTube で配信とかにしてくれたらいいんだ…。<br />
-
-<ul>
-<li>とはいえ、キックオフの感想で愚痴を書いたら社長から返事がきたりする一面もあり、嬉しいところもある。<br /></li>
-</ul></li>
-<li>職場の近くの飲食店、美味しいところが多いので無限に金を吸われてしまうし、その結果、自分の体は無限に炭水化物と脂を吸い込んでしまう。<br />
-<br /></li>
-</ul>
-
-<p>ササッと並べてみたがこんなもんだろうか。ネガティブも並べてみたけれど &ldquo;強いて言うなら&rdquo; みたいな項目であり、あんまりネガティブなところ思いつかないのである。言うほど不満ないんだろうか…？不満ないとかありえる…？</p>
-
-<h2 id="be-the-worst-ってやつよ">Be the Worst ってやつよ</h2>
-
-<p>そういえば、自分のスキルセット (私はもともと組み込みソフトウェア開発をしていた、C/C++ で) は現職では結構役に立ってない印象で、Rails？slim？React？ああ何度も入門してます！みたいなノリで始まったのであるが、三ヶ月経った今でもそれほど変わってないようなところもある。おいおい 3 ヶ月たってそれって大丈夫かよ、おいら死ぬわ…。<br />
-現チームでウェブ開発のことを最も分かっていないのはきっと自分であろうと思うんだけどね。足の引っ張り具合がちょっとツライと感じるものの、どっかの本だか記事だか (<a href="https://www.amazon.co.jp/dp/B01IGW5MQ0/ref=dp-kindle-redirect?_encoding=UTF8&amp;btkr=1">情熱プログラマー (アマゾンリンク)</a> だったかな？) に「Be the Worst」って言葉が出てきたのを思い出し。耐えればきっと自身の技術の向上もあろうと信じて、もう少し周りの人にも耐えてもらいつつ。食費を抑えつつ、引き続き頑張って行こうと思いました。まる。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">20 Jun 2019, 14:52</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2019/06/20/golangtokyo-25/" class="post-title">golang.tokyo #25 @ Wantedly</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。</p>
-
-<p>イベントページはココ</p>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://golangtokyo.connpass.com/event/133581/" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">golang.tokyo #25 (2019/06/18 19:00〜)</span></div><div style="min-height:100px;"><div style="float:left;width:100px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://connpass-tokyo.s3.amazonaws.com/thumbs/e2/9f/e29f60758cc8cda99c6f4b90a105d129.png" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:14px;font-weight:400;color:#666"># イベントについて  golang.tokyo 25回目の開催です！今回のテーマは「Go の郷に入る」。  最近 Gopher になった人も昔から Gopher やってる人も、あたらめて Go を見直し Go に入り直してみましょう！  # golang.tokyo って？  プログラミング言語のGoの導入企業のメンバーが集まり、Goの普及を推進するコミュニティです。 トークイベント、ハンズオン、etcのイベントを開催していく予定です！  # LT 参加者募集  申し込みフォーム  6/11まで、LT参加者を募集しています。  内容はGoに関連することであれば自由です。  3枠あり、枠...</span><br/><span style="font-size:12px;font-weight:400;color:#373">https://golangtokyo.connpass.com/event/133581/</span></div></div></a></blockquote>
-
-<p>ツイッターはハッシュタグ「#golangtokyo」で検索すると、当日の実況ツイートの様子が分かります。<br />
-<a href="https://twitter.com/search?q=%23golangtokyo%20since%3A2019-06-17%20until%3A2019-06-19&amp;src=typed_query&amp;f=tweets">ツイッター検索 (#golangtokyo since:2019-06-17 until: 2019-06-19)</a></p>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-25/01.jpg><img src=/images/golang.tokyo-25/01.jpg /></a>
-  <div class="caption">こういったネームカードをぶら下げての参加 (後ほど返却)</div>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-25/02.jpg><img src=/images/golang.tokyo-25/02.jpg /></a>
-  <div class="caption">おしゃれな軽食を振る舞っていただく</div>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-25/03.jpg><img src=/images/golang.tokyo-25/03.jpg /></a>
-  <div class="caption">アルコールの類も少々</div>
-</div>
-
-<p>セッション 2 つ。</p>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://docs.google.com/presentation/d/117AECfnKnKALyxHXQ0ap5yJjhB6fvg1LrGYKLagaP48/edit?usp=embed_facebook" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">今改めて読み直したい Go基礎情報 その1</span></div><div style="min-height:100px;"><div style="float:left;width:100px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://lh6.googleusercontent.com/B_pN3FJk4vwflX08-M0YPPHUhZvWnIzwmnJR5hDlpxYD17EQXPgb5sU0LrxhsKU5IKru5g=w1200-h630-p" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:14px;font-weight:400;color:#666">今改めて読み直したい Go基礎情報 その1 2019/06/18 golang.tokyo #25 Yoichiro Shimizu @budougumi0617</span><br/><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://docs.google.com/presentation/d/117AECfnKnKALyxHXQ0ap5yJjhB6fvg1LrGYKLagaP48/edit?usp=embed_facebook</span></div></div></a></blockquote>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://speakerdeck.com/izumin5210/golang-dot-tokyo-number-25" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">今あらためて読み直したい Go 基礎知識 その2 / golang.tokyo #25</span></div><div style="min-height:100px;"><div style="float:left;width:100px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://speakerd.s3.amazonaws.com/presentations/b36992074ba343ada06059e73a02a583/slide_0.jpg?523374" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://speakerdeck.com/izumin5210/golang-dot-tokyo-number-25</span></div></div></a></blockquote>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-25/04.jpg><img src=/images/golang.tokyo-25/04.jpg /></a>
-  <div class="caption">発表に対して質問をした報酬にステッカーをいただけた。嬉しい</div>
-</div>
-
-<p>LT は 3 つ。</p>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://l0w.dev/posts/golang-binary-hacks/" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">golang binary hacks (golang.tokyo #25)</span></div><div><div><span style="font-size:14px;font-weight:400;color:#666">今日は golang.tokyo #25 というイベントにお邪魔して LT 枠で「golang binary hacks」というお題のお話をしてきました。 現地でお話を聞いてくださったみなさま、</span><br/><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://l0w.dev/posts/golang-binary-hacks/</span></div></div></a></blockquote>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://speakerdeck.com/mackee/i-need-detect-to-conflicts-of-identifier-for-go" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">package名と変数名がかぶっているのをとにかく検出したい / I need detect to conflicts of identifier for Go</span></div><div style="min-height:100px;"><div style="float:left;width:100px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://speakerd.s3.amazonaws.com/presentations/54a5494c76d64f098808f28699259382/slide_0.jpg?523346" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://speakerdeck.com/mackee/i-need-detect-to-conflicts-of-identifier-for-go</span></div></div></a></blockquote>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://speakerdeck.com/po3rin/consider-a-test-of-image-processing-in-go" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">Consider a test of image processing in Go</span></div><div style="min-height:100px;"><div style="float:left;width:100px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://speakerd.s3.amazonaws.com/presentations/34747fe0aeca42b3b17b1470ee98b9cf/slide_0.jpg?521793" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:14px;font-weight:400;color:#666">Goによる画像処理テストを考察した話</span><br/><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://speakerdeck.com/po3rin/consider-a-test-of-image-processing-in-go</span></div></div></a></blockquote>
-
-<p>会場は 100 人弱くらいの入りでとても盛況。<br />
-例によって参加枠よりも多い応募があったようで、相変わらずの人気勉強会ですな。</p>
-
-<p>今回のセッションのテーマは「Go の郷に入る」。<br />
-しばしば「Go らしい/らしくないコード」なんて表現されることもある気がする昨今であるが、さて実際「Go らしさ」とは一体なんなのよ？というのを、原典を当たることで振り返っていこうという回。</p>
-
-<p>Go が出始めたばかりの頃の設計を紹介している記事やスライドがいくらか紹介されていったが、一環して「Go は当初から今まで基本的なポリシーを変えていない」ということが強調されていたように感じた。実際、2013 年のあたりに書かれたコーディングのベストプラクティスが今見ても古臭くないというというのは結構すごいことなのではないだろうか。<br />
-とはいえ Go はまだ若い部類の言語かと思われるので、今後もこのシンプルさが保っていけるのかっていうのは気になるところ。ぜひ Go らしさを保っていってほしい…！</p>
-
-<p>ところで、「みんなの Go 言語」が改定されて第 2 版がでるという話題が出ていた。<br />
-第 1 版には、本当に「いますぐ役立つ！」という感じの記事が並んでいたので、第 2 版にも期待である。</p>
-
-<blockquote class="blogcard" style="width:auto;border:1px solid #aaa;margin:1em 0;padding:1em;line-height:1.4;text-align:left;background:#fff;"><a href="https://gihyo.jp/book/2019/978-4-297-10727-7" target="_blank" style="display:block;text-decoration:none;"><div style="width:100%;margin-bottom:0.5em;"><span style="font-size:18px;font-weight:700;color:#333">改訂2版 みんなのGo言語</span></div><div style="min-height:100px;"><div style="float:left;width:80px;height:100px;margin:0 1em 0.5em 0;position:relative;"><img src="https://images.weserv.nl/?w=100&url=https://image.gihyo.co.jp/assets/images/cover/2019/thumb/TH300_9784297107277.jpg" alt="thumbnail" style="position:absolute;top:50%;left:50%;transform: translate(-50%,-50%);border:none;"/></div><div><span style="font-size:12px;font-weight:400;color:#373;word-wrap:break-word">https://gihyo.jp/book/2019/978-4-297-10727-7</span></div></div></a></blockquote>
-
-                    </div>
-                </section>
-                
+            <div>
+                <div>2020-05-30 12:30:16</div>
+                <div><a href="/blog/2020/05/30/em-dialy-2020-05-29/">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a></div>
+                <p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
             </div>
             
+              
+              <div>
+                <a href="/blog/2020/05/30/em-dialy-2020-05-29/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-23 12:21:34</div>
+                <div><a href="/blog/2020/04/23/em-dialy-2020-04-23/">Engineering Manager というものになったようだが何がなんだか分からない</a></div>
+                2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/23/em-dialy-2020-04-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-09 10:50:55</div>
+                <div><a href="/blog/2020/04/09/misc/">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a></div>
+                ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなか
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/09/misc/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-08-04 16:14:51</div>
+                <div><a href="/blog/2019/08/04/join-in-quipper/">Quipper に転職して三ヶ月が経った</a></div>
+                さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/08/04/join-in-quipper/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-06-20 14:52:59</div>
+                <div><a href="/blog/2019/06/20/golangtokyo-25/">golang.tokyo #25 @ Wantedly</a></div>
+                2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/06/20/golangtokyo-25/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-05-31 10:50:59</div>
+                <div><a href="/blog/2019/05/31/job-change/">Quipper に転職した</a></div>
+                2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/05/31/job-change/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-04-24 14:52:59</div>
+                <div><a href="/blog/2019/04/24/golangtokyo-23/">golang.tokyo #23 @ DeNA</a></div>
+                2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/04/24/golangtokyo-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-07-13 19:15:16</div>
+                <div><a href="/blog/2018/07/13/golangtokyo-16/">golang.tokyo #16 @メルペイ</a></div>
+                golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/07/13/golangtokyo-16/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-06-23 17:00:42</div>
+                <div><a href="/blog/2018/06/23/mashimahi/">強いパスワードのためのフレーズジェネレータを作ってみた</a></div>
+                ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/06/23/mashimahi/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-05-30 19:39:48</div>
+                <div><a href="/blog/2018/05/30/golangtokyo-15/">golang.tokyo #15@DeNA</a></div>
+                golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/05/30/golangtokyo-15/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-04-16 19:32:07</div>
+                <div><a href="/blog/2018/04/16/golangtokyo-14/">golang.tokyo #14@メルカリ</a></div>
+                golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/04/16/golangtokyo-14/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-02-05 00:38:03</div>
+                <div><a href="/blog/2018/02/05/droidkaigi_2018_material/">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a></div>
+                DroidKaigi 2018 では以下の枠で発表する予定。 DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - gomobile でゲームを作る 資料はココ → gomobile でゲームは作れる 発表内容についての徒然 DroidKaigi と言うからには Androider たちの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/02/05/droidkaigi_2018_material/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-31 16:30:10</div>
+                <div><a href="/blog/2018/01/31/gomobile_get_files_dir/">gomobile (build) で作るアプリでファイルを保存する</a></div>
+                gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/31/gomobile_get_files_dir/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-29 08:41:12</div>
+                <div><a href="/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a></div>
+                本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。 来週の木曜日である。ヤバイ。準備捗ってない…。 とはいえ色々調査
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/29/droidkaigi-2018-3/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-08 23:10:33</div>
+                <div><a href="/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a></div>
+                DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/08/droidkaigi-2018-todo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-06 23:09:05</div>
+                <div><a href="/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a></div>
+                DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/06/my-first-post-2018/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-02 13:32:34</div>
+                <div><a href="/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a></div>
+                いままで本ブログは Octopress を使って生成していたのであるが、 久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/02/my-first-post-by-hugo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-06-01 19:34:21</div>
+                <div><a href="/blog/2017/06/01/golangtokyo-6/">golang.tokyo#6@DeNA</a></div>
+                2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。 golang.tokyo #6 - connpass 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集してい
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/06/01/golangtokyo-6/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-03-01 19:31:27</div>
+                <div><a href="/blog/2017/03/01/golangtokyo-4/">golang.tokyo#4@eureka</a></div>
+                2017.03.01 に eureka さんにて、golang.tokyo #4 が行われました。 golang.tokyo #4 - connpass 今回もまた大盛況で一般参加枠は倍率3倍くらいの抽選となっていましたが、 たま
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/03/01/golangtokyo-4/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2016-12-14 11:12:31</div>
+                <div><a href="/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a></div>
+                何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに 日本語が入力できなくなることがあった。 起きた
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2016/12/14/jp-input-on-gnome-app/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+
+        </div>
+        
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
@@ -392,7 +422,7 @@ ujihisa 曰く、「プロダクトに時間が割けない中でプロダクト
 </div>
 
 
-            <div class="footer">
+        <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
@@ -410,10 +440,10 @@ $(function(){
 <link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
+      </div>
     </div>
-</div>
 
-
+  
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

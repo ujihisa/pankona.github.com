@@ -50,7 +50,7 @@
 
 
 <div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+  <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <hgroup>
             <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
@@ -81,445 +81,334 @@
 </div>
 
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
+  <div class="content pure-u-1 pure-u-md-3-4">
+    <div>
+      
+      <div class="posts">
+        
+          <article>
             
-            <div class="posts">
-                
-                <h1 class="content-subhead">28 May 2014, 07:49</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/28/use-uim-mozc/" class="post-title">日本語入力のための設定メモ for Arch Linux</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-ArchLinux" href="https://pankona.github.io/categories/archlinux">ArchLinux</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>IMはずっとibusを使ってきたのだが、なかなか設定に融通が効かないというか、なんというか。<br />
-具体的な要望としては、</p>
-
-<ul>
-<li>mozcを使いたい<br /></li>
-<li>Alt + Space でIMEを切り替えたい（Direct Inputと日本語入力をトグルする）<br />
-<br /></li>
-</ul>
-
-<p>という二点なのだが、後者の「Alt + Space」というキーバインドを設定する方法がわからず。。。<br />
-きっとやり方があるというか、いままでごまかしごまかしやってきたのだが、<br />
-ついに気持ち悪さが先に立って、「やめてやるわ！」となったところ。</p>
-
-<p>で、IMとしてUIMを使ってみた。uim-mozc。<br />
-そしたらいともたやすく Alt + Space でのトグルが設定できちゃったもんだから拍子抜けというか。<br />
-はじめからこれ使ってれば良かったね！しばらくこれでいきます。uim-mozc。</p>
-
-<p>備忘録的に、設定方法のメモ。<br />
-Arch Linux向けです。</p>
-
-<h2 id="基本的にはwiki参照">基本的にはWiki参照</h2>
-
-<p>ブログに書いた内容というのはいずれ時代遅れになるので、、、<br />
-やはり、Arch Wikiの<a href="https://wiki.archlinux.org/index.php/Input_Japanese_using_uim_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">uim-mozcの設定方法</a>を参照するのが確実。<br />
-うちもこれでいけた。</p>
-
-<h2 id="インストールしたパッケージ">インストールしたパッケージ</h2>
-
-<ul>
-<li>uim<br /></li>
-<li>uim-mozc<br />
-<br /></li>
-</ul>
-
-<h2 id="設定箇所">設定箇所</h2>
-
-<ul>
-<li>.xinitrc の記載<br />
-<br /></li>
-</ul>
-
-<p>.xinitrcに以下を追記。uimを使う設定ですな。</p>
-
-<pre><code># uim
-export GTK_IM_MODULE='uim'
-export QT_IM_MODULE='uim'
-uim-xim &amp;
-export XMODIFIERS='@im=uim'
-</code></pre>
-
-<h2 id="uimの設定">uimの設定</h2>
-
-<p><code>uim-pref-gtk</code>で設定画面を出し、色々設定する。</p>
-
-<ul>
-<li>「Global settings」の設定。<br />
-<br /></li>
-</ul>
-
-<p>&ndash; Specify Default IMにチェックを入れる。<br />
-  &ndash; Default input method を Mozc にする。</p>
-
-<ul>
-<li>「Mozc」の設定。<br />
-<br /></li>
-</ul>
-
-<p>&ndash; Default Input modeはDirect Inputに。<br />
-  &ndash; ついでにVIM協調モードも有効にしておく。</p>
-
-<ul>
-<li>「Mozc key bindings」の設定。<br />
-<br /></li>
-</ul>
-
-<p>&ndash; [Mozc] on/off、両方に&rdquo;&lt;Alt&gt;space&rdquo;を設定。</p>
-
-<h3 id="ここまでで">ここまでで</h3>
-
-<p>Alt + Space でDirect Inputと日本語入力がトグルできるようになった。<br />
-チャンスがあれば、他のIMも試してみよっかな。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">19 May 2014, 21:21</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/19/about-google-search/" class="post-title">Google Japanの検索にgithubがヒットしないかと思ったがそんなことはなかった</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<h2 id="自分のページがgoogle検索にヒットしない理由">自分のページがGoogle検索にヒットしない理由</h2>
-
-<p>なかなか自分のページ（ここのブログのこと）がGoogle検索に引っかからないので、<br />
-いや、大層なことを書いているわけでもないから引っかからなくても怒ったりはしないが、<br />
-いやでもなんで引っかからないんだろう、と思って調査をしていたところ、</p>
-
-<h3 id="githubのリポジトリはgoogle日本の検索に引っかからない">GithubのリポジトリはGoogle日本の検索に引っかからない</h3>
-
-<p>といった記事を見つけた。ほんまかいな？<br />
-もしかしてそのせいでうちのページはGoogleに引っかからないんじゃああるまいか？<br />
-（Github pagesを使って公開しているページなので）</p>
-
-<p>等と考えつつ、調査を続行していったところ、、、</p>
-
-<h3 id="結論からすると-githubのリポジトリはgoogle日本の検索にちゃんと引っかかる">結論からすると、GithubのリポジトリはGoogle日本の検索にちゃんと引っかかる。</h3>
-
-<p>ただし条件がある模様。それは（おそらく）、</p>
-
-<p><strong>ページ（リポジトリの場合はREADMEかな？）に日本語が含まれていること</strong></p>
-
-<p>つまり、Google日本の検索に引っかからない、というよりは、<br />
-<strong>&ldquo;日本語のページを検索&rdquo;</strong>に引っかからない、ということである模様。<br />
-全編英語で書いてたら英語のページと判断して、&rdquo;日本語のページを検索&rdquo;には載せない、ってことかなー。<br />
-そして、Google日本の検索は、おそらくデフォルトは&rdquo;日本語のページを検索&rdquo;になってる。という話。</p>
-
-<p>加えて、GithubのリポジトリのREADMEなんかは、英語だけで書かれているケースが多い。<br />
-だからGoogle日本を使ってそのまま検索をしていると、Githubのページがあんまり出てこないという現象が。</p>
-
-<p>だので、英語だけで書かれたGithubのページも、検索オプションで言語に依らない検索にしてあげれば、Google日本の検索でも出てきます。</p>
-
-<h3 id="じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか">じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか？</h3>
-
-<p>自分のGithubのリポジトリに日本人を呼び込みたい！と思ったら、READMEに日本語をちょっと混ぜてあげればリーチできる人が増えるかも？<br />
-と思っているがどうか。たぶん、おそらく、きっと、効果あると思われる。つまり自信ない。<br />
-自分のリポジトリ使って実験してみます。そのうち調査結果を書きます。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">15 May 2014, 12:25</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/15/vaio-pro-palm-detect-on-archlinux/" class="post-title">Vaio Pro 13における手のひら検知 on Arch Linux</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-ArchLinux" href="https://pankona.github.io/categories/archlinux">ArchLinux</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>Vaio Pro 13にArch Linuxを入れて遊んでいる近頃である。<br />
-概ね快適なLinuxライフを過ごせているのだが、一個だけ非常に不満な点がある。<br />
-それは「タッチパッドの手のひら検知」。パームディテクト、Palm Detection、等と呼ばれる機能。</p>
-
-<h3 id="手のひら検知">手のひら検知？</h3>
-
-<p>もはや手のひら検知について触れる必要もなさそうだが、一応。</p>
-
-<p>Vaio Pro 13のタッチパッドはなかなか大きい。<br />
-これは最近のノートPC、MBPとか他のUltraBookにも採用されていて流行と言ったら流行。<br />
-これ自体は割と私は好みで、二本指、三本指でのスワイプなんかもやりやすくてなかなかいい。</p>
-
-<p>ただ大きいタッチパッドには弊害もあって、キーボードを打ってるときに親指の付け根のあたりで触れちゃうってこと。<br />
-触れちゃうとどうなるかっていうと、クリックした扱いになってしまって、つまりカーソルが飛ぶ。<br />
-編集中に予期せぬ場所にカーソルが飛んでしまって、あれ、これどうなった、みたいなことになる。</p>
-
-<p>それを解決してくれるのが、手のひら検知の仕組み。<br />
-つまり意図したタッチでないと思われるものは無視してくれるというやつで、考えた人凄いと思います。</p>
-
-<h3 id="arch-linux-on-vaio-pro-13の場合">Arch Linux on Vaio Pro 13の場合</h3>
-
-<p>件の手のひら検知を有効にする仕組みがある（デフォルトではオフ）。<br />
-synclient、PalmDetect、あたりでぐぐると結構出てくる。具体的には、<br />
-<code>synclient PalamDetect=1</code> とかってやって手のひら検知を有効にする。する、のだが。</p>
-
-<p>なんか全然効いてない気がするんですけど・・・。ということで調べてみた。<br />
-ほんとに効いてるのかどうかを。</p>
-
-<h3 id="結論からいうと効いてなかった">結論からいうと効いてなかった</h3>
-
-<p>効いてなかったです。ちくしょうめ。やっぱりか。</p>
-
-<p>ドライバのソースコードに簡単にログを仕込んで確認してみたところ、やっぱり効いてなかった。<br />
-Arch Linuxでタッチパッドのドライバーは、Synapticsが使われている（というか大体どこでもSynapticsか）。<br />
-ソースコードはこれ。Githubに公開されている。<a href="git:anongit.freedesktop.org/xorg/driverxf86-input-synaptics">xf86-input-synaptics</a></p>
-
-<p>なんで効かないかと言うと、の前に、ソースコードからどうやって手のひら検知をしているかを調べてみたのでそれをメモ。</p>
-
-<h3 id="どうやって手のひら検知している">どうやって手のひら検知している？</h3>
-
-<p>以下の3要素を考慮して手のひら検知としている模様。</p>
-
-<ul>
-<li>PalmDetectの設定が有効になっているか（synclient PalmDetect=1 で有効になるやつ）<br /></li>
-<li>PalmMinZがしきい値を超えているか（これも synclient PalmMinZ=XXX で設定できる）<br /></li>
-<li>PalmMinWidthがしきい値を超えているか（これも synclient PalmMinWidth=XXX で設定できる）<br />
-<br /></li>
-</ul>
-
-<p>PalmMinZ は、どれくらい深く（強く？）タッチパッドが押されたら手のひらと判断するか、のしきい値。<br />
-PalmMinWidth は、タッチの広さを見ていて、太すぎる指は手のひらとみなしましょう、という判断のためのしきい値。</p>
-
-<h3 id="arch-linux-on-vaio-pro-13-が手のひら検知をしてくれない理由">Arch Linux on Vaio Pro 13 が手のひら検知をしてくれない理由</h3>
-
-<p>上記のしきい値のうち、どうやらPalmMinWidthのほうがおかしいっぽくて、<br />
-どんな触り方をしても常に「0」で判定されてしまっている模様。<br />
-ちなみに、SynapticsはPalmMinWidthが0のときは手のひらとして判断しないように実装されている。<br />
-なので、PalmDetect、PalmMinZ、PalmMinWidth、どれをどの値にしても手のひら検知は効かないということである。ちくしょうめ。</p>
-
-<h3 id="どうすれば解決するのか">どうすれば解決するのか？</h3>
-
-<h4 id="palmminwidthを正しく判定させる方法">PalmMinWidthを正しく判定させる方法</h4>
-
-<p>調査をしているが今のところわからない。。一般ピープルに手が及ぶ範囲なのかどうか。</p>
-
-<h4 id="それ以外の対処法">それ以外の対処法？</h4>
-
-<p>PalmMinWidthはもう一切判断に含めないようにソースコードを書き換えてみたが、、、<br />
-それってつまりタッチ深度だけで手のひらを検知するということであって、それはまあ微妙な感じ。</p>
-
-<h4 id="つまり">つまり</h4>
-
-<p><strong>残念ながら、手のひら検知がいまいちな件は解決できていない。</strong>なんとかする方法の調査はTo Be Continuedである。<br />
-デュアルブートしているWindowsの側ではできているっぽいので、Arch Linux側でも出来ないことないと信じて。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">14 May 2014, 17:59</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/14/arch-windows-multiboot-tips/" class="post-title">Arch LinuxとWindows8.1をデュアルブートにしたときの備忘録</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-ArchLinux" href="https://pankona.github.io/categories/archlinux">ArchLinux</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<h2 id="このポストは">このポストは</h2>
-
-<p>Windows8.1に対してWindows Updateしたところ、何だかわからないがデュアルブートしなくなって焦ったため、<br />
-直し方というか、そもそもどうやってデュアルブートにしているかをメモしておくための記事。</p>
-
-<h3 id="件のpcについて">件のPCについて</h3>
-
-<p>以下のようなPCと、その中身の構成にしている。</p>
-
-<p>&ndash; PC本体：Vaio Pro 13<br />
-&ndash; OS：Arch LinuxとWindows8.1のデュアルブート</p>
-
-<h3 id="デュアルブートのためにしたこと-まずは普通にarch-linuxをインストール">デュアルブートのためにしたこと - まずは普通にArch Linuxをインストール</h3>
-
-<ul>
-<li>Arch Linux起動のためのUSBメモリを作成。ここはWindowsを使う。<br />
-<br /></li>
-</ul>
-
-<p><a href="https://wiki.archlinux.org/index.php/USB_Installation_Media_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">USB Installation Media（日本語） - Arch LinuxのWiki</a> なんかが参考になる。</p>
-
-<ul>
-<li>Windowsを使ってLinux向けのパーティションを切る。<br />
-<br /></li>
-</ul>
-
-<p>「管理」を使ってやる。<a href="http://windows.microsoft.com/ja-jp/windows/create-boot-partition#1TC=windows-7">ブート パーティンションを作成する - Microsoftのページ</a>等が参考になる。<br />
-とにかく何か領域が空いていればいい。うちの構成では180GB程度確保した。<br />
-少なくとも30GBくらいいるかな？</p>
-
-<ul>
-<li>Arch Linux起動用のUSBを挿した状態でPCを起動し、USBからのブートを行う。<br />
-<br /></li>
-</ul>
-
-<p>あとは↑で作ったパーティションにArch Linuxをインストールしていく。詳しくはやはりArch LinuxのWiki参照。<br />
-&ndash; パーティションのフォーマット。割り当て可能領域はすべて割り当て。EFIパーティションにする必要はない。普通ので。<br />
-&ndash; /mnt にフォーマットしたパーティションをマウント。<code>mount /dev/sda5 /mnt</code> ← うちの環境の場合。<br />
-&ndash; chrootする。<code>arch-chroot /mnt</code> で。<br />
-&ndash; Arch Linuxのインストール。 <code>pacman -S base base-devel</code> とかやる。<br />
-&ndash; genfstab とかそういったことをこまごま行う。<br />
-&ndash; ブートローダのインストール。ブートローダにはgummibootを採用した。</p>
-
-<pre><code>mount /dev/sda2 /boot/EFI
-cd /boot/EFI
-gummiboot install
-</code></pre>
-
-<p>ここまでで勝手にデュアルブートしてくれたら嬉しかったが、そうはいかなかった（本来はこれだけでOKらしい）。<br />
-Vaioのせいなのか、Windowsのせいなのか。。</p>
-
-<h3 id="デュアルブートのためにしたこと-無理やりgummibootを使わせる">デュアルブートのためにしたこと - 無理やりgummibootを使わせる</h3>
-
-<p>上記までで何が起きるかというと、、、<br />
-どうやら、せっかくgummibootで設定したブートの設定がPC起動時になかったことにされてしまう模様。<br />
-つまりWindowsが問答無用で起動される状態に戻ってしまう。VaioのせいなのかWindowsのせいなのか。。。</p>
-
-<p>この点をちゃんと解決するのは諦めました。<br />
-諦めて、Windowsの起動に使われるファイルをgummibootのものと置き換えることでデュアルブートを実現。。<br />
-一応、やれればいいや、ということで。</p>
-
-<ul>
-<li>先ほどのUSBからArch Linuxを起動し、無理やりgummibootを使わせるようにしにいく<br />
-<br /></li>
-</ul>
-
-<p>&ndash; まず、EFIのパーティションをマウントする。</p>
-
-<pre><code>mount /dev/sda2 /mnt/boot/EFI
-</code></pre>
-
-<p>&ndash; Windows起動用のファイルとgummiboot起動用のファイルを置き換える。</p>
-
-<p>&mdash; Windows起動用のファイル &hellip; /boot/EFI/Microsoft/boot/bootmgrfw.efi<br />
-&mdash; gummiboot起動用のファイル &hellip; /boot/EFI/gummiboot/gummibootx64.efi</p>
-
-<p>上記のWindows起動用のファイルを、gummiboot起動用のファイルで上書きしてやると、、、<br />
-次回のPC起動時には、OS選択の画面が表示されるはず。上書きする前にバックアップしてあげてね。。。</p>
-
-<h3 id="windowsアップデートのときに-bootmgrfw-efiが更新されちゃうことがあるっぽい">Windowsアップデートのときに、bootmgrfw.efiが更新されちゃうことがあるっぽい</h3>
-
-<p>だのでWindowsアップデートでデュアルブートができなくなったりするんだろう。<br />
-デュアルブートできなくなったら、いちいちgummibootx64.efiをWindows起動用のファイルに上書きしてやる必要がある。</p>
-
-<h2 id="これでwindowsアップデートも怖くない">これでWindowsアップデートも怖くない！</h2>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">05 May 2014, 23:38</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/05/05/raspi-livestream-web/" class="post-title">Raspberry Pi &#43; カメラモジュール &#43; Webで配信</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>Raspberry Piにカメラモジュールを接続し、映像をWebで配信させてみた。<br />
-いろいろ悩んだ点もあったので、やり方の結論をメモしておく。<br />
-ちなみに、Raspberry PiにはArch Linux (ARM版) を載せている。</p>
-
-<h2 id="良さそうな例">良さそうな例</h2>
-
-<p>参考にしたウェブサイトは↓。結論からするとここだけでOKだった。<br />
-<a href="https://github.com/jacksonliam/mjpg-streamer">https://github.com/jacksonliam/mjpg-streamer</a></p>
-
-<h2 id="上記のリポジトリの情報を元にやったこと">上記のリポジトリの情報を元にやったこと</h2>
-
-<h3 id="mjpg-streamerのインストール">mjpg-streamerのインストール。</h3>
-
-<p>上記のリポジトリからソースコードをもってきてビルド。ビルド方法も上記のリポジトリのREADMEに記載されている。<br />
-pacmanであったりyaourtで取得できるmjpg-streamerのパッケージは使わない。それらはinput_raspicam.soを作ってくれないため。</p>
-
-<h3 id="超簡単にhtmlを書く">超簡単にhtmlを書く。</h3>
-
-<p>下記のような。とりあえずサンプルなので、簡単に。。<br />
-書いたHTMLは、任意の場所におく。ここではひとまず、<code>~/www/index.html</code>として置いたとする。</p>
-
-<pre><code>&lt;html&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Raspberry Pi&lt;/h1&gt;
-    &lt;img src=&quot;/?action=stream&quot;&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<h3 id="配信するコマンドを実行する">配信するコマンドを実行する。</h3>
-
-<p>このコマンドも件のリポジトリに記載されているが、一応。<br />
-ライブラリ（.so）へのパスが通ってなかったら、LD_LIBRARY_PATHを設定してライブラリへのパスを通すか、もしくはライブラリをフルパスで指定する。</p>
-
-<p><code>mjpg_streamer -o &quot;output_http.so -w ./www&quot; -i &quot;input_raspicam.so -x 1280 -y 720 -fps 15 -ex night&quot;</code></p>
-
-<p>こんな感じに入力してやると、カメラが動き出して動画配信が始まる。<br />
-別のPC等からブラウザで、</p>
-
-<p><code>http://[Raspberry PiのIPアドレス]:8080/</code></p>
-
-<p>にアクセスしてあげると、カメラが写してる画像が配信されているのが確認できると思われる。</p>
-
-                    </div>
-                </section>
-                
+            <div>
+                <div>2020-05-30 12:30:16</div>
+                <div><a href="/blog/2020/05/30/em-dialy-2020-05-29/">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a></div>
+                <p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
             </div>
             
+              
+              <div>
+                <a href="/blog/2020/05/30/em-dialy-2020-05-29/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-23 12:21:34</div>
+                <div><a href="/blog/2020/04/23/em-dialy-2020-04-23/">Engineering Manager というものになったようだが何がなんだか分からない</a></div>
+                2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/23/em-dialy-2020-04-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-09 10:50:55</div>
+                <div><a href="/blog/2020/04/09/misc/">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a></div>
+                ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなか
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/09/misc/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-08-04 16:14:51</div>
+                <div><a href="/blog/2019/08/04/join-in-quipper/">Quipper に転職して三ヶ月が経った</a></div>
+                さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/08/04/join-in-quipper/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-06-20 14:52:59</div>
+                <div><a href="/blog/2019/06/20/golangtokyo-25/">golang.tokyo #25 @ Wantedly</a></div>
+                2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/06/20/golangtokyo-25/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-05-31 10:50:59</div>
+                <div><a href="/blog/2019/05/31/job-change/">Quipper に転職した</a></div>
+                2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/05/31/job-change/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-04-24 14:52:59</div>
+                <div><a href="/blog/2019/04/24/golangtokyo-23/">golang.tokyo #23 @ DeNA</a></div>
+                2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/04/24/golangtokyo-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-07-13 19:15:16</div>
+                <div><a href="/blog/2018/07/13/golangtokyo-16/">golang.tokyo #16 @メルペイ</a></div>
+                golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/07/13/golangtokyo-16/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-06-23 17:00:42</div>
+                <div><a href="/blog/2018/06/23/mashimahi/">強いパスワードのためのフレーズジェネレータを作ってみた</a></div>
+                ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/06/23/mashimahi/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-05-30 19:39:48</div>
+                <div><a href="/blog/2018/05/30/golangtokyo-15/">golang.tokyo #15@DeNA</a></div>
+                golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/05/30/golangtokyo-15/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-04-16 19:32:07</div>
+                <div><a href="/blog/2018/04/16/golangtokyo-14/">golang.tokyo #14@メルカリ</a></div>
+                golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/04/16/golangtokyo-14/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-02-05 00:38:03</div>
+                <div><a href="/blog/2018/02/05/droidkaigi_2018_material/">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a></div>
+                DroidKaigi 2018 では以下の枠で発表する予定。 DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - gomobile でゲームを作る 資料はココ → gomobile でゲームは作れる 発表内容についての徒然 DroidKaigi と言うからには Androider たちの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/02/05/droidkaigi_2018_material/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-31 16:30:10</div>
+                <div><a href="/blog/2018/01/31/gomobile_get_files_dir/">gomobile (build) で作るアプリでファイルを保存する</a></div>
+                gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/31/gomobile_get_files_dir/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-29 08:41:12</div>
+                <div><a href="/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a></div>
+                本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。 来週の木曜日である。ヤバイ。準備捗ってない…。 とはいえ色々調査
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/29/droidkaigi-2018-3/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-08 23:10:33</div>
+                <div><a href="/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a></div>
+                DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/08/droidkaigi-2018-todo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-06 23:09:05</div>
+                <div><a href="/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a></div>
+                DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/06/my-first-post-2018/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-02 13:32:34</div>
+                <div><a href="/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a></div>
+                いままで本ブログは Octopress を使って生成していたのであるが、 久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/02/my-first-post-by-hugo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-06-01 19:34:21</div>
+                <div><a href="/blog/2017/06/01/golangtokyo-6/">golang.tokyo#6@DeNA</a></div>
+                2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。 golang.tokyo #6 - connpass 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集してい
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/06/01/golangtokyo-6/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-03-01 19:31:27</div>
+                <div><a href="/blog/2017/03/01/golangtokyo-4/">golang.tokyo#4@eureka</a></div>
+                2017.03.01 に eureka さんにて、golang.tokyo #4 が行われました。 golang.tokyo #4 - connpass 今回もまた大盛況で一般参加枠は倍率3倍くらいの抽選となっていましたが、 たま
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/03/01/golangtokyo-4/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2016-12-14 11:12:31</div>
+                <div><a href="/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a></div>
+                何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに 日本語が入力できなくなることがあった。 起きた
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2016/12/14/jp-input-on-gnome-app/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+
+        </div>
+        
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
@@ -537,7 +426,7 @@ pacmanであったりyaourtで取得できるmjpg-streamerのパッケージは�
 </div>
 
 
-            <div class="footer">
+        <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
@@ -555,10 +444,10 @@ $(function(){
 <link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
+      </div>
     </div>
-</div>
 
-
+  
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

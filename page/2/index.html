@@ -50,7 +50,7 @@
 
 
 <div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+  <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <hgroup>
             <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
@@ -81,506 +81,334 @@
 </div>
 
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
+  <div class="content pure-u-1 pure-u-md-3-4">
+    <div>
+      
+      <div class="posts">
+        
+          <article>
             
-            <div class="posts">
-                
-                <h1 class="content-subhead">31 May 2019, 10:50</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2019/05/31/job-change/" class="post-title">Quipper に転職した</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>2019 年 5 月、令和が始まるタイミングで転職した。<br />
-ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。</p>
-
-<p>入って概ね一ヶ月が経ったが戦力には程遠くて結構あれな気持ちにはなっているものの、<br />
-急に何もかもが分かるようになるのは難しいし、徐々に馴染んでいくしかないと思っているところ。</p>
-
-<p>ところで、新職場には「オンボーディング」と呼ばれる、新しく入った人が早く成果をあげられるようにするための訓練プログラム (？) のようなものがなんとなく整備されている。<br />
-そういった試みは前職にはなかったので、まずそれがあるだけでそれなりに感動であった。オンボーディングの内容自体はまだ練り上げている段階のようなので、せっかくの貴重なオンボーディング体験チャンス (当然だけど入社した直後しか体験する機会がない) であるから、よりよいオンボーディングを作る、みたいな文脈でも貢献していけたら良いなぁ等と思ったり。</p>
-
-<p>Ruby / Rails に関しては未経験ではないものの、もうすっかり忘れていて戦闘能力が 0 になっている。<br />
-改めて勉強し直しているが、まあ難しいこと難しいこと。全部黒魔法に見えてくる。そのうち自分にも黒魔法が使える日が来ると信じる。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">24 Apr 2019, 14:52</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2019/04/24/golangtokyo-23/" class="post-title">golang.tokyo #23 @ DeNA</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。</p>
-
-<p>イベントページはココ<br />
-<a class="embedly-card" data-card-controls="0" href="https://golangtokyo.connpass.com/event/126673/">golang.tokyo #23 (2019/04/19 19:10〜)</a></p>
-
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
-
-<p>ツイッターはハッシュタグ「#golangtokyo」で検索すると、当日の実況ツイートの様子が分かります。<br />
-<a href="https://twitter.com/search?f=tweets&amp;q=%23golangtokyo%20since%3A2019-04-19%20until%3A2019-04-23&amp;src=typd">ツイッター検索 (#golangtokyo since:2019-04-19 until: 2019-04-23)</a></p>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-23/03.jpg><img src=/images/golang.tokyo-23/03.jpg /></a>
-  <div class="caption">会場ではベイスターズ的アルコール飲料が振る舞われました</div>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-23/02.jpg><img src=/images/golang.tokyo-23/02.jpg /></a>
-  <div class="caption">軽食 (ベイスターズ的アルコール飲料に合う) も振る舞われました</div>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-23/01.jpg><img src=/images/golang.tokyo-23/01.jpg /></a>
-  <div class="caption">golang.tokyo #23 開幕</div>
-</div>
-
-<p>今回のテーマは「これから Go を始める人に知ってほしいこと」。<br />
-(実際に用いられた資料はイベントページを参照されたし)</p>
-
-<p>当日使われた全ての資料のいくらかはまだ connpass のイベントページに載っていないようなので、一応本記事でもリストアップしておきます。<br />
-(以下、登壇順)</p>
-
-<ul>
-<li>セッション<br />
-
-<ul>
-<li><a href="https://docs.google.com/presentation/d/1u93oMe7QForbqrCwGE2lHbu99t4I9_m5IzfeYETD7BU/edit#slide=id.p">絶対に分かるポインタ</a> by <a href="https://twitter.com/tenntenn">tenntenn</a> さん<br /></li>
-<li><a href="https://speakerdeck.com/mom0tomo/golang-tokyo-go-tools">Go をはじめるにあたって知っておいてほしいツール</a> by <a href="https://twitter.com/mom0tomo">mom0tomo</a> さん<br /></li>
-<li><a href="https://speakerdeck.com/mishirakawa/golang-dot-tokyo-number-23">Go をはじめるにあたって知っておいてほしいツールやテスト</a> by <a href="https://twitter.com/micchiebear">micchie</a> さん<br /></li>
-<li><a href="https://speakerdeck.com/xruins/delvewoyong-itadebatugu-and-pprofwoyong-itapurohuairingu">Delve を用いたデバッグ &amp; pprof を用いたプロファイリング</a> by <a href="https://twitter.com/C_Ruins">C_Ruins</a> さん<br /></li>
-</ul></li>
-<li>ライトニングトーク<br />
-
-<ul>
-<li><a href="https://speakerdeck.com/shoheshohe/godoctotddnidaibusitaratuo-xin-ren-woshi-merareru-hua">GoDoc と TDD にダイブして脱新人を始められる？話</a> by <a href="https://twitter.com/PGShohei">PGShohei</a> さん<br /></li>
-<li><a href="https://speakerdeck.com/horiryota/gorasisatogo-generate">Go らしさと go generate</a> by <a href="https://twitter.com/hori_ryota">hori_ryota</a> さん<br /></li>
-<li><a href="https://speakerdeck.com/micnncim/goreleaser-release-and-distribute-go-application">GoRelaesr: Release and Distribute Go Application</a> by <a href="https://twitter.com/micnncim">micnncim</a> さん<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<p>DeNA のイベントスペースらしきところでの開催であり、100 人弱くらいは集まっていたんではなかろうか。</p>
-
-<p>golang.tokyo は今回で 23 回目。いつも定員オーバーになるくらいの人気な勉強会です。<br />
-今回も 74 の参加枠に対して 124 もの応募があった様子。人気。とても人気。</p>
-
-<p>だので普通に参加しようと思ったら概ねの場合は抽選になってしまいますが、「ブログ枠」という「イベントの様子をブログにしたためてくれるなら参加していいよ」枠が存在します。<br />
-私もしばしばこれで参加しています。この枠だと早いもの勝ち、かつ何故か人気がない (いつもだいたい空いている) ので、参加したいが抽選にあぶれたくない人はトライしてみるのも良いのではないかと思います。</p>
-
-<p>さて勉強会の様子。<br />
-今回は「これから Go を始める人に知っておいてほしいこと」ということで、セッションの内容はどちらかと言うと基礎的な内容でした。<br />
-Go の初学者の方にはもちろん有用であると思いますし、Go をやりこんでいる人にとっても諸々再確認できて非常に有意義な会だったと感じました。</p>
-
-<p>前半のツール紹介は、主に Go 公式から提供されているツール類の紹介、ならびに使い方の説明でしたが、このツール類の充実っぷりは Go の特徴かと思っています。<br />
-便利ツールの諸々が野良の OSS じゃなくて公式から提供されているっていうのは安心感あるよね！ということで、知っておいてほしいツール類、必見です。</p>
-
-<p>ライトニングトーク一発目の PGShohei さんは、今回が人生で初めてのライトニングトークだったとのこと。<br />
-初めてとは思えない発表クオリティにびびりつつ、その挑戦していく心意気には目頭が熱くなる思いでありました。<br />
-今回で 23 回目を数える golang.tokyo ですが、常連もいつつ、一方で新しいひともいつつ、という感じで広く門戸が開かれていると感じた会でした。</p>
-
-<p>そんな golang.tokyo ですが、次回開催 (#24) が既に告知されています (2019/05/02 現在、まだ募集を開始していません) 。<br />
-<a class="embedly-card" data-card-controls="0" href="https://golangtokyo.connpass.com/event/129067/">golang.tokyo #24 (2019/05/20 19:10〜)</a></p>
-
-<p>次回は Go Conference 2019 に参加できなかった勢が主なターゲット (いわゆる RejectCon) であるようなので、また濃い話が聞けるのではないかと思います。楽しみですね！<br />
-参加者募集開始のアナウンスなどは <a href="https://twitter.com/golangtokyo">golang.tokyo 公式ツイッターアカウント</a> をウォッチしていれば良いと思います。</p>
-
-<p>最後に、ブログ枠なのにブログ書くの遅くなってほんとすんません&hellip;！イベントから二週間くらい経っちゃってますな…。<br />
-ちなみに次回の golang.tokyo #24 では「ツイッター実況枠」というのが設けられたようなので (その代わりブログ枠はなくなった) 、ツイッターの腕に覚えのある方はトライしてみてもいいんじゃないかなと思います。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">13 Jul 2018, 19:15</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/07/13/golangtokyo-16/" class="post-title">golang.tokyo #16 @メルペイ</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p><a href="https://golangtokyo.connpass.com/event/92225/">golang.tokyo #16 @メルペイ</a>に参加。<br />
-本日は wasm がメインテーマ。発表者と資料は末尾に記載。</p>
-
-<h2 id="そもそも-wasm-webassembly-とは何か">そもそも wasm (WebAssembly) とは何か</h2>
-
-<p>以下は公式サイト。webassembly.org。<br />
-<a class="embedly-card" data-card-controls="0" href="https://webassembly.org/">WebAssembly</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<p>公式ページからの説明を引用すると以下のように書かれている。</p>
-
-<p><em>WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. Wasm is designed as a portable target for compilation of high-level languages like C/C++/Rust, enabling deployment on the web for client and server applications.</em></p>
-
-<p>C/C++/Rust 等で作ったバイナリをウェブブラウザ上で動かすための規格、くらいに捉えれば良かろうか。<br />
-公式を含む各所の記事をあたってみると、wasm の存在意義としては基本的には JavaScript から比較しての軽量化、高速化である模様。</p>
-
-<h2 id="go-の-wasm-サポート">Go の wasm サポート</h2>
-
-<p>Go 言語も wasm へのビルド (トランスパイル) を Go 1.11 からサポートする予定であり、2018/07 現在は tip (Go の master のさきっちょ) を使うことで機能を試すことができる。<br />
-ちなみに Go 1.11 は、2018/08 にリリース予定。</p>
-
-<h2 id="go-から-wasm-をビルドしてみる">Go から wasm をビルドしてみる</h2>
-
-<p>たとえば以下のいわゆるハローワールド的なコードも wasm 向けにビルドできるようになる。</p>
-
-<pre><code>package main
-
-import &quot;fmt&quot;
-
-func main() {
-    fmt.Println(&quot;Hello world!&quot;)
-}
-</code></pre>
-
-<p>wasm 向けのビルドは以下のようなコマンドで行う。<br />
-(上記のソースが main.go として存在していると仮定)</p>
-
-<pre><code>$ GOOS=js GOARCH=wasm go build -o hello.wasm main.go
-</code></pre>
-
-<h2 id="生成した-wasm-の動作確認まで">生成した wasm の動作確認まで</h2>
-
-<p>動作を確認するためにはもういくつかファイルが必要であり、Go のリポジトリからコピーしてくる必要がある。<br />
-GitHub に curl を飛ばしても取得できる。</p>
-
-<p>ビルドと必要なファイルを揃える処理を一式 Makefile で書くと以下のような感じになる。</p>
-
-<pre><code>WASM = test.wasm
-HTML = wasm_exec.html
-JS   = wasm_exec.js
-CLEAN_TARGET = $(WASM) $(HTML) $(JS)
-
-all: $(WASM) $(HTML) $(JS)
-
-$(WASM):
-	GOOS=js GOARCH=wasm go build -o test.wasm main.go
-
-$(HTML):
-	curl -sO https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.html
-
-$(JS):
-	curl -sO https://raw.githubusercontent.com/golang/go/master/misc/wasm/wasm_exec.js
-
-clean:
-	rm -f $(CLEAN_TARGET)
-</code></pre>
-
-<p>一式そろうと以下のようになる。</p>
-
-<pre><code>$ ls
-main.go  Makefile  server.go  test.wasm  wasm_exec.html  wasm_exec.js
-</code></pre>
-
-<p>この状態で wasm_exec.html を何らかの HTTP Server でサーブすると、なんとなく Console に Hello world 的な文字がでることが確認できる。<br />
-ちなみに file:/// で wasm_exec.html をサーブしても正しく動作しない場合があるようで、これは Chrome が file スキームで読み込んだ HTML ファイルだと JavaScript を実行してくれないためである模様。</p>
-
-<p>上記までを一式納めたものは以下のリポジトリに置いておいた。<br />
-<a href="https://github.com/pankona/go-wasm-test">https://github.com/pankona/go-wasm-test</a></p>
-
-<h2 id="各セッションを聞いて">各セッションを聞いて</h2>
-
-<p>golang.tokyo#16 の各セッションを聞いての留意点としては、</p>
-
-<ul>
-<li>ベンチマークをとると、Go を JS にトランスパイルする GopherJS のほうがパフォーマンスが出る。wasm の最適化は今後の課題 (Go 1.12 以降？)<br />
-
-<ul>
-<li>Chrome で動かす JS がやたら速いという一面も<br /></li>
-</ul></li>
-<li>Empscripten (C++ から wasm を作るやつ) が比較的速い<br /></li>
-<li>Go から作った wasm はまだバイナリサイズが大きい (2MB〜) という面があり、この点も今後の最適化が待たれるところ<br />
-<br /></li>
-</ul>
-
-<h2 id="色々まだまだな-go-の-wasm-サポートとはいえ">色々まだまだな Go の wasm サポートとはいえ</h2>
-
-<p>ベンチマーク、バイナリサイズなどはまだ改善の余地があるとはいえ、超絶お手軽なクロスコンパイルは快適そのもの。<br />
-まだ出てきたばかり (出てきてすらいないか) なので、今後に大いに期待である。</p>
-
-<p>以下、各セッションの資料を記載。</p>
-
-<h2 id="session1-webassemblyとgoの対応状況について-by-tenntenn-https-www-twitter-com-tenntenn-さん">(Session1) WebAssemblyとGoの対応状況について by <a href="https://www.twitter.com/tenntenn">tenntenn</a> さん</h2>
-
-<ul>
-<li><p>(TODO: 2018/07/17現在、発表資料がへのリンクが見当たらないので、後々更新)</p></li>
-
-<li><p>goroutine と channel には対応。wasm にマルチスレッドの機能が入るらしい。</p></li>
-
-<li><p><a href="syscall/js">https://tip.golang.org/pkg/syscall/js</a> を使う</p></li>
-</ul>
-
-<h2 id="session2-gopherjs-vs-goarch-wasm-by-hajimehoshi-https-www-twitter-com-hajimehoshi-さん">(Session2) GopherJS vs GOARCH=wasm by <a href="https://www.twitter.com/hajimehoshi">hajimehoshi</a> さん</h2>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://docs.google.com/presentation/d/e/2PACX-1vQLOcSY-SpdWedMT48QFZ8f9T_XojfqUOCgMg4jqIz8cJjFIJhHm98gHKVyMaboqGpsXCfedplT-lmp/pub?start=false&loop=false&delayms=3000#slide=id.p">GopherJS vs GOARCH=wasm</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<p>以下、ライトニングトーク。</p>
-
-<h2 id="lt1-go-で社内向け管理画面を楽に作る方法-by-yudppp-https-www-twitter-com-yudppp-さん">(LT1) Go で社内向け管理画面を楽に作る方法 by <a href="https://www.twitter.com/yudppp">yudppp</a> さん</h2>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://speakerdeck.com/yudppp/godeshe-nei-xiang-keguan-li-hua-mian-wole-nizuo-rufang-fa">Goで社内向け管理画面を楽に作る方法</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li>Go 歴 4 年の方。<br /></li>
-<li>Viron を使って自社向けサービスの管理画面を自動生成する話。<br />
-<br /></li>
-</ul>
-
-<h2 id="lt2-go-のスライス容量拡張量がどのように決まるのか-by-kaznishi1246-https-www-twitter-com-kaznishi1246-さん">(LT2) Go のスライス容量拡張量がどのように決まるのか by <a href="https://www.twitter.com/kaznishi1246">kaznishi1246</a> さん</h2>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://speakerdeck.com/kaznishi/180713-lt">Goのスライス容量拡張量がどのように決まるのか追った / 180713 LT</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li>Go 歴 1 ヶ月の方とのこと。1 ヶ月で LT しにくるの強い。<br /></li>
-<li>メモリ確保量によってクラス分けされている。<br /></li>
-<li>TCMalloc がメモリ確保量を切り上げる動作をする。<br />
-<br /></li>
-</ul>
-
-<h2 id="lt3-go言語の正規表現に後読みを実装した話-by-さっき作った-https-www-twitter-com-make-now-just-さん">(LT3) Go言語の正規表現に後読みを実装した話 by <a href="https://www.twitter.com/make_now_just">さっき作った</a> さん</h2>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://slides.com/makenowjust/regexp-lookbehind-in-golang#/">Go言語の正規表現に後読みを実装した話</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<ul>
-<li>いまのところまだマージされていないが、上記は既に実装して Gerrit にてレビュー中。<br /></li>
-<li>マージされたら嬉しいね！<br />
-<br /></li>
-</ul>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">23 Jun 2018, 17:00</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/06/23/mashimahi/" class="post-title">強いパスワードのためのフレーズジェネレータを作ってみた</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>ふと思い立って、フレーズジェネレータなるものを作ってみた。</p>
-
-<p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS をあててちょっとオシャレにしといたぞ。無駄に日本語への自動翻訳もつけておきたかったが、翻訳部分は無料ではいまいち達成できなそうかなー。<a href="https://t.co/tThQl1mfSe">https://t.co/tThQl1mfSe</a></p>&mdash; パン粉 (@pankona) <a href="https://twitter.com/pankona/status/1010435240714633216?ref_src=twsrc%5Etfw">2018年6月23日</a></blockquote><br />
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
-<p>GAE/Go で作成。<a href="https://strongest-mashimashi.appspot.com/">ココ</a> にホスティング。PhraGen (ふらげん) と命名。</p>
-
-<h2 id="これは何か">これは何か</h2>
-
-<p>どこかで聞いた話であるが、いわゆる「強いパスワードというのはどうやって生成するのが良いのか」ということを考えた時に、<br />
-ひとつの手法として<strong>「英語の辞書からランダムで 3 単語ひっぱってきてつなげるのが良い」</strong>というのがあると小耳に挟んだわけである。</p>
-
-<p>なるほどなるほど、ということで、では試しに作ってみようということで作ってみたのがこれである。</p>
-
-<h2 id="ちょっとした工夫">ちょっとした工夫</h2>
-
-<p>完全にランダムな単語をチョイスしたほうがパスワード的には強いのだろうけど、きっとそれは覚えにくいフレーズになってしまうと思われる。<br />
-ということで、ちょっとでも覚えやすいフレーズを生成するために、完全にランダムなチョイスではなく<strong>「形容詞＋形容詞＋名詞」</strong>の順で現れるフレーズを生成するようにしてみた。<br />
-<strong>Super Great Goalkeeper</strong> 的なものが生成されることをイメージしている。</p>
-
-<h2 id="ジェネレータのしくみなど">ジェネレータのしくみなど</h2>
-
-<h3 id="oxford-dictionaries-api">Oxford Dictionaries API</h3>
-
-<p>そもそも英語の辞書のデータをどのように扱えば良いのか。出どころはどこか、ということを探していると以下を見つけた。</p>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://developer.oxforddictionaries.com/">Oxford Dictionaries API</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<p>これは英語辞書で有名な Oxford が提供してくれている (と思われる)、Web API である。<br />
-REST API の形をしていて (なんと Swagger の定義までついている)、ドキュメントの記載通りに叩くことで単語とその意味などを得ることができる。<br />
-形容詞で、&rdquo;super で始まる&rdquo; 5字以上の単語、みたいなクエリでワードリストを取得できるような機能が提供されている。</p>
-
-<p>これを利用しようということで、まずは提供されている swagger の定義をありがたくお借りしてクライアントライブラリを生成した。<br />
-以下のリポジトリに置いておいた。またいつか使うかもしれない。</p>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/oxford-dict-api-client-go">pankona/oxford-dict-api-client-go</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<h3 id="レスポンス遅いけどキャッシュは規約違反">レスポンス遅いけどキャッシュは規約違反</h3>
-
-<p>ただ、一回のクエリに数秒かかるようなところがあり、PhraGen の裏で動かすにはちょっとしんどい一面がある。<br />
-3 単語から構成されるフレーズを作るということは 3 回リクエストするということであり、つまり 1 フレーズ生成につき 5〜6 秒は待たされてしまう。</p>
-
-<p>問い合わせてみたところ、規約上、フリーのプランでは Oxford Dictionaries API が吐き出す結果をキャッシュしておくことは禁止とのこと。<br />
-お金を払えば制限つきでキャッシュしておけるということで、検討されたしとのお達しであった。うーむ…。<br />
-※ この点については、近日中にバイオレーションのない形に変更予定。</p>
-
-<h3 id="ホスティングは-gae-バックエンドは-go">ホスティングは GAE、バックエンドは Go</h3>
-
-<p>ジェネレータは GAE/Go で作った。ソースコードは以下のリポジトリに格納。</p>
-
-<p><a class="embedly-card" data-card-controls="0" href="https://github.com/pankona/strongest-mashimashi">pankona/strongest-mashimashi</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script></p>
-
-<p>リポジトリ名に深い意味はなく、なんとなく語呂が良いのでつけておいた。ストロンゲストマシマシ。</p>
-
-<h3 id="フロントエンドは色々">フロントエンドは色々</h3>
-
-<p>フロントエンド力がナメクジレベルのパン粉であるが、色々調べつつ、以下の技術要素の利用を試みている。<br />
-特に CSS フレームワーク Bulma のおかげで、PhraGen はまあまあしゃらくさい感じのキレイな見た目になったのではないかと思っている。</p>
-
-<ul>
-<li>TypeScript<br /></li>
-<li>React<br /></li>
-<li>CSS フレームワークとして Bulma<br />
-<br /></li>
-</ul>
-
-<h3 id="使えるのか">使えるのか</h3>
-
-<p>使えるかどうかよりもそもそも使わなそう。<br />
-でもせっかく作ったので、実際にパスワードの生成のために使ってみる所存。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">30 May 2018, 19:39</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/05/30/golangtokyo-15/" class="post-title">golang.tokyo #15@DeNA</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p><a href="https://golangtokyo.connpass.com/event/87064/">golang.tokyo #15</a>に参加してきた。<br />
-内容は以下。</p>
-
-<ul>
-<li>メインの30分セッションふたつ<br />
-
-<ul>
-<li>Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん<br /></li>
-<li>次世代のコンテナランタイム！？gVisorのコードを読みながら理解してみる by <a href="https://twitter.com/niconegoto">niconegoto</a> さん<br /></li>
-</ul></li>
-<li>ライトニングトークは発表予定の 2 人が都合が悪くなってしまったらしく、急遽代打を現地で 2 名補充<br />
-<br /></li>
-</ul>
-
-<h2 id="effective-streaming-in-golang-by-avvmoto-https-twitter-com-avvmoto-さん">Effective Streaming in Golang by <a href="https://twitter.com/avvmoto">avvmoto</a> さん</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="3431ee80147b48b2beabf723612382e5" data-ratio="1.41436464088398" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-15/10.jpg><img src=/images/golang.tokyo-15/resized_10.jpg /></a>
-  <div class="caption">avvmoto さんの発表。io package を使いこなして無駄をなくそう！</div>
-</div>
-
-<p>何かデータを読み込んでそれを引き回そうというときに、<strong>読み取り時にメモリ上に確保し、 確保したメモリを引き回す</strong>とやってしまうと、関数をまたぐたびにコピーが発生してしまう (もしくはポインタで渡していくか) みたいなことが起きがちである。<br />
-io.Reader interface を引き回すことで、<strong>いざ実際に必要になった段で初めてメモリ上に読み込む</strong>ような動作にでき、メモリ効率、処理速度の向上に寄与できるんじゃない、という話だったと理解した。</p>
-
-<h2 id="次世代のコンテナランタイム-gvisor-を理解する-by-niconegoto-https-twitter-com-niconegoto-さん">次世代のコンテナランタイム gVisor を理解する by <a href="https://twitter.com/niconegoto">niconegoto</a> さん</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="648504c5f1724ee5b97d1f14ca12a4cb" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-15/08.jpg><img src=/images/golang.tokyo-15/resized_08.jpg /></a>
-  <div class="caption">noconegoto さん。</div>
-</div>
-
-<p>gVisor はよりセキュアにコンテナの仕組みを使おうということで出てきたプロダクトの模様。<br />
-Google においては、gVisor についていずれ論文で技術的な詳細をつまびらかにする予定があるらしく、出てきたら読んでみようかなと思う。<br />
-ちなみに、<a href="https://github.com/google/gvisor">gVisor のソースコード</a>は既に20万行くらいになっているらしく、なかなかゴツいっすね…。</p>
-
-<p>暫時休憩を挟み。</p>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-15/03.jpg><img src=/images/golang.tokyo-15/resized_03.jpg /></a>
-  <div class="caption">軽食のミニチキンカツサンド。本日も色々いただきました。ありがとうございました。</div>
-</div>
-
-<p>以下、ライトニングトーク。</p>
-
-<h2 id="lt-by-yoshi-xxxxxiiii-https-twitter-com-yoshi-xxxxxiiii-さん-from-cluex">LT by <a href="https://twitter.com/yoshi_xxxxxiiii">@yoshi_xxxxxiiii</a> さん from Cluex</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="e4a3aaa06df042cbbcd90cd215ec858d" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-15/04.jpg><img src=/images/golang.tokyo-15/resized_04.jpg /></a>
-  <div class="caption">yoshi_xxxxxiiii さん。アゴヒゲキンパツの二つ名があるとのこと。</div>
-</div>
-
-<ul>
-<li>「mamanoko」「ままのて」というサービスを運営されているとのこと。<br /></li>
-<li>せっかく実装したローディング画面について、サーバが JSON 返すの速くなりすぎてローディング画面が出ない、という苦情があったらしい。すごいね。<br />
-<br /></li>
-</ul>
-
-<p>しばしば Rails と Go は比較に上がる気がする。Go に一部変えたら速くなりました！みたいな。<br />
-Rails だから遅いってこともないという認識だけど、速くしようと思ったら大変ってことなのかなー。</p>
-
-<h2 id="lt-by-pospome-https-twitter-com-pospome-さん">LT by <a href="https://twitter.com/pospome">@pospome</a> さん</h2>
-
-<ul>
-<li>急遽代打で登壇。<br /></li>
-<li>技術書典で golang.tokyo が出した本に寄稿した内容の紹介<br />
-<br /></li>
-</ul>
-
-<h2 id="lt-by-karupanerura-https-twitter-com-karupanerura-さん">LT by <a href="https://twitter.com/karupanerura">@karupanerura</a> さん</h2>
-
-<ul>
-<li>こちらも急遽代打で登壇。<br /></li>
-<li>以下の記事について解説。<br />
-<a class="embedly-card" href="https://qiita.com/karupanerura/items/fa3b35dfdceb96730b03">Goで書いたMicroservicesな構成からWeb APIを叩くときに考えたこと - Qiita</a><br />
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script><br />
-<br />
-<br /></li>
-</ul>
-
-                    </div>
-                </section>
-                
+            <div>
+                <div>2020-05-30 12:30:16</div>
+                <div><a href="/blog/2020/05/30/em-dialy-2020-05-29/">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a></div>
+                <p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
             </div>
             
+              
+              <div>
+                <a href="/blog/2020/05/30/em-dialy-2020-05-29/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-23 12:21:34</div>
+                <div><a href="/blog/2020/04/23/em-dialy-2020-04-23/">Engineering Manager というものになったようだが何がなんだか分からない</a></div>
+                2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/23/em-dialy-2020-04-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-09 10:50:55</div>
+                <div><a href="/blog/2020/04/09/misc/">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a></div>
+                ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなか
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/09/misc/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-08-04 16:14:51</div>
+                <div><a href="/blog/2019/08/04/join-in-quipper/">Quipper に転職して三ヶ月が経った</a></div>
+                さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/08/04/join-in-quipper/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-06-20 14:52:59</div>
+                <div><a href="/blog/2019/06/20/golangtokyo-25/">golang.tokyo #25 @ Wantedly</a></div>
+                2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/06/20/golangtokyo-25/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-05-31 10:50:59</div>
+                <div><a href="/blog/2019/05/31/job-change/">Quipper に転職した</a></div>
+                2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/05/31/job-change/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-04-24 14:52:59</div>
+                <div><a href="/blog/2019/04/24/golangtokyo-23/">golang.tokyo #23 @ DeNA</a></div>
+                2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/04/24/golangtokyo-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-07-13 19:15:16</div>
+                <div><a href="/blog/2018/07/13/golangtokyo-16/">golang.tokyo #16 @メルペイ</a></div>
+                golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/07/13/golangtokyo-16/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-06-23 17:00:42</div>
+                <div><a href="/blog/2018/06/23/mashimahi/">強いパスワードのためのフレーズジェネレータを作ってみた</a></div>
+                ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/06/23/mashimahi/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-05-30 19:39:48</div>
+                <div><a href="/blog/2018/05/30/golangtokyo-15/">golang.tokyo #15@DeNA</a></div>
+                golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/05/30/golangtokyo-15/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-04-16 19:32:07</div>
+                <div><a href="/blog/2018/04/16/golangtokyo-14/">golang.tokyo #14@メルカリ</a></div>
+                golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/04/16/golangtokyo-14/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-02-05 00:38:03</div>
+                <div><a href="/blog/2018/02/05/droidkaigi_2018_material/">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a></div>
+                DroidKaigi 2018 では以下の枠で発表する予定。 DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - gomobile でゲームを作る 資料はココ → gomobile でゲームは作れる 発表内容についての徒然 DroidKaigi と言うからには Androider たちの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/02/05/droidkaigi_2018_material/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-31 16:30:10</div>
+                <div><a href="/blog/2018/01/31/gomobile_get_files_dir/">gomobile (build) で作るアプリでファイルを保存する</a></div>
+                gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/31/gomobile_get_files_dir/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-29 08:41:12</div>
+                <div><a href="/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a></div>
+                本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。 来週の木曜日である。ヤバイ。準備捗ってない…。 とはいえ色々調査
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/29/droidkaigi-2018-3/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-08 23:10:33</div>
+                <div><a href="/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a></div>
+                DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/08/droidkaigi-2018-todo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-06 23:09:05</div>
+                <div><a href="/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a></div>
+                DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/06/my-first-post-2018/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-02 13:32:34</div>
+                <div><a href="/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a></div>
+                いままで本ブログは Octopress を使って生成していたのであるが、 久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/02/my-first-post-by-hugo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-06-01 19:34:21</div>
+                <div><a href="/blog/2017/06/01/golangtokyo-6/">golang.tokyo#6@DeNA</a></div>
+                2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。 golang.tokyo #6 - connpass 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集してい
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/06/01/golangtokyo-6/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-03-01 19:31:27</div>
+                <div><a href="/blog/2017/03/01/golangtokyo-4/">golang.tokyo#4@eureka</a></div>
+                2017.03.01 に eureka さんにて、golang.tokyo #4 が行われました。 golang.tokyo #4 - connpass 今回もまた大盛況で一般参加枠は倍率3倍くらいの抽選となっていましたが、 たま
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/03/01/golangtokyo-4/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2016-12-14 11:12:31</div>
+                <div><a href="/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a></div>
+                何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに 日本語が入力できなくなることがあった。 起きた
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2016/12/14/jp-input-on-gnome-app/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+
+        </div>
+        
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
@@ -598,7 +426,7 @@ Rails だから遅いってこともないという認識だけど、速くし�
 </div>
 
 
-            <div class="footer">
+        <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
@@ -616,10 +444,10 @@ $(function(){
 <link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
+      </div>
     </div>
-</div>
 
-
+  
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

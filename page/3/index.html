@@ -50,7 +50,7 @@
 
 
 <div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+  <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <hgroup>
             <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
@@ -81,749 +81,334 @@
 </div>
 
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
+  <div class="content pure-u-1 pure-u-md-3-4">
+    <div>
+      
+      <div class="posts">
+        
+          <article>
             
-            <div class="posts">
-                
-                <h1 class="content-subhead">16 Apr 2018, 19:32</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/04/16/golangtokyo-14/" class="post-title">golang.tokyo #14@メルカリ</a>
-
-                        <p class="post-meta">
-                            
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p><a href="https://golangtokyo.connpass.com/event/82723/">golang.tokyo #14</a> に参加してきたのでその内容メモ。<br />
-発表内容は以下。</p>
-
-<ul>
-<li>ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん<br /></li>
-<li>チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん<br /></li>
-<li>ライトニングトーク 3 つ<br />
-
-<ul>
-<li>vgo の話 by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん<br /></li>
-<li>プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん<br /></li>
-<li>linter を作る話<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<p>例によって軽食 (と言いつつかなり十分な量の食事が) 提供されており、ありがたくいただきました…！<br />
-ありがとうございました。ごちそうさまでした。</p>
-
-<h2 id="ホリネズミでもわかる-goroutine-入門-by-inukirom-https-twitter-com-inukirom-さん">ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="5611568f65044914bb63fb0d787e0852" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-14/05.jpg><img src=/images/golang.tokyo-14/resized_05.jpg /></a>
-  <div class="caption">inukirom さん発表の様子。とても丁寧でわかりやすかった。</div>
-</div>
-
-<h3 id="goroutine-と-chan-の基本的な使い方">goroutine と chan の基本的な使い方</h3>
-
-<p>goroutine と defer と panic を組み合わせて使う場合に注意すべき点があり、<br />
-たとえば以下のような場合、A 内で張った defer は呼び出されない<strong>場合がある</strong>。<br />
-(スライド内では&rdquo;呼び出されない&rdquo;と書かれているが、その限りではなさそうな)</p>
-
-<pre><code>func A() {
-    defer func(){}()
-    go B()
-}
-
-func B() {
-    panic(&quot;panic!!&quot;)
-}
-</code></pre>
-
-<p>状況としては、</p>
-
-<ul>
-<li><code>A()</code> が終わるよりも先に <code>B()</code> 内の <code>panic</code> が先に実行されたときは、<code>A()</code> 内の <code>defer</code> は呼び出されないまま終わる。<br /></li>
-<li><code>panic</code> よりも <code>A()</code> が終了するほうが先なのであれば、<code>defer</code> は実行される。<br />
-<br /></li>
-</ul>
-
-<h3 id="channel">channel</h3>
-
-<p>channel については以下のような話題がとりあげられた。</p>
-
-<ul>
-<li>close は結構デリケート (使い方を誤るとすぐに動かなくなる) なので注意<br /></li>
-<li>RW、R only、W only という属性を持たせられる<br /></li>
-<li>select. default で non-blocking にできる<br />
-<br /></li>
-</ul>
-
-<p>ところで、channel は close しないでほっとくような例もよく見るのであれが、close しなくて良いのだろうか？</p>
-
-<p><a href="https://groups.google.com/forum/#!msg/golang-nuts/pZwdYRGxCIk/qpbHxRRPJdUJ">golang-nuts でのやりとり</a> を見るにつけては、 使われなくなった channel は GC の対象になるため、あえて明示的に close する必要はないと言っている気がする。 channel を close すると受け手側にお知らせがいくので、どうやらそういう目的で使うらしい。</p>
-
-<h3 id="wait-処理">wait 処理</h3>
-
-<p>goroutine の終了を待ち合わせする例の紹介。</p>
-
-<ul>
-<li>channel で待つ<br />
-
-<ul>
-<li>単なるお知らせであってお知らせ内容に意味がないのであれば、<code>struct{}{}</code> を使うのがメモリ効率が良い。<br /></li>
-</ul></li>
-<li>sync.WaitGroup<br />
-
-<ul>
-<li><code>sync.WaitGroup</code> で、複数の goroutine を待ち合わせしやすくなる<br /></li>
-<li><code>sync.WaitGroup</code> にエラー処理を生やしたみたいな <code>errgroup</code> なんかもある<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h3 id="for-ループと-goroutine">for ループと goroutine</h3>
-
-<p>for 文の中で goroutine 立てる例。よくある罠。</p>
-
-<ul>
-<li>引数に渡して何とかする例<br /></li>
-<li>競合の解決<br />
-
-<ul>
-<li>直列でええやん、という場合もある<br /></li>
-<li>排他制御に <code>sync.Mutex</code> 使う例。<code>RWMutex</code> もあるぞ<br /></li>
-<li><code>sync/atomic</code> というパッケージもあるぞ<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h3 id="goroutine-のリーク">goroutine のリーク</h3>
-
-<ul>
-<li>goroutine の中でブロックしちゃうと goroutine がリークする<br />
-
-<ul>
-<li><code>context.Context</code> 等を用いると goroutine を終わらせる処理を書きやすい<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h3 id="便利ツールの紹介">便利ツールの紹介</h3>
-
-<ul>
-<li>gotrace<br />
-
-<ul>
-<li>goroutine と channel のやりとりを可視化できるぞ…！<br /></li>
-<li>docker image を使って動かしている<br />
-<br /></li>
-</ul></li>
-</ul>
-
-<h2 id="チャネルのしくみ-by-knsh14-https-twitter-com-knsh14-さん">チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="3ca3b188d9904775b4281cfee7018c27" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-14/03.jpg><img src=/images/golang.tokyo-14/resized_03.jpg /></a>
-  <div class="caption">knsh14 さん発表の様子。シュラスコと寿司で例えていく。</div>
-</div>
-
-<p>以下、LT</p>
-
-<h2 id="vgo-by-tanksuzuki-https-twitter-com-tanksuzuki-さん">vgo by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん</h2>
-
-<div style="max-width: 800px">
-<script async class="speakerdeck-embed" data-id="08cee61b8c56450d8ef618b378fcd6a0" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-</div>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-14/02.jpg><img src=/images/golang.tokyo-14/resized_02.jpg /></a>
-  <div class="caption">tanksuzuki さん発表の様子。GOPATH なくなるのは胸熱。</div>
-</div>
-
-<p>vgo に関してはまだ使うのしんどい一面もあるものの、GOPATH、vendor が不要になるみたいな、Go を紹介するときに割と不評を買うところが改善されていくわけであり、今後に大いに期待である。</p>
-
-<h2 id="プロダクションに-go-を適用した話-by-kurikazu-https-twitter-com-kurikazu-さん">プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん</h2>
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/lyY1i4CNbWM6jP" width="595" height="520" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"></div></iframe>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-14/04.jpg><img src=/images/golang.tokyo-14/resized_04.jpg /></a>
-  <div class="caption">kurikazu さん発表の様子。Go 導入してハッピーなのは良いね！</div>
-</div>
-
-<h2 id="linter-を作る話-by-dice-zu-https-twitter-com-dice-zu-さん">linter を作る話 by <a href="https://twitter.com/dice_zu">@dice_zu</a> さん</h2>
-
-<p><a href="https://daisuzu.github.io/golang-tokyo-14/#1"><img src=/images/golang.tokyo-14/linter_by_dice_zu.jpg /></a></p>
-
-<div style="margin-bottom:24px">
-  <a href=/images/golang.tokyo-14/01.jpg><img src=/images/golang.tokyo-14/resized_01.jpg /></a>
-  <div class="caption">dice_zu さん発表の様子。lint を比較的容易に自作できるのも Go の良いところか。</div>
-</div>
-
-<p>プロジェクト独自のコーディングルールとかがあるのであれば、チームで lint を作って運用するのもありかもしれない。<br />
-個人的には named return value 禁止とかやりたいところであるが…？</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">05 Feb 2018, 00:38</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/02/05/droidkaigi_2018_material/" class="post-title">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>DroidKaigi 2018 では以下の枠で発表する予定。</p>
-
-<p>DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - <a href="https://droidkaigi.jp/2018/timetable?session=17012">gomobile でゲームを作る</a><br />
-資料はココ → <a href="http://pankona.github.io/slides/droidkaigi_2018.html">gomobile でゲームは作れる</a></p>
-
-<h2 id="発表内容についての徒然">発表内容についての徒然</h2>
-
-<p>DroidKaigi と言うからには Androider たちの集いであることは間違いないと思うんだけど、<br />
-さて、であればそもそも Go 言語が登場すること自体が結構レアな事態であり、ややもすれば<br />
-聴衆は Go 言語のこと全然知らないってこともありうるんじゃないかと想像したりしている。</p>
-
-<p>ということに鑑みて、「Go とは何か」みたいなところから話題を始めようと思っているが、<br />
-だとすると 30 分ではあまり細かい話 (JNI で Toast 出すのが何故困難か、とか) まで踏み込めない構成になってしまい、<br />
-なかなか悩ましいところである。ニッチ枠であるならば、もっとニッチにニッチを煮詰めたような内容にしたいのであるが…。</p>
-
-<p>ということで、ニッチにニッチを煮詰めたような内容はブログ記事に書いておき、<br />
-興味があったら見てね、みたいな感じにしとこうという結論に達した。<br />
-発表内容はライトに。リンク先はもう少し深く、みたいな。</p>
-
-<p>DroidKaigi は、実は見に行くのも初めてなので、他のセッションを聞いて廻るのも楽しみである。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">31 Jan 2018, 16:30</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/31/gomobile_get_files_dir/" class="post-title">gomobile (build) で作るアプリでファイルを保存する</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-go" href="https://pankona.github.io/categories/go">go</a><a class="post-category post-category-gomobile" href="https://pankona.github.io/categories/gomobile">gomobile</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。<br />
-ページはココ → <a href="https://github.com/golang/go/wiki/Mobile">gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile</a></p>
-
-<p><code>gomobile build</code> コマンド一発で Go のソースから APK が生成されるというなかなか豪快なコマンドなのであるが、<br />
-いかんせん色々制限があって、いざ何か作ってみようとするとまあまあハマる。<br />
-どんな苦行があるかは <a href="https://qiita.com/pankona/items/11941a5cfb668e653b4a">手前味噌だが Qiita の記事</a> に何となく記しておいた。</p>
-
-<p>上記記事には書いてなかったハマりポイントとして、<strong>「ファイルを永続領域に保存する API がない」</strong>というのがある。<br />
-ファイルを保存できないということは、ゲーム作ってて何かセーブデータでも保存しよう、とかそういうことができないってことである。<br />
-割と致命的である。</p>
-
-<p>ただ、実は gomobile はパッケージ内に JNI を触る実装を持っていて (何故か internal パッケージなので外から触れないが) 、<br />
-それを参考にすれば、cgo 経由で JNI に触ることができる。<br />
-JNI に触れるということは、Java の API に触れるということで、それはすなわち Android SDK の API に触れるということである。<br />
-Go から Android SDK の API に触れるのである。</p>
-
-<h2 id="android-アプリ作成におけるファイル保存領域の取得">Android アプリ作成におけるファイル保存領域の取得</h2>
-
-<p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、<br />
-ファイルを永続保存できる領域へのディレクトリパスを取得できる (アプリアンインストールと共に削除される) 。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">class</span> MyActivity <span style="color:#a6e22e">extends</span> AppCompatActivity {
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">void</span> onCreate(Bundle <span style="color:#a6e22e">savedInstanceState</span>) {
-        String <span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">getCacheDir</span>().<span style="color:#a6e22e">getAbsolutePath</span>();
-        <span style="color:#75715e">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
-</span><span style="color:#75715e"></span>    }
-}</code></pre></div>
-<h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
-
-<p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br />
-以下のようになる。</p>
-
-<h3 id="jni-パッケージ-go言語-c言語">jni パッケージ (Go言語 + C言語)</h3>
-
-<p>指定した関数を JNI 上で実行する関数 <code>RunOnJVM</code> を定義しているパッケージ。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
-</span><span style="color:#75715e"></span>
-<span style="color:#f92672">package</span> <span style="color:#a6e22e">jni</span>
-
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#cgo LDFLAGS: -landroid
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">JavaVM* current_vm;
-</span><span style="color:#75715e">jobject current_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static char *
-</span><span style="color:#75715e">_lockJNI(uintptr_t* envp, int* attachedp) {
-</span><span style="color:#75715e">	JNIEnv* env;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	if (current_vm == NULL) {
-</span><span style="color:#75715e">		return &#34;no current JVM&#34;;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	*attachedp = 0;
-</span><span style="color:#75715e">	switch ((*current_vm)-&gt;GetEnv(current_vm, (void**)&amp;env, JNI_VERSION_1_6)) {
-</span><span style="color:#75715e">	case JNI_OK:
-</span><span style="color:#75715e">		break;
-</span><span style="color:#75715e">	case JNI_EDETACHED:
-</span><span style="color:#75715e">		if ((*current_vm)-&gt;AttachCurrentThread(current_vm, &amp;env, 0) != 0) {
-</span><span style="color:#75715e">			return &#34;cannot attach to JVM&#34;;
-</span><span style="color:#75715e">		}
-</span><span style="color:#75715e">		*attachedp = 1;
-</span><span style="color:#75715e">		break;
-</span><span style="color:#75715e">	case JNI_EVERSION:
-</span><span style="color:#75715e">		return &#34;bad JNI version&#34;;
-</span><span style="color:#75715e">	default:
-</span><span style="color:#75715e">		return &#34;unknown JNI error from GetEnv&#34;;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	*envp = (uintptr_t)env;
-</span><span style="color:#75715e">	return NULL;
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static char *
-</span><span style="color:#75715e">_checkException(uintptr_t jnienv) {
-</span><span style="color:#75715e">	jthrowable exc;
-</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jnienv;
-</span><span style="color:#75715e">	if (!(*env)-&gt;ExceptionCheck(env)) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	exc = (*env)-&gt;ExceptionOccurred(env);
-</span><span style="color:#75715e">	(*env)-&gt;ExceptionClear(env);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass clazz = (*env)-&gt;FindClass(env, &#34;java/lang/Throwable&#34;);
-</span><span style="color:#75715e">	jmethodID toString = (*env)-&gt;GetMethodID(env, clazz, &#34;toString&#34;, &#34;()Ljava/lang/String;&#34;);
-</span><span style="color:#75715e">	jobject msgStr = (*env)-&gt;CallObjectMethod(env, exc, toString);
-</span><span style="color:#75715e">	return (char*)(*env)-&gt;GetStringUTFChars(env, msgStr, 0);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">void
-</span><span style="color:#75715e">_unlockJNI() {
-</span><span style="color:#75715e">	(*current_vm)-&gt;DetachCurrentThread(current_vm);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;errors&#34;</span>
-	<span style="color:#e6db74">&#34;runtime&#34;</span>
-	<span style="color:#e6db74">&#34;unsafe&#34;</span>
-)
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RunOnJVM</span>(<span style="color:#a6e22e">fn</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span>) <span style="color:#66d9ef">error</span> {
-	<span style="color:#a6e22e">errch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">error</span>)
-	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-		<span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">LockOSThread</span>()
-		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">UnlockOSThread</span>()
-
-		<span style="color:#a6e22e">env</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#ae81ff">0</span>)
-		<span style="color:#a6e22e">attached</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.int(<span style="color:#ae81ff">0</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_lockJNI</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">env</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">attached</span>); <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">errStr</span>))
-			<span style="color:#66d9ef">return</span>
-		}
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attached</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> {
-			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_unlockJNI</span>()
-		}
-
-		<span style="color:#a6e22e">vm</span> <span style="color:#f92672">:=</span> uintptr(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_vm</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fn</span>(<span style="color:#a6e22e">vm</span>, uintptr(<span style="color:#a6e22e">env</span>), uintptr(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_ctx</span>)); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">err</span>
-			<span style="color:#66d9ef">return</span>
-		}
-
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_checkException</span>(<span style="color:#a6e22e">env</span>); <span style="color:#a6e22e">exc</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">exc</span>))
-			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">exc</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span>
-		}
-		<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">nil</span>
-	}()
-	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errch</span>
-}</code></pre></div>
-<h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語-c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
-
-<p>上記 jni パッケージを使って、ファイル保存領域を取得するための関数を jni 上で実行する。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
-</span><span style="color:#75715e"></span>
-<span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
-
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static const char *
-</span><span style="color:#75715e">getFilesDir(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx) {
-</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jni_env;
-</span><span style="color:#75715e">	jobject ctx = (jobject)jni_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass context = (*env)-&gt;FindClass(env, &#34;android/content/Context&#34;);
-</span><span style="color:#75715e">	if(context == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">	jmethodID getFilesDir = (*env)-&gt;GetMethodID(env, context, &#34;getFilesDir&#34;, &#34;()Ljava/io/File;&#34;);
-</span><span style="color:#75715e">	if(getFilesDir == NULL){
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jobject f = (*env)-&gt;CallObjectMethod(env, ctx, getFilesDir);
-</span><span style="color:#75715e">	if (f == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass file = (*env)-&gt;FindClass(env, &#34;java/io/File&#34;);
-</span><span style="color:#75715e">	if (file == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jmethodID getAbsolutePath = (*env)-&gt;GetMethodID(env, file, &#34;getAbsolutePath&#34;, &#34;()Ljava/lang/String;&#34;);
-</span><span style="color:#75715e">	if (getAbsolutePath == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jstring path = (jstring)(*env)-&gt;CallObjectMethod(env, f, getAbsolutePath);
-</span><span style="color:#75715e">	return (*env)-&gt;GetStringUTFChars(env, path, 0);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
-
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;unsafe&#34;</span>
-
-	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/internal/jni&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/simlog&#34;</span>
-)
-
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">storageAndroid</span> <span style="color:#66d9ef">struct</span>{}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewStorage</span>() <span style="color:#a6e22e">Storager</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">storageAndroid</span>{}
-}
-
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">path</span> <span style="color:#66d9ef">string</span>
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">storageAndroid</span>) <span style="color:#a6e22e">DirectoryPath</span>() <span style="color:#66d9ef">string</span> {
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
-	}
-	<span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
-		<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
-			<span style="color:#a6e22e">cpath</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">getFilesDir</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>))
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cpath</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
-				<span style="color:#a6e22e">simlog</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;failed to get FilesDir!&#34;</span>)
-			}
-			<span style="color:#a6e22e">path</span> = <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">cpath</span>)
-			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">cpath</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-		})
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
-}</code></pre></div>
-<h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
-
-<p>上記で準備した関数を呼び出す部分。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
-    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">NewStorage</span>().<span style="color:#a6e22e">DirectoryPath</span>()
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage: %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}</code></pre></div>
-<p>これで、ファイル保存領域へのディレクトリパスを取得できる。<br />
-あとは、取得したディレクトリパス配下に保存したいものを保存する。</p>
-
-<h2 id="余談-キャッシュディレクトリの取得">(余談) キャッシュディレクトリの取得</h2>
-
-<p>上記のコードで永続保存が可能な領域へのパスが取得できるので、それはそれで良いのであるが、<br />
-実はもっと手軽にファイル保存が可能な領域へのパスを取得できる方法があり、<br />
-それは環境変数 <code>TMPDIR</code> を参照することである。</p>
-
-<p>ただし、本値は Android SDK の API で言うところの <code>Context.getCacheDir</code> に相当し、<br />
-Android 端末の状況によっては削除され得る領域であることに気をつける必要がある。<br />
-が、ちょっと保存したいくらいの用途であれば耐えうるような気がする。<br />
-以下のようにして取得する。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
-    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;TMPDIR&#34;</span>)
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage (for cache): %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}</code></pre></div>
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">29 Jan 2018, 08:41</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/29/droidkaigi-2018-3/" class="post-title">gomobile build で JNI から Toast を出せなかった話</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。<br />
-来週の木曜日である。ヤバイ。準備捗ってない…。</p>
-
-<p>とはいえ色々調査は進めている。<br />
-gomobile 関連で色々調べて分かったことを書いておく。</p>
-
-<h2 id="jni-だけで-toast-を出すのは無理な気がする">JNI だけで Toast を出すのは無理な気がする</h2>
-
-<p><code>Toast.makeText(this, &quot;hogehoge&quot;, Toast.LENGTH_SHORT);</code></p>
-
-<p>「Java でやるなら」、上のような書き方をすれば Toast は出る。実に簡単。</p>
-
-<p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。<br />
-(下記はエラーチェックを省略している)</p>
-
-<p>先に書いておくと、下記のコードは正しく動作しない。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">toast</span>
-
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static int
-</span><span style="color:#75715e">showToast(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx, char* text) {
-</span><span style="color:#75715e">    JNIEnv* env = (JNIEnv*)jni_env;
-</span><span style="color:#75715e">    jobject ctx = (jobject)jni_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // Toast クラスの取得 ... 1
-</span><span style="color:#75715e">    jclass toast = (*env)-&gt;FindClass(env, &#34;android/widget/Toast&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドの ID を取得 ... 2
-</span><span style="color:#75715e">    jmethodID makeText = (*env)-&gt;GetStaticMethodID(env, toast, &#34;makeText&#34;,
-</span><span style="color:#75715e">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // String を生成 ... 3
-</span><span style="color:#75715e">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドを呼び出し ... 4
-</span><span style="color:#75715e">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
-</span><span style="color:#75715e">        ctx, jstr, 0); // 0 = Toast.LENGTH_SHORT
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッド の IDの を取得 ... 5
-</span><span style="color:#75715e">    jmethodID methodShow = (*env)-&gt;GetMethodID(env, toastobj, &#34;show&#34;, &#34;()V&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッドを呼び出し ... 6
-</span><span style="color:#75715e">    (*env)-&gt;CallVoidMethod(env, toastobj, methodShow);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    return 0;
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
-
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
-
-    <span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/jni&#34;</span>
-)
-
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">t</span> <span style="color:#66d9ef">struct</span>{}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewToaster</span>() <span style="color:#a6e22e">Toaster</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">t</span>{}
-}
-
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">t</span>) <span style="color:#a6e22e">Show</span>(<span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
-    <span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
-        <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
-            <span style="color:#a6e22e">ret</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">showToast</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">CString</span>(<span style="color:#a6e22e">text</span>))
-            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;ret = %d\n&#34;</span>, <span style="color:#a6e22e">ret</span>)
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-        })
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}</code></pre></div>
-<p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br />
-<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br />
-<del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
-
-<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del><br />
-<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del><br />
-<del>事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</del></p>
-
-<p><del>Java のレイヤでは書ける以下のような例は、</del><br />
-<del>JNI のレイヤでは表現することができないと思われる。</del></p>
-
-<p><del><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></del></p>
-
-<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del><br />
-<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del><br />
-<del>もう少し原因究明に届かなかった。</del></p>
-
-<p>(2018/01/31 追記)</p>
-
-<p>上記は完全にウソだった。勘違いであった。申し訳ございません！</p>
-
-<p>ちゃんとどのようなエラーが (4) で吐かれているか補足してみたところ、以下の例外が投げられていた。</p>
-
-<pre><code>java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
-</code></pre>
-
-<p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで<br />
-Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
-
-<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br />
-定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity.<span style="color:#a6e22e">runOnUiThread</span>(<span style="color:#66d9ef">new</span> Runnable() {
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
-        Toast.<span style="color:#a6e22e">makeText</span>(activity, <span style="color:#e6db74">&#34;Hello&#34;</span>, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
-    }
-});</code></pre></div>
-<p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br />
-無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br />
-とりあえず試みてみようとは思う。</p>
-
-<h2 id="java-のレイヤに-charsequence-をとらないメソッドを定義すればいけるが">Java のレイヤに CharSequence をとらないメソッドを定義すればいけるが…</h2>
-
-<p>上記の原因の仮説を若干補強するものとして、<br />
-CharSequence を取らずに Toast を出すメソッドを Java レイヤに準備しておき、<br />
-それを JNI から呼び出すようなコードを書いた場合は無事に Toast が出力される。</p>
-
-<p>以下のようなコードをあらかじめ Java のレイヤに書いておき、<br />
-それを上記の JNI と同様のノリで呼び出すようにする。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// static Activity goNativeActivity;
-</span><span style="color:#75715e">// onCreate にて goNativeActivity = this;
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> showToast(<span style="color:#66d9ef">final</span> <span style="color:#a6e22e">String</span> message) {
-    Handler <span style="color:#a6e22e">h</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler(goNativeActivity.<span style="color:#a6e22e">getApplication</span>().<span style="color:#a6e22e">getMainLooper</span>());
-    h.<span style="color:#a6e22e">post</span>(<span style="color:#66d9ef">new</span> Runnable() {
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
-            Toast.<span style="color:#a6e22e">makeText</span>(goNativeActivity, message, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
-        }
-    });
-}</code></pre></div>
-<p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br />
-Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">08 Jan 2018, 23:10</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/" class="post-title">DroidKaigi 2018 に向けて (その2)</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>DroidKaigi 2018 に向けての準備を改めて整理した。<br />
-プレゼンで伝えたいことは、<strong><code>gomobile build</code> で Android 向けゲームを作るときのTIPS集</strong> みたいなことなので、<br />
-そこまで Kokeshi Scramble はフィーチャーしないほうがいいよね、と思いを改め。</p>
-
-<h2 id="伝えたいこと">伝えたいこと</h2>
-
-<ul>
-<li>まず、開発の進め方を紹介。<br />
-
-<ul>
-<li>まず PC 版で作っていって → Android 上でテストする、みたいな流れ。<br /></li>
-<li>ついでに Mac 版、Windows 版、Linux 版も作れてお得、みたいな話もする。<br /></li>
-</ul></li>
-<li><code>gomobile build</code> でいきなり APK 吐けて楽なのは良いものの、いざ作っていくとこんなハマり事があるよ、っていう紹介。<br />
-
-<ul>
-<li>ハマり事の回避方法の紹介。<br /></li>
-<li>ハマり事をいちいち回避しなくても、うちのライブラリを使えばいいかもよ、という宣伝。<br />
-あわせて、よそのライブラリも紹介。<br /></li>
-</ul></li>
-<li>おまけで、Kokeshi Scramble の話を入れておく。<br />
-<br /></li>
-</ul>
-
-<p>みたいな感じの流れが良いかな、ということをうすらぼんやり考え。</p>
-
-<h2 id="本番までの作業">本番までの作業</h2>
-
-<p>だいたい残り 1 ヶ月であり、作業に使えない日もあるだろうことを考えると、<br />
-作業に使える日数は 20 日程度と考えるべきかと思う。<br />
-1 日 1 〜 2 時間捻出したら 20 〜 40 時間。だいたい 3 〜 6 人日ってところだろうか。<br />
-ここに収まる中で準備を進めないといけないが、以下のような対応をしておきたい。</p>
-
-<ul>
-<li>gomo-simra 拡張。以下の機能を加える (各々についてサンプルも追加) 。<br />
-
-<ul>
-<li>アイコンを設定する (これは gomo-simra 拡張は不要の予定なので設定方法を記載する)。<br /></li>
-<li>トーストを出す。<br /></li>
-<li>SharedPreference を使う。<br /></li>
-<li>指定の URL をブラウザで読み込む (広告クリック的な機能を想定) 。<br /></li>
-</ul></li>
-<li>以下の改善も予定。<br />
-
-<ul>
-<li>README.md をもう少し詳しく書く。使い方の例が分かるような。<br /></li>
-</ul></li>
-<li>その上で、スライドを更新。<br />
-
-<ul>
-<li>各ハマり事への解決策をコードを踏まえて紹介する。<br /></li>
-</ul></li>
-<li>あとは発表の練習。<br />
-<br /></li>
-</ul>
-
-<p>トータルで 5 人日くらいになりそうな作業見積だがどうか。<br />
-Kokeshi Scramble の改善まではちょっと手が付けられないだろうという感じかな。</p>
-
-<p>という感じで作業を何となくでも洗い出しておくと、いざ着手したときにスムーズに作業が進められるよね、という期待を込めて。<br />
-DroidKaigi、気合い入れていくぞ。</p>
-
-                    </div>
-                </section>
-                
+            <div>
+                <div>2020-05-30 12:30:16</div>
+                <div><a href="/blog/2020/05/30/em-dialy-2020-05-29/">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a></div>
+                <p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
             </div>
             
+              
+              <div>
+                <a href="/blog/2020/05/30/em-dialy-2020-05-29/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-23 12:21:34</div>
+                <div><a href="/blog/2020/04/23/em-dialy-2020-04-23/">Engineering Manager というものになったようだが何がなんだか分からない</a></div>
+                2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/23/em-dialy-2020-04-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-09 10:50:55</div>
+                <div><a href="/blog/2020/04/09/misc/">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a></div>
+                ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなか
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/09/misc/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-08-04 16:14:51</div>
+                <div><a href="/blog/2019/08/04/join-in-quipper/">Quipper に転職して三ヶ月が経った</a></div>
+                さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/08/04/join-in-quipper/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-06-20 14:52:59</div>
+                <div><a href="/blog/2019/06/20/golangtokyo-25/">golang.tokyo #25 @ Wantedly</a></div>
+                2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/06/20/golangtokyo-25/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-05-31 10:50:59</div>
+                <div><a href="/blog/2019/05/31/job-change/">Quipper に転職した</a></div>
+                2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/05/31/job-change/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-04-24 14:52:59</div>
+                <div><a href="/blog/2019/04/24/golangtokyo-23/">golang.tokyo #23 @ DeNA</a></div>
+                2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/04/24/golangtokyo-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-07-13 19:15:16</div>
+                <div><a href="/blog/2018/07/13/golangtokyo-16/">golang.tokyo #16 @メルペイ</a></div>
+                golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/07/13/golangtokyo-16/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-06-23 17:00:42</div>
+                <div><a href="/blog/2018/06/23/mashimahi/">強いパスワードのためのフレーズジェネレータを作ってみた</a></div>
+                ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/06/23/mashimahi/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-05-30 19:39:48</div>
+                <div><a href="/blog/2018/05/30/golangtokyo-15/">golang.tokyo #15@DeNA</a></div>
+                golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/05/30/golangtokyo-15/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-04-16 19:32:07</div>
+                <div><a href="/blog/2018/04/16/golangtokyo-14/">golang.tokyo #14@メルカリ</a></div>
+                golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/04/16/golangtokyo-14/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-02-05 00:38:03</div>
+                <div><a href="/blog/2018/02/05/droidkaigi_2018_material/">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a></div>
+                DroidKaigi 2018 では以下の枠で発表する予定。 DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - gomobile でゲームを作る 資料はココ → gomobile でゲームは作れる 発表内容についての徒然 DroidKaigi と言うからには Androider たちの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/02/05/droidkaigi_2018_material/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-31 16:30:10</div>
+                <div><a href="/blog/2018/01/31/gomobile_get_files_dir/">gomobile (build) で作るアプリでファイルを保存する</a></div>
+                gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/31/gomobile_get_files_dir/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-29 08:41:12</div>
+                <div><a href="/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a></div>
+                本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。 来週の木曜日である。ヤバイ。準備捗ってない…。 とはいえ色々調査
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/29/droidkaigi-2018-3/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-08 23:10:33</div>
+                <div><a href="/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a></div>
+                DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/08/droidkaigi-2018-todo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-06 23:09:05</div>
+                <div><a href="/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a></div>
+                DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/06/my-first-post-2018/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-02 13:32:34</div>
+                <div><a href="/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a></div>
+                いままで本ブログは Octopress を使って生成していたのであるが、 久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/02/my-first-post-by-hugo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-06-01 19:34:21</div>
+                <div><a href="/blog/2017/06/01/golangtokyo-6/">golang.tokyo#6@DeNA</a></div>
+                2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。 golang.tokyo #6 - connpass 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集してい
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/06/01/golangtokyo-6/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-03-01 19:31:27</div>
+                <div><a href="/blog/2017/03/01/golangtokyo-4/">golang.tokyo#4@eureka</a></div>
+                2017.03.01 に eureka さんにて、golang.tokyo #4 が行われました。 golang.tokyo #4 - connpass 今回もまた大盛況で一般参加枠は倍率3倍くらいの抽選となっていましたが、 たま
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/03/01/golangtokyo-4/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2016-12-14 11:12:31</div>
+                <div><a href="/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a></div>
+                何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに 日本語が入力できなくなることがあった。 起きた
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2016/12/14/jp-input-on-gnome-app/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+
+        </div>
+        
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
@@ -841,7 +426,7 @@ DroidKaigi、気合い入れていくぞ。</p>
 </div>
 
 
-            <div class="footer">
+        <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
@@ -859,10 +444,10 @@ $(function(){
 <link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
+      </div>
     </div>
-</div>
 
-
+  
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -50,7 +50,7 @@
 
 
 <div id="layout" class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+  <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <hgroup>
             <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
@@ -81,221 +81,334 @@
 </div>
 
 
-    <div class="content pure-u-1 pure-u-md-3-4">
-        <div>
+  <div class="content pure-u-1 pure-u-md-3-4">
+    <div>
+      
+      <div class="posts">
+        
+          <article>
             
-            <div class="posts">
-                
-                <h1 class="content-subhead">28 Apr 2014, 21:15</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/04/28/fix-pygments/" class="post-title">Pygmentsがエラーを吐きやがるので修正</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-Octopressカスタマイズ" href="https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA">Octopressカスタマイズ</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>Octopressのカスタマイズを続けていく。</p>
-
-<h2 id="fenced-code-block-がうまく表示されない">Fenced Code Block がうまく表示されない</h2>
-
-<p>具体的にどのようにうまく表示されないかというと、</p>
-
-<p>{% codeblock %}<br />
-{% raw %}<br />
-{% hogehoge %}<br />
-{% endraw %}<br />
-{% endcodeblock %}</p>
-
-<p>といった表記。％で囲まれてる部分も Fenced Code Block を使って表示してもらいたいところであったが、<br><br />
-コメントとしてみなされてしまっているようで、表示してもらえないという感じに。</p>
-
-<p>結果として、</p>
-
-<p>{% codeblock %}<br />
-{% raw %}<br />
-{\% codeblock %}<br />
-{\% raw %}<br />
-{% hogehoge %}<br />
-{\% endraw %}<br />
-{\% endcodeblock %}<br />
-{% endraw %}<br />
-{% endcodeblock %}</p>
-
-<p>というので書くことができた。raw ~ endraw というのを使う。<br><br />
-ただ、↑に書いている通り、ネストさせることができなかったのでバックスラッシュ突っ込んでお茶を濁した。。<br><br />
-ネストさせるのはどうやればいいのかな？</p>
-
-<h2 id="fenced-code-block-にファイル名が表示できない">Fenced Code Block にファイル名が表示できない</h2>
-
-<p>Fenced Code Block を書くときに、↓のような書き方をするとコードブロックにちょっとした注釈が出る。</p>
-
-<p><code>{% raw %}{% codeblock %}{% endraw %}</code><br></p>
-
-<p>出るという触れ込みだったのだが、なかなかどうして出なかった。</p>
-
-<p>結論からすると、これはうちのArchlinuxがpython3を使おうとしているためだった。<br><br />
-PygmentsというやつがPython2.7を求めているところを、違うバージョンのPythonが使われちゃって失敗してた感じ。</p>
-
-<p>修正方法は以下のページを参考にしました。というかそのまま使わせていただきました。多謝。<br />
-<a href="http://www.nonsenseby.me/blog/2013/04/13/arch-linux/">Arch Linux, Octopress, and misbehaving Pygments - Nonsense By Me</a></p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">26 Apr 2014, 20:19</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/04/26/octopress-custom/" class="post-title">OctopressにGravatarの画像が出るようにしてみた</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-Octopressカスタマイズ" href="https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA">Octopressカスタマイズ</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-
-<p>引き続きOctopressをカスタマイズしていく。</p>
-
-<h3 id="サイドバーにgravatarの画像を出すように">サイドバーにGravatarの画像を出すように</h3>
-
-<p>京都で食べた抹茶パンケーキ（←旨い）の画像を載せるように。<br />
-自分のブログ感が出て良い。</p>
-
-<p>以下のGravatarプラグインを使わせてもらいました。多謝。</p>
-
-<p><a href="https://github.com/joet3ch/gravatar-octopress">joet3ch/gravatar-octopress</a></p>
-
-<p>↑を導入すると、Gravatarの画像をimgタグ的にひっぱってこれるようになるので、<br />
-それを参考にしつつ、souce/_include/custom/asides/about.html を編集してった感じ。</p>
-
-<p>about.html はこんな感じに。</p>
-
-<p>{% codeblock %}<br />
-{% raw %}<br />
-<section><br />
-  <h1>About Me</h1><br />
-  {% if site.gravatar_email %}<br />
-    <img src="{% gravatar_image %}" alt="Gravatar of {{site.author}}" title="Gravatar of {{ site.author }}" align="left" style="margin-right:10px;" /><br />
-  {% endif %}<br />
-  Arch Linux on Vaio Pro 13で日々遊んでます。Octopressはvimで編集。武蔵野線ユーザ。一応、ソフトウェアエンジニア。<br />
-  <br clear="left"><br />
-</section><br />
-{% endraw %}<br />
-{% endcodeblock %}</p>
-
-<h3 id="commentをかけるようにdisqusを設定">CommentをかけるようにDisqusを設定</h3>
-
-<p>各ポストにコメントがかけるような感じにしてみた。いかにもブラグらしい。<br><br />
-設定方法をざっくり書いておくと、</p>
-
-<p><span><br />
-1. Disqusのアカウントを作り、ブログサイトに関する情報を登録するとshort nameが取得できる<br />
-2. _config.ymlのdisqus_short_nameに、↑で取得したshort nameを設定する<br />
-</span></p>
-
-<p>次はテーマを変更してみようかな。デフォルトでもそこそこかっこいいが。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">25 Apr 2014, 21:11</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/04/25/add-category-list/" class="post-title">Octopressにタグクラウドとカテゴリリストを追加してみた</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-Octopressカスタマイズ" href="https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA">Octopressカスタマイズ</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>Octopressにプラグインを追加して、tag_cloundとcategory_listを表示できるようにしてみた。<br />
-見た目デフォルトのままというのも微妙なので、徐々にカスタマイズしていこう。</p>
-
-<p>tag_cloud、category_listの追加については以下のページを参考にさせていただきました。多謝。<br />
-<a href="http://rcmdnk.github.io/blog/2013/03/23/octopress/">http://rcmdnk.github.io/blog/2013/03/23/octopress/</a></p>
-
-<p>次はサイドバーに筆者プロフィールをGravatarと共に載せる、みたいな感じにしてみようかな。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">24 Apr 2014, 21:44</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/04/24/start-blog-with-octopress/" class="post-title">Octopressでブログを始めてみる</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>ちょっと長めの通勤時間を有効活用するため、軽く技術的な内容の備忘録というか、日記をつけてみることにした。<br />
-マークダウンの書き方すらよくわかっていないが、徐々にいろいろと進歩させていこうと思う。</p>
-
-<p>私は一応プログラマをやっている。なので色々困ったことにでくわし、そのたびに解決方法を調べつつ業務にあたっている。<br />
-きっと私が困ったところは、おそらく世の中の誰かが同じように困っているであろうと信じ、本ブログがその助けになることを願うと共に、<br />
-基本的には日々の調査結果なんかをここにアウトプットしていきたいと思っている。</p>
-
-<p>細く、長く、続けて行ければ。</p>
-
-                    </div>
-                </section>
-                
-                <h1 class="content-subhead">23 Apr 2014, 21:05</h1>
-                <section class="post">
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/04/23/second-post/" class="post-title">second post</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        
-                    </div>
-                </section>
-                
+            <div>
+                <div>2020-05-30 12:30:16</div>
+                <div><a href="/blog/2020/05/30/em-dialy-2020-05-29/">Engineering Manager とはやっぱりコマンダーバトルなのではないか</a></div>
+                <p>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。</p>
             </div>
             
+              
+              <div>
+                <a href="/blog/2020/05/30/em-dialy-2020-05-29/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-23 12:21:34</div>
+                <div><a href="/blog/2020/04/23/em-dialy-2020-04-23/">Engineering Manager というものになったようだが何がなんだか分からない</a></div>
+                2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/23/em-dialy-2020-04-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2020-04-09 10:50:55</div>
+                <div><a href="/blog/2020/04/09/misc/">Blog が書けない理由を考えていたら数ヶ月が過ぎた</a></div>
+                ブログは誰に見せるでもなくても、自分の気持ちとかやってたことを記録しておけるってだけで書いておいて意義があると思っているのであるが、なかなか
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2020/04/09/misc/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-08-04 16:14:51</div>
+                <div><a href="/blog/2019/08/04/join-in-quipper/">Quipper に転職して三ヶ月が経った</a></div>
+                さて、2019 年 5 月に Quipper に入り、3 ヶ月が過ぎた。 入ってから 3 ヶ月は試用期間という扱いであったので、このブログを書いている 8 月はちょうど試用期
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/08/04/join-in-quipper/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-06-20 14:52:59</div>
+                <div><a href="/blog/2019/06/20/golangtokyo-25/">golang.tokyo #25 @ Wantedly</a></div>
+                2019 年 6 月 18 日 (火) に行われた golang.tokyo #25 (@Wantdly) に参加しました。 イベントページはココ golang.tokyo #25 (2019/06/18 19:00〜)# イベントについて golang.tokyo 25回目の開催です！今回のテー
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/06/20/golangtokyo-25/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-05-31 10:50:59</div>
+                <div><a href="/blog/2019/05/31/job-change/">Quipper に転職した</a></div>
+                2019 年 5 月、令和が始まるタイミングで転職した。 ACCESS → Quipper 。今度は Web Developer として主に Rails 等を触っていく仕事をする予定。 入って概ね一ヶ月が経ったが戦力には程
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/05/31/job-change/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2019-04-24 14:52:59</div>
+                <div><a href="/blog/2019/04/24/golangtokyo-23/">golang.tokyo #23 @ DeNA</a></div>
+                2019 年 4 月 19 日 (金) に行われた golang.tokyo #23 (@DeNA) に参加ました。 イベントページはココ golang.tokyo #23 (2019/04/19 19:10〜) ツイッターはハッシュタグ「#golangtokyo」
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2019/04/24/golangtokyo-23/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-07-13 19:15:16</div>
+                <div><a href="/blog/2018/07/13/golangtokyo-16/">golang.tokyo #16 @メルペイ</a></div>
+                golang.tokyo #16 @メルペイに参加。 本日は wasm がメインテーマ。発表者と資料は末尾に記載。 そもそも wasm (WebAssembly) とは何か 以下は公式サイト。webassembly.org
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/07/13/golangtokyo-16/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-06-23 17:00:42</div>
+                <div><a href="/blog/2018/06/23/mashimahi/">強いパスワードのためのフレーズジェネレータを作ってみた</a></div>
+                ふと思い立って、フレーズジェネレータなるものを作ってみた。 こないだ作ってみた「強そうなパスフレーズ/パスワード生成器 (PhraGen)」に CSS
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/06/23/mashimahi/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-05-30 19:39:48</div>
+                <div><a href="/blog/2018/05/30/golangtokyo-15/">golang.tokyo #15@DeNA</a></div>
+                golang.tokyo #15に参加してきた。 内容は以下。 メインの30分セッションふたつ Effective Streaming in Golang by avvmoto さん 次世代のコンテナランタイム！？gVisorのコードを読みな
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/05/30/golangtokyo-15/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-04-16 19:32:07</div>
+                <div><a href="/blog/2018/04/16/golangtokyo-14/">golang.tokyo #14@メルカリ</a></div>
+                golang.tokyo #14 に参加してきたのでその内容メモ。 発表内容は以下。 ホリネズミでもわかる Goroutine 入門 by @inukirom さん チャネルのしくみ by @knsh14 さん ライトニングトーク 3 つ vgo の話 by
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/04/16/golangtokyo-14/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-02-05 00:38:03</div>
+                <div><a href="/blog/2018/02/05/droidkaigi_2018_material/">DroidKaigi 2018 向け資料 - gomobile でゲームを作る</a></div>
+                DroidKaigi 2018 では以下の枠で発表する予定。 DAY.01 (Feb 8th, 2018) 14:00-14:30 Room 7 - gomobile でゲームを作る 資料はココ → gomobile でゲームは作れる 発表内容についての徒然 DroidKaigi と言うからには Androider たちの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/02/05/droidkaigi_2018_material/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-31 16:30:10</div>
+                <div><a href="/blog/2018/01/31/gomobile_get_files_dir/">gomobile (build) で作るアプリでファイルを保存する</a></div>
+                gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。 ページはココ → gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile gomobile build コマンド一発で Go のソースから
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/31/gomobile_get_files_dir/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-29 08:41:12</div>
+                <div><a href="/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a></div>
+                本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。 来週の木曜日である。ヤバイ。準備捗ってない…。 とはいえ色々調査
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/29/droidkaigi-2018-3/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-08 23:10:33</div>
+                <div><a href="/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a></div>
+                DroidKaigi 2018 に向けての準備を改めて整理した。 プレゼンで伝えたいことは、gomobile build で Android 向けゲームを作るときのTIPS集 みたいなことなので、 そこ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/08/droidkaigi-2018-todo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-06 23:09:05</div>
+                <div><a href="/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a></div>
+                DroidKaigi 2018 に向けての準備 DroidKaigi 2018 にはしゃべる側で参加する予定である。 以下、準備しておこうと思う内容のメモ。 ネタは gomobile でゲーム作った話。 golang-tokyo #9 にて発表済みの
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/06/my-first-post-2018/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2018-01-02 13:32:34</div>
+                <div><a href="/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a></div>
+                いままで本ブログは Octopress を使って生成していたのであるが、 久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレ
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2018/01/02/my-first-post-by-hugo/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-06-01 19:34:21</div>
+                <div><a href="/blog/2017/06/01/golangtokyo-6/">golang.tokyo#6@DeNA</a></div>
+                2017.06.01 に DeNA さんにて、golang.tokyo #6 が行われました。 golang.tokyo #6 - connpass 開幕は DeNA の方のお話だったんですが、何やら DeNA では Go エンジニアを色々募集してい
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/06/01/golangtokyo-6/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2017-03-01 19:31:27</div>
+                <div><a href="/blog/2017/03/01/golangtokyo-4/">golang.tokyo#4@eureka</a></div>
+                2017.03.01 に eureka さんにて、golang.tokyo #4 が行われました。 golang.tokyo #4 - connpass 今回もまた大盛況で一般参加枠は倍率3倍くらいの抽選となっていましたが、 たま
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2017/03/01/golangtokyo-4/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+          <article>
+            
+            <div>
+                <div>2016-12-14 11:12:31</div>
+                <div><a href="/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a></div>
+                何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに 日本語が入力できなくなることがあった。 起きた
+            </div>
+            
+              
+              <div>
+                <a href="/blog/2016/12/14/jp-input-on-gnome-app/">Read More…</a>
+              </div>
+              <hr>
+            
+          </article>
+          
+
+        </div>
+        
 <div class="pagination">
   <nav role="pagination" class="post-list-pagination">
       
@@ -313,7 +426,7 @@ PygmentsというやつがPython2.7を求めているところを、違うバー
 </div>
 
 
-            <div class="footer">
+        <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
         <ul>
             <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
@@ -331,10 +444,10 @@ $(function(){
 <link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
 
         </div>
+      </div>
     </div>
-</div>
 
-
+  
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
