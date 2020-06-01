@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>EM on make clean; make</title>
+    <link>https://pankona.github.io/categories/em/</link>
+    <description>Recent content in EM on make clean; make</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 30 May 2020 12:30:16 +0900</lastBuildDate>
+    
+	<atom:link href="https://pankona.github.io/categories/em/atom.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Engineering Manager とはやっぱりコマンダーバトルなのではないか</title>
+      <link>https://pankona.github.io/blog/2020/05/30/em-dialy-2020-05-29/</link>
+      <pubDate>Sat, 30 May 2020 12:30:16 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/05/30/em-dialy-2020-05-29/</guid>
+      <description>Engineering Manager (以下 EM) を始めて二ヶ月くらい経った。依然として EM というものはいったい何なのかを考え続けている。 引き続きもやもやしている 弊社 (Quipper) において EM が</description>
+    </item>
+    
+    <item>
+      <title>Engineering Manager というものになったようだが何がなんだか分からない</title>
+      <link>https://pankona.github.io/blog/2020/04/23/em-dialy-2020-04-23/</link>
+      <pubDate>Thu, 23 Apr 2020 12:21:34 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/04/23/em-dialy-2020-04-23/</guid>
+      <description>2020 年 4 月から所属している会社 (Quipper という) で Engineering Manager というロールをやっていくことになった。 これを書いているのが 2020-04-23 なのでロールを言い渡されてから概ね一</description>
+    </item>
+    
+  </channel>
+</rss>
