@@ -86,11 +86,11 @@
             
             <div class="posts">
                 
-                <h1 class="content-subhead">14 Dec 2016, 11:12</h1>
-                <section class="post">
+                <div class="content-subhead">2016-12-14 11:12:31</div>
+                <section >
                     <header class="post-header">
 
-                        <a href="https://pankona.github.io/blog/2016/12/14/jp-input-on-gnome-app/" class="post-title">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a>
+                        <a href="https://pankona.github.io/blog/2016/12/14/jp-input-on-gnome-app/">GNOMEアプリ上で日本語入力できなくなったときの対処メモ</a>
 
                         <p class="post-meta">
                             
@@ -152,11 +152,11 @@
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">14 Nov 2016, 20:14</h1>
-                <section class="post">
+                <div class="content-subhead">2016-11-14 20:14:02</div>
+                <section >
                     <header class="post-header">
 
-                        <a href="https://pankona.github.io/blog/2016/11/14/usb-wifi-dongle/" class="post-title">Linux で 無線LAN の USB ドングルを使う</a>
+                        <a href="https://pankona.github.io/blog/2016/11/14/usb-wifi-dongle/">Linux で 無線LAN の USB ドングルを使う</a>
 
                         <p class="post-meta">
                             
@@ -263,11 +263,11 @@ WN-G150UMK は rtl8192cu というドライバで動いている模様。<code>l
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">15 Sep 2014, 00:30</h1>
-                <section class="post">
+                <div class="content-subhead">2014-09-15 00:30:08</div>
+                <section >
                     <header class="post-header">
 
-                        <a href="https://pankona.github.io/blog/2014/09/15/histryback-by-swipe-on-firefox/" class="post-title">二本指スワイプに戻る／進むを割り当てる方法 for Firefox on Arch Linux</a>
+                        <a href="https://pankona.github.io/blog/2014/09/15/histryback-by-swipe-on-firefox/">二本指スワイプに戻る／進むを割り当てる方法 for Firefox on Arch Linux</a>
 
                         <p class="post-meta">
                             
@@ -353,11 +353,11 @@ UbuntuとArch Linux、どちらのFirefoxでもデフォルト設定では横方
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">28 May 2014, 07:49</h1>
-                <section class="post">
+                <div class="content-subhead">2014-05-28 07:49:23</div>
+                <section >
                     <header class="post-header">
 
-                        <a href="https://pankona.github.io/blog/2014/05/28/use-uim-mozc/" class="post-title">日本語入力のための設定メモ for Arch Linux</a>
+                        <a href="https://pankona.github.io/blog/2014/05/28/use-uim-mozc/">日本語入力のための設定メモ for Arch Linux</a>
 
                         <p class="post-meta">
                             
@@ -457,11 +457,11 @@ export XMODIFIERS='@im=uim'
                     </div>
                 </section>
                 
-                <h1 class="content-subhead">15 May 2014, 12:25</h1>
-                <section class="post">
+                <div class="content-subhead">2014-05-15 12:25:25</div>
+                <section >
                     <header class="post-header">
 
-                        <a href="https://pankona.github.io/blog/2014/05/15/vaio-pro-palm-detect-on-archlinux/" class="post-title">Vaio Pro 13における手のひら検知 on Arch Linux</a>
+                        <a href="https://pankona.github.io/blog/2014/05/15/vaio-pro-palm-detect-on-archlinux/">Vaio Pro 13における手のひら検知 on Arch Linux</a>
 
                         <p class="post-meta">
                             
@@ -554,20 +554,116 @@ PalmMinWidth は、タッチの広さを見ていて、太すぎる指は手の�
                     </div>
                 </section>
                 
+                <div class="content-subhead">2014-05-14 17:59:10</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2014/05/14/arch-windows-multiboot-tips/">Arch LinuxとWindows8.1をデュアルブートにしたときの備忘録</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-ArchLinux" href="https://pankona.github.io/categories/archlinux">ArchLinux</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        
+
+<h2 id="このポストは">このポストは</h2>
+
+<p>Windows8.1に対してWindows Updateしたところ、何だかわからないがデュアルブートしなくなって焦ったため、<br />
+直し方というか、そもそもどうやってデュアルブートにしているかをメモしておくための記事。</p>
+
+<h3 id="件のpcについて">件のPCについて</h3>
+
+<p>以下のようなPCと、その中身の構成にしている。</p>
+
+<p>&ndash; PC本体：Vaio Pro 13<br />
+&ndash; OS：Arch LinuxとWindows8.1のデュアルブート</p>
+
+<h3 id="デュアルブートのためにしたこと-まずは普通にarch-linuxをインストール">デュアルブートのためにしたこと - まずは普通にArch Linuxをインストール</h3>
+
+<ul>
+<li>Arch Linux起動のためのUSBメモリを作成。ここはWindowsを使う。<br />
+<br /></li>
+</ul>
+
+<p><a href="https://wiki.archlinux.org/index.php/USB_Installation_Media_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">USB Installation Media（日本語） - Arch LinuxのWiki</a> なんかが参考になる。</p>
+
+<ul>
+<li>Windowsを使ってLinux向けのパーティションを切る。<br />
+<br /></li>
+</ul>
+
+<p>「管理」を使ってやる。<a href="http://windows.microsoft.com/ja-jp/windows/create-boot-partition#1TC=windows-7">ブート パーティンションを作成する - Microsoftのページ</a>等が参考になる。<br />
+とにかく何か領域が空いていればいい。うちの構成では180GB程度確保した。<br />
+少なくとも30GBくらいいるかな？</p>
+
+<ul>
+<li>Arch Linux起動用のUSBを挿した状態でPCを起動し、USBからのブートを行う。<br />
+<br /></li>
+</ul>
+
+<p>あとは↑で作ったパーティションにArch Linuxをインストールしていく。詳しくはやはりArch LinuxのWiki参照。<br />
+&ndash; パーティションのフォーマット。割り当て可能領域はすべて割り当て。EFIパーティションにする必要はない。普通ので。<br />
+&ndash; /mnt にフォーマットしたパーティションをマウント。<code>mount /dev/sda5 /mnt</code> ← うちの環境の場合。<br />
+&ndash; chrootする。<code>arch-chroot /mnt</code> で。<br />
+&ndash; Arch Linuxのインストール。 <code>pacman -S base base-devel</code> とかやる。<br />
+&ndash; genfstab とかそういったことをこまごま行う。<br />
+&ndash; ブートローダのインストール。ブートローダにはgummibootを採用した。</p>
+
+<pre><code>mount /dev/sda2 /boot/EFI
+cd /boot/EFI
+gummiboot install
+</code></pre>
+
+<p>ここまでで勝手にデュアルブートしてくれたら嬉しかったが、そうはいかなかった（本来はこれだけでOKらしい）。<br />
+Vaioのせいなのか、Windowsのせいなのか。。</p>
+
+<h3 id="デュアルブートのためにしたこと-無理やりgummibootを使わせる">デュアルブートのためにしたこと - 無理やりgummibootを使わせる</h3>
+
+<p>上記までで何が起きるかというと、、、<br />
+どうやら、せっかくgummibootで設定したブートの設定がPC起動時になかったことにされてしまう模様。<br />
+つまりWindowsが問答無用で起動される状態に戻ってしまう。VaioのせいなのかWindowsのせいなのか。。。</p>
+
+<p>この点をちゃんと解決するのは諦めました。<br />
+諦めて、Windowsの起動に使われるファイルをgummibootのものと置き換えることでデュアルブートを実現。。<br />
+一応、やれればいいや、ということで。</p>
+
+<ul>
+<li>先ほどのUSBからArch Linuxを起動し、無理やりgummibootを使わせるようにしにいく<br />
+<br /></li>
+</ul>
+
+<p>&ndash; まず、EFIのパーティションをマウントする。</p>
+
+<pre><code>mount /dev/sda2 /mnt/boot/EFI
+</code></pre>
+
+<p>&ndash; Windows起動用のファイルとgummiboot起動用のファイルを置き換える。</p>
+
+<p>&mdash; Windows起動用のファイル &hellip; /boot/EFI/Microsoft/boot/bootmgrfw.efi<br />
+&mdash; gummiboot起動用のファイル &hellip; /boot/EFI/gummiboot/gummibootx64.efi</p>
+
+<p>上記のWindows起動用のファイルを、gummiboot起動用のファイルで上書きしてやると、、、<br />
+次回のPC起動時には、OS選択の画面が表示されるはず。上書きする前にバックアップしてあげてね。。。</p>
+
+<h3 id="windowsアップデートのときに-bootmgrfw-efiが更新されちゃうことがあるっぽい">Windowsアップデートのときに、bootmgrfw.efiが更新されちゃうことがあるっぽい</h3>
+
+<p>だのでWindowsアップデートでデュアルブートができなくなったりするんだろう。<br />
+デュアルブートできなくなったら、いちいちgummibootx64.efiをWindows起動用のファイルに上書きしてやる必要がある。</p>
+
+<h2 id="これでwindowsアップデートも怖くない">これでWindowsアップデートも怖くない！</h2>
+
+                    </div>
+                </section>
+                
             </div>
             
-<div class="pagination">
-  <nav role="pagination" class="post-list-pagination">
-      
-    <span class="post-list-pagination-item post-list-pagination-item-current">Page 1 of 2</span>
-    
-      <a href="/categories/archlinux/page/2/" class="post-list-pagination-item pure-button post-list-pagination-item-next">
-        Older&nbsp;<i class="fa fa-angle-double-right"></i>
-      </a>
-    
-  </nav>
-</div>
-
 
             <div class="footer">
     <div class="pure-menu pure-menu-horizontal pure-menu-open">
