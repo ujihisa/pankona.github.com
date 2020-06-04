@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>イベント on make clean; make</title>
+    <link>https://pankona.github.io/categories/%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88/</link>
+    <description>Recent content in イベント on make clean; make</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 03 Jun 2020 10:47:03 +0900</lastBuildDate>
+    
+	<atom:link href="https://pankona.github.io/categories/%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88/atom.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>吉祥寺.pm 22 に参加</title>
+      <link>https://pankona.github.io/blog/2020/06/03/kichijojipm-22/</link>
+      <pubDate>Wed, 03 Jun 2020 10:47:03 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/06/03/kichijojipm-22/</guid>
+      <description>&lt;p&gt;2020-06-02、吉祥寺.pm 22 (今回はオンラインでの開催) に参加した。&lt;br /&gt;
+今回のテーマは 「変わったこと、変わらなかったこと」&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
