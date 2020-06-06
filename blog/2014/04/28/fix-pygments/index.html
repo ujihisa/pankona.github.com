@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="Pygmentsがエラーを吐きやがるので修正 - make clean; make">
@@ -99,51 +99,36 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p>Octopressのカスタマイズを続けていく。</p>
-
+                        <p>Octopressのカスタマイズを続けていく。</p>
 <h2 id="fenced-code-block-がうまく表示されない">Fenced Code Block がうまく表示されない</h2>
-
 <p>具体的にどのようにうまく表示されないかというと、</p>
-
-<p>{% codeblock %}<br />
-{% raw %}<br />
-{% hogehoge %}<br />
-{% endraw %}<br />
+<p>{% codeblock %}
+{% raw %}
+{% hogehoge %}
+{% endraw %}
 {% endcodeblock %}</p>
-
-<p>といった表記。％で囲まれてる部分も Fenced Code Block を使って表示してもらいたいところであったが、<br><br />
+<p>といった表記。％で囲まれてる部分も Fenced Code Block を使って表示してもらいたいところであったが、<br>
 コメントとしてみなされてしまっているようで、表示してもらえないという感じに。</p>
-
 <p>結果として、</p>
-
-<p>{% codeblock %}<br />
-{% raw %}<br />
-{\% codeblock %}<br />
-{\% raw %}<br />
-{% hogehoge %}<br />
-{\% endraw %}<br />
-{\% endcodeblock %}<br />
-{% endraw %}<br />
+<p>{% codeblock %}
+{% raw %}
+{% codeblock %}
+{% raw %}
+{% hogehoge %}
+{% endraw %}
+{% endcodeblock %}
+{% endraw %}
 {% endcodeblock %}</p>
-
-<p>というので書くことができた。raw ~ endraw というのを使う。<br><br />
-ただ、↑に書いている通り、ネストさせることができなかったのでバックスラッシュ突っ込んでお茶を濁した。。<br><br />
+<p>というので書くことができた。raw ~ endraw というのを使う。<br>
+ただ、↑に書いている通り、ネストさせることができなかったのでバックスラッシュ突っ込んでお茶を濁した。。<br>
 ネストさせるのはどうやればいいのかな？</p>
-
 <h2 id="fenced-code-block-にファイル名が表示できない">Fenced Code Block にファイル名が表示できない</h2>
-
 <p>Fenced Code Block を書くときに、↓のような書き方をするとコードブロックにちょっとした注釈が出る。</p>
-
 <p><code>{% raw %}{% codeblock %}{% endraw %}</code><br></p>
-
 <p>出るという触れ込みだったのだが、なかなかどうして出なかった。</p>
-
-<p>結論からすると、これはうちのArchlinuxがpython3を使おうとしているためだった。<br><br />
+<p>結論からすると、これはうちのArchlinuxがpython3を使おうとしているためだった。<br>
 PygmentsというやつがPython2.7を求めているところを、違うバージョンのPythonが使われちゃって失敗してた感じ。</p>
-
-<p>修正方法は以下のページを参考にしました。というかそのまま使わせていただきました。多謝。<br />
+<p>修正方法は以下のページを参考にしました。というかそのまま使わせていただきました。多謝。
 <a href="http://www.nonsenseby.me/blog/2013/04/13/arch-linux/">Arch Linux, Octopress, and misbehaving Pygments - Nonsense By Me</a></p>
 
                     </div>

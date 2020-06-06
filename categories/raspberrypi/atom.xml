@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RaspberryPi on make clean; make</title>
@@ -52,7 +52,7 @@
       <pubDate>Tue, 10 Jun 2014 21:49:47 +0900</pubDate>
       
       <guid>https://pankona.github.io/blog/2014/06/10/raspi-photo-during-streaming/</guid>
-      <description>Raspberry Pi＋カメラモジュールを使って、 - 映像をWebページで配信しつつ。 - いま写してる絵を保存する（写真を撮るみたいな）。写真を撮るボタンもWe</description>
+      <description>Raspberry Pi＋カメラモジュールを使って、 映像をWebページで配信しつつ。 いま写してる絵を保存する（写真を撮るみたいな）。写真を撮るボタンもWebペ</description>
     </item>
     
     <item>

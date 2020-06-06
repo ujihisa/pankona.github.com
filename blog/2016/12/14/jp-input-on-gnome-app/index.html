@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="GNOMEアプリ上で日本語入力できなくなったときの対処メモ - make clean; make">
@@ -99,50 +99,40 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p>何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに<br />
+                        <p>何が原因かハッキリしていないが、Linux をアップデート (パッケージの更新という意味) したときに
 日本語が入力できなくなることがあった。</p>
-
-<p>起きたこととしては、<br />
-* firefox 上では日本語入力可能 (direct input と日本語のトグル可能) 。<br />
-* Slack、chromium の上では日本語入力できない (direct input のみ可能) 。</p>
-
-<p>環境は、<br />
-* Manjaro Linux (2016年12月あたり)<br />
-* fcitx を使用<br />
-* 日本語入力は mozc</p>
-
+<p>起きたこととしては、</p>
+<ul>
+<li>firefox 上では日本語入力可能 (direct input と日本語のトグル可能) 。</li>
+<li>Slack、chromium の上では日本語入力できない (direct input のみ可能) 。</li>
+</ul>
+<p>環境は、</p>
+<ul>
+<li>Manjaro Linux (2016年12月あたり)</li>
+<li>fcitx を使用</li>
+<li>日本語入力は mozc</li>
+</ul>
 <p>方々ググって対処法を見つけたのでメモ。</p>
-
-<h2 id="dconf-editor-で設定を確認し-必要に応じて修正する">dconf Editor で設定を確認し、必要に応じて修正する</h2>
-
-<p>dconf Editor を開き、以下の設定を確認する。<br />
-* <code>/org/gnome/settings-daemon/plugins/xsettings/overrides</code> を参照する<br />
-* 値に <code>{'Gtk/IMModule': &lt;'fcitx'&gt;}</code> が入っているかどうか</p>
-
+<h2 id="dconf-editor-で設定を確認し必要に応じて修正する">dconf Editor で設定を確認し、必要に応じて修正する</h2>
+<p>dconf Editor を開き、以下の設定を確認する。</p>
+<ul>
+<li><code>/org/gnome/settings-daemon/plugins/xsettings/overrides</code> を参照する</li>
+<li>値に <code>{'Gtk/IMModule': &lt;'fcitx'&gt;}</code> が入っているかどうか</li>
+</ul>
 <p>コマンドラインから確認する場合は以下のように入力する。</p>
-
 <pre><code>$ gsettings get org.gnome.settings-daemon.plugins.xsettings overrides
 # (期待される出力) {'Gtk/IMModule': &lt;'fcitx'&gt;}
-</code></pre>
-
-<p>入ってなかったら、上記の値をコピペして設定する。<br />
+</code></pre><p>入ってなかったら、上記の値をコピペして設定する。
 コマンドラインから設定する場合は以下のように入力する。</p>
-
 <pre><code>$ gsettings set org.gnome.settings-daemon.plugins.xsettings overrides &quot;{'Gtk/IMModule':&lt;'fcitx'&gt;}&quot;
-</code></pre>
-
-<p>当方の環境ではこれで日本語入力ができる状態になった。</p>
-
+</code></pre><p>当方の環境ではこれで日本語入力ができる状態になった。</p>
 <h2 id="参考サイト">参考サイト</h2>
-
 <ul>
-<li><a href="https://wiki.archlinuxjp.org/index.php/Fcitx#Gnome-Shell">Fcitx - ArchWiki (日本語版)</a><br />
-
+<li><a href="https://wiki.archlinuxjp.org/index.php/Fcitx#Gnome-Shell">Fcitx - ArchWiki (日本語版)</a>
 <ul>
-<li>「Ctrl+Space が GTK のプログラムで機能しない」の項を参照。<br /></li>
-</ul></li>
+<li>「Ctrl+Space が GTK のプログラムで機能しない」の項を参照。</li>
+</ul>
+</li>
 </ul>
 
                     </div>

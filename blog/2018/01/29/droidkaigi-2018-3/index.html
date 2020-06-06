@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="gomobile build で JNI から Toast を出せなかった話 - make clean; make">
@@ -99,23 +99,15 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p>本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。<br />
+                        <p>本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。
 来週の木曜日である。ヤバイ。準備捗ってない…。</p>
-
-<p>とはいえ色々調査は進めている。<br />
+<p>とはいえ色々調査は進めている。
 gomobile 関連で色々調べて分かったことを書いておく。</p>
-
 <h2 id="jni-だけで-toast-を出すのは無理な気がする">JNI だけで Toast を出すのは無理な気がする</h2>
-
 <p><code>Toast.makeText(this, &quot;hogehoge&quot;, Toast.LENGTH_SHORT);</code></p>
-
 <p>「Java でやるなら」、上のような書き方をすれば Toast は出る。実に簡単。</p>
-
-<p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。<br />
+<p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。
 (下記はエラーチェックを省略している)</p>
-
 <p>先に書いておくと、下記のコードは正しく動作しない。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">toast</span>
 
@@ -173,68 +165,54 @@ gomobile 関連で色々調べて分かったことを書いておく。</p>
             <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
         })
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}</code></pre></div>
-<p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br />
-<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br />
+}
+</code></pre></div><p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。
+<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del>
 <del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
-
-<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del><br />
-<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del><br />
+<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del>
+<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del>
 <del>事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</del></p>
-
-<p><del>Java のレイヤでは書ける以下のような例は、</del><br />
+<p><del>Java のレイヤでは書ける以下のような例は、</del>
 <del>JNI のレイヤでは表現することができないと思われる。</del></p>
-
 <p><del><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></del></p>
-
-<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del><br />
-<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del><br />
+<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del>
+<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del>
 <del>もう少し原因究明に届かなかった。</del></p>
-
 <p>(2018/01/31 追記)</p>
-
 <p>上記は完全にウソだった。勘違いであった。申し訳ございません！</p>
-
 <p>ちゃんとどのようなエラーが (4) で吐かれているか補足してみたところ、以下の例外が投げられていた。</p>
-
 <pre><code>java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
-</code></pre>
-
-<p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで<br />
+</code></pre><p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで
 Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
-
-<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br />
+<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。
 定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity.<span style="color:#a6e22e">runOnUiThread</span>(<span style="color:#66d9ef">new</span> Runnable() {
-    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
-        Toast.<span style="color:#a6e22e">makeText</span>(activity, <span style="color:#e6db74">&#34;Hello&#34;</span>, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
-    }
-});</code></pre></div>
-<p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br />
-無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity<span style="color:#f92672">.</span><span style="color:#a6e22e">runOnUiThread</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">});</span>
+</code></pre></div><p>これを JNI で表現するにはどうすれば良いかを考えれば良い。
+無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、
 とりあえず試みてみようとは思う。</p>
-
 <h2 id="java-のレイヤに-charsequence-をとらないメソッドを定義すればいけるが">Java のレイヤに CharSequence をとらないメソッドを定義すればいけるが…</h2>
-
-<p>上記の原因の仮説を若干補強するものとして、<br />
-CharSequence を取らずに Toast を出すメソッドを Java レイヤに準備しておき、<br />
+<p>上記の原因の仮説を若干補強するものとして、
+CharSequence を取らずに Toast を出すメソッドを Java レイヤに準備しておき、
 それを JNI から呼び出すようなコードを書いた場合は無事に Toast が出力される。</p>
-
-<p>以下のようなコードをあらかじめ Java のレイヤに書いておき、<br />
+<p>以下のようなコードをあらかじめ Java のレイヤに書いておき、
 それを上記の JNI と同様のノリで呼び出すようにする。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// static Activity goNativeActivity;
 </span><span style="color:#75715e">// onCreate にて goNativeActivity = this;
 </span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> showToast(<span style="color:#66d9ef">final</span> <span style="color:#a6e22e">String</span> message) {
-    Handler <span style="color:#a6e22e">h</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler(goNativeActivity.<span style="color:#a6e22e">getApplication</span>().<span style="color:#a6e22e">getMainLooper</span>());
-    h.<span style="color:#a6e22e">post</span>(<span style="color:#66d9ef">new</span> Runnable() {
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showToast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Handler h <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getApplication</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMainLooper</span><span style="color:#f92672">());</span>
+    h<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
         <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">void</span> run() {
-            Toast.<span style="color:#a6e22e">makeText</span>(goNativeActivity, message, Toast.<span style="color:#a6e22e">LENGTH_SHORT</span>).<span style="color:#a6e22e">show</span>();
-        }
-    });
-}</code></pre></div>
-<p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br />
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">,</span> message<span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">});</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、
 Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
 
                     </div>

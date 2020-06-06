@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="gomobile (build) で作るアプリでファイルを保存する - make clean; make">
@@ -99,42 +99,32 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p>gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。<br />
+                        <p>gomobile という Go 言語で Android/iOS のアプリを作ろうというプロジェクト (準公式) が存在する。
 ページはココ → <a href="https://github.com/golang/go/wiki/Mobile">gomobile の公式 wiki ページ - https://github.com/golang/go/wiki/Mobile</a></p>
-
-<p><code>gomobile build</code> コマンド一発で Go のソースから APK が生成されるというなかなか豪快なコマンドなのであるが、<br />
-いかんせん色々制限があって、いざ何か作ってみようとするとまあまあハマる。<br />
+<p><code>gomobile build</code> コマンド一発で Go のソースから APK が生成されるというなかなか豪快なコマンドなのであるが、
+いかんせん色々制限があって、いざ何か作ってみようとするとまあまあハマる。
 どんな苦行があるかは <a href="https://qiita.com/pankona/items/11941a5cfb668e653b4a">手前味噌だが Qiita の記事</a> に何となく記しておいた。</p>
-
-<p>上記記事には書いてなかったハマりポイントとして、<strong>「ファイルを永続領域に保存する API がない」</strong>というのがある。<br />
-ファイルを保存できないということは、ゲーム作ってて何かセーブデータでも保存しよう、とかそういうことができないってことである。<br />
+<p>上記記事には書いてなかったハマりポイントとして、**「ファイルを永続領域に保存する API がない」**というのがある。
+ファイルを保存できないということは、ゲーム作ってて何かセーブデータでも保存しよう、とかそういうことができないってことである。
 割と致命的である。</p>
-
-<p>ただ、実は gomobile はパッケージ内に JNI を触る実装を持っていて (何故か internal パッケージなので外から触れないが) 、<br />
-それを参考にすれば、cgo 経由で JNI に触ることができる。<br />
-JNI に触れるということは、Java の API に触れるということで、それはすなわち Android SDK の API に触れるということである。<br />
+<p>ただ、実は gomobile はパッケージ内に JNI を触る実装を持っていて (何故か internal パッケージなので外から触れないが) 、
+それを参考にすれば、cgo 経由で JNI に触ることができる。
+JNI に触れるということは、Java の API に触れるということで、それはすなわち Android SDK の API に触れるということである。
 Go から Android SDK の API に触れるのである。</p>
-
 <h2 id="android-アプリ作成におけるファイル保存領域の取得">Android アプリ作成におけるファイル保存領域の取得</h2>
-
-<p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、<br />
+<p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、
 ファイルを永続保存できる領域へのディレクトリパスを取得できる (アプリアンインストールと共に削除される) 。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">class</span> MyActivity <span style="color:#a6e22e">extends</span> AppCompatActivity {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">void</span> onCreate(Bundle <span style="color:#a6e22e">savedInstanceState</span>) {
-        String <span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">getCacheDir</span>().<span style="color:#a6e22e">getAbsolutePath</span>();
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String dir <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheDir</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">();</span>
         <span style="color:#75715e">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
-</span><span style="color:#75715e"></span>    }
-}</code></pre></div>
-<h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
-
-<p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br />
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
+<p>つまりは上記と同様の処理を JNI で書いてやれば良い。
 以下のようになる。</p>
-
-<h3 id="jni-パッケージ-go言語-c言語">jni パッケージ (Go言語 + C言語)</h3>
-
+<h3 id="jni-パッケージ-go言語--c言語">jni パッケージ (Go言語 + C言語)</h3>
 <p>指定した関数を JNI 上で実行する関数 <code>RunOnJVM</code> を定義しているパッケージ。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
 </span><span style="color:#75715e"></span>
@@ -236,9 +226,8 @@ Go から Android SDK の API に触れるのである。</p>
 		<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">nil</span>
 	}()
 	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errch</span>
-}</code></pre></div>
-<h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語-c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
-
+}
+</code></pre></div><h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語--c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
 <p>上記 jni パッケージを使って、ファイル保存領域を取得するための関数を jni 上で実行する。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
 </span><span style="color:#75715e"></span>
@@ -313,31 +302,28 @@ Go から Android SDK の API に触れるのである。</p>
 </span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
 		})
 	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
-}</code></pre></div>
-<h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
-
+}
+</code></pre></div><h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
 <p>上記で準備した関数を呼び出す部分。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
     <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">NewStorage</span>().<span style="color:#a6e22e">DirectoryPath</span>()
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage: %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}</code></pre></div>
-<p>これで、ファイル保存領域へのディレクトリパスを取得できる。<br />
+}
+</code></pre></div><p>これで、ファイル保存領域へのディレクトリパスを取得できる。
 あとは、取得したディレクトリパス配下に保存したいものを保存する。</p>
-
 <h2 id="余談-キャッシュディレクトリの取得">(余談) キャッシュディレクトリの取得</h2>
-
-<p>上記のコードで永続保存が可能な領域へのパスが取得できるので、それはそれで良いのであるが、<br />
-実はもっと手軽にファイル保存が可能な領域へのパスを取得できる方法があり、<br />
+<p>上記のコードで永続保存が可能な領域へのパスが取得できるので、それはそれで良いのであるが、
+実はもっと手軽にファイル保存が可能な領域へのパスを取得できる方法があり、
 それは環境変数 <code>TMPDIR</code> を参照することである。</p>
-
-<p>ただし、本値は Android SDK の API で言うところの <code>Context.getCacheDir</code> に相当し、<br />
-Android 端末の状況によっては削除され得る領域であることに気をつける必要がある。<br />
-が、ちょっと保存したいくらいの用途であれば耐えうるような気がする。<br />
+<p>ただし、本値は Android SDK の API で言うところの <code>Context.getCacheDir</code> に相当し、
+Android 端末の状況によっては削除され得る領域であることに気をつける必要がある。
+が、ちょっと保存したいくらいの用途であれば耐えうるような気がする。
 以下のようにして取得する。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
     <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;TMPDIR&#34;</span>)
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage (for cache): %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}</code></pre></div>
+}
+</code></pre></div>
                     </div>
                     
                     <div class="post-share">

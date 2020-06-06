@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>make clean; make</title>
@@ -25,7 +25,7 @@
       <pubDate>Wed, 03 Jun 2020 10:47:03 +0900</pubDate>
       
       <guid>https://pankona.github.io/blog/2020/06/03/kichijojipm-22/</guid>
-      <description>&lt;p&gt;2020-06-02、吉祥寺.pm 22 (今回はオンラインでの開催) に参加した。&lt;br /&gt;
+      <description>&lt;p&gt;2020-06-02、吉祥寺.pm 22 (今回はオンラインでの開催) に参加した。
 今回のテーマは 「変わったこと、変わらなかったこと」&lt;/p&gt;</description>
     </item>
     
@@ -377,7 +377,7 @@
       <pubDate>Tue, 10 Jun 2014 21:49:47 +0900</pubDate>
       
       <guid>https://pankona.github.io/blog/2014/06/10/raspi-photo-during-streaming/</guid>
-      <description>Raspberry Pi＋カメラモジュールを使って、 - 映像をWebページで配信しつつ。 - いま写してる絵を保存する（写真を撮るみたいな）。写真を撮るボタンもWe</description>
+      <description>Raspberry Pi＋カメラモジュールを使って、 映像をWebページで配信しつつ。 いま写してる絵を保存する（写真を撮るみたいな）。写真を撮るボタンもWebペ</description>
     </item>
     
     <item>

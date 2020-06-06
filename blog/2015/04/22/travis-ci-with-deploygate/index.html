@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="Cocos2d-x &#43; Travis CI &#43; DeployGate - make clean; make">
@@ -99,28 +99,20 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p><a href="http://pankona.github.io/blog/2015/04/19/cocos-with-travisci/">前回</a>の記事にて、cocos2d-xでのアプリ作成とTravis CIを連携させるとこまでいった。<br />
+                        <p><a href="http://pankona.github.io/blog/2015/04/19/cocos-with-travisci/">前回</a>の記事にて、cocos2d-xでのアプリ作成とTravis CIを連携させるとこまでいった。
 今回は成果物であるAPKをDeployGateにアップロードするところについて書き留めておく。</p>
-
 <h2 id="だいたいのやり方">だいたいのやり方</h2>
-
 <ul>
-<li>ビルドが成功したら<code>curl</code>コマンドにてDeployGateにAPKをアップロードする。<br /></li>
-<li>アップロードにあたってDeployGateのAPI Keyが必要になる。DeployGateにログインして個人設定的なところを見れば載っている。<br /></li>
-<li>API Keyは.travis.ymlに書くことになるが、そのまま載せちゃうとセキュリティ的に問題なので暗号化する。<br />
-
+<li>ビルドが成功したら<code>curl</code>コマンドにてDeployGateにAPKをアップロードする。</li>
+<li>アップロードにあたってDeployGateのAPI Keyが必要になる。DeployGateにログインして個人設定的なところを見れば載っている。</li>
+<li>API Keyは.travis.ymlに書くことになるが、そのまま載せちゃうとセキュリティ的に問題なので暗号化する。
 <ul>
-<li>暗号化には<code>travis</code>コマンドを用いる。<br />
-<br /></li>
-</ul></li>
+<li>暗号化には<code>travis</code>コマンドを用いる。</li>
 </ul>
-
+</li>
+</ul>
 <h2 id="ちょっと細かいやり方">ちょっと細かいやり方</h2>
-
 <p>まずはAPKアップロード成功後の.travis.ymlを載せておく。</p>
-
 <pre><code>language: android
 
 # Handle git submodules yourself
@@ -172,45 +164,27 @@ after_success:
     - echo $TRAVIS_BRANCH
     - echo $TRAVIS_PULL_REQUEST
     - '[ &quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ] &amp;&amp; curl -F &quot;file=@./bin/debug/android/KonaReflection-debug.apk&quot; -F &quot;token=${DEPLOYGATE_TOKEN}&quot; -F &quot;message=Deploy from Travis CI&quot; https://deploygate.com/api/users/pankona/apps'
-</code></pre>
-
-<h3 id="前回からの変更点-apkアップロードのために追加した部分">前回からの変更点（APKアップロードのために追加した部分）</h3>
-
+</code></pre><h3 id="前回からの変更点apkアップロードのために追加した部分">前回からの変更点（APKアップロードのために追加した部分）</h3>
 <p>前回から増えたり変更したりしたのは以下。</p>
-
 <pre><code>env:
   global:
     secure: &quot;TeSR8JLJd2Z0erCxcgLinC+me5SfwpgcCNwiTsqXn09erOgos2+mUbVQaSyo7Bw4OF4TmNpejX+jETd/lL4fTiWRDw6NW/cqEelk57fXJ5mmf5ey+tB1EkMFwd8x7Fw2vBe4xtO8KeohI6D1Gtu1qTYU9t9x4bhAd4qL15Y5osE=&quot;
-</code></pre>
-
-<pre><code>    - '[ &quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ] &amp;&amp; curl -F &quot;file=@./bin/debug/android/KonaReflection-debug.apk&quot; -F &quot;token=${DEPLOYGATE_TOKEN}&quot; -F &quot;message=Deploy from Travis CI&quot; https://deploygate.com/api/users/pankona/apps'
-</code></pre>
-
-<p>後者の部分で、<code>${DEPLOYGATE_TOKEN}</code>という環境変数を参照しているが、これを設定しているのが前者の部分。</p>
-
-<h3 id="deploygate-tokenの暗号化">DEPLOYGATE_TOKENの暗号化</h3>
-
+</code></pre><pre><code>    - '[ &quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ] &amp;&amp; curl -F &quot;file=@./bin/debug/android/KonaReflection-debug.apk&quot; -F &quot;token=${DEPLOYGATE_TOKEN}&quot; -F &quot;message=Deploy from Travis CI&quot; https://deploygate.com/api/users/pankona/apps'
+</code></pre><p>後者の部分で、<code>${DEPLOYGATE_TOKEN}</code>という環境変数を参照しているが、これを設定しているのが前者の部分。</p>
+<h3 id="deploygate_tokenの暗号化">DEPLOYGATE_TOKENの暗号化</h3>
 <p>以下のコマンドでDeployGateのAPI Keyを暗号化する。</p>
-
-<p><code>$ gem install travis</code> # travisコマンドを使えるようにする。<br />
+<p><code>$ gem install travis </code> # travisコマンドを使えるようにする。
 <code>$ travis encrypt DEPLOYGATE_TOKEN={My DeployGate API Key}</code> # DeployGateで確認したAPI Keyを暗号化するコマンド（中括弧はいらない）。</p>
-
 <p>このコマンドで得られた文字列をそのまま.travis.ymlに貼っつければOKである。</p>
-
 <h3 id="いつアップロードするか">いつアップロードするか</h3>
-
-<p>以下の条件を満たした場合のみ、APKのアップロードを行うようにした。<br />
-これは、Pull Requestがmasterにマージされたとき、を意味している（つもり）。<br />
+<p>以下の条件を満たした場合のみ、APKのアップロードを行うようにした。
+これは、Pull Requestがmasterにマージされたとき、を意味している（つもり）。
 <code>&quot;$TRAVIS_BRANCH&quot; == &quot;master&quot; -a &quot;$TRAVIS_PULL_REQUEST&quot; == &quot;false&quot; ]</code></p>
-
-<p>これをやっとかないと、ブランチにコミットをPUSHしたタイミングだったりPull Requestを作ったタイミングだったり、でアップロードが走る。<br />
+<p>これをやっとかないと、ブランチにコミットをPUSHしたタイミングだったりPull Requestを作ったタイミングだったり、でアップロードが走る。
 個人的にはやり過ぎ感があったので、APKはmasterからだけ作ればいいやという制限を施した。</p>
-
 <h3 id="これがそこそこ楽だと思います">これがそこそこ楽だと思います</h3>
-
-<p>AndroidアプリにAPKをいちいち頑張って転送しなくても、開発中アプリをインストールすることができるようになった。<br />
+<p>AndroidアプリにAPKをいちいち頑張って転送しなくても、開発中アプリをインストールすることができるようになった。
 ちなみに、アップロードされたAPKはDeployGateアプリ経由で取得することになる。</p>
-
 <p>今回はここまで。</p>
 
                     </div>

@@ -7,7 +7,7 @@
 
     <meta name="description" content="Good poem">
 
-    <meta name="generator" content="Hugo 0.57.0-DEV" />
+    <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
     <meta name="twitter:title" content="golang.tokyo #14@メルカリ - make clean; make">
@@ -95,44 +95,33 @@
                         </p>
                     </header>
                     <div class="post-description">
-                        
-
-<p><a href="https://golangtokyo.connpass.com/event/82723/">golang.tokyo #14</a> に参加してきたのでその内容メモ。<br />
+                        <p><a href="https://golangtokyo.connpass.com/event/82723/">golang.tokyo #14</a> に参加してきたのでその内容メモ。
 発表内容は以下。</p>
-
 <ul>
-<li>ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん<br /></li>
-<li>チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん<br /></li>
-<li>ライトニングトーク 3 つ<br />
-
+<li>ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん</li>
+<li>チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん</li>
+<li>ライトニングトーク 3 つ
 <ul>
-<li>vgo の話 by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん<br /></li>
-<li>プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん<br /></li>
-<li>linter を作る話<br />
-<br /></li>
-</ul></li>
+<li>vgo の話 by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん</li>
+<li>プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん</li>
+<li>linter を作る話</li>
 </ul>
-
-<p>例によって軽食 (と言いつつかなり十分な量の食事が) 提供されており、ありがたくいただきました…！<br />
+</li>
+</ul>
+<p>例によって軽食 (と言いつつかなり十分な量の食事が) 提供されており、ありがたくいただきました…！
 ありがとうございました。ごちそうさまでした。</p>
-
-<h2 id="ホリネズミでもわかる-goroutine-入門-by-inukirom-https-twitter-com-inukirom-さん">ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん</h2>
-
+<h2 id="ホリネズミでもわかる-goroutine-入門-by-inukiromhttpstwittercominukirom-さん">ホリネズミでもわかる Goroutine 入門 by <a href="https://twitter.com/inukirom">@inukirom</a> さん</h2>
 <div style="max-width: 800px">
 <script async class="speakerdeck-embed" data-id="5611568f65044914bb63fb0d787e0852" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
-
 <div style="margin-bottom:24px">
   <a href=/images/golang.tokyo-14/05.jpg><img src=/images/golang.tokyo-14/resized_05.jpg /></a>
   <div class="caption">inukirom さん発表の様子。とても丁寧でわかりやすかった。</div>
 </div>
-
 <h3 id="goroutine-と-chan-の基本的な使い方">goroutine と chan の基本的な使い方</h3>
-
-<p>goroutine と defer と panic を組み合わせて使う場合に注意すべき点があり、<br />
-たとえば以下のような場合、A 内で張った defer は呼び出されない<strong>場合がある</strong>。<br />
-(スライド内では&rdquo;呼び出されない&rdquo;と書かれているが、その限りではなさそうな)</p>
-
+<p>goroutine と defer と panic を組み合わせて使う場合に注意すべき点があり、
+たとえば以下のような場合、A 内で張った defer は呼び出されない<strong>場合がある</strong>。
+(スライド内では&quot;呼び出されない&quot;と書かれているが、その限りではなさそうな)</p>
 <pre><code>func A() {
     defer func(){}()
     go B()
@@ -141,134 +130,95 @@
 func B() {
     panic(&quot;panic!!&quot;)
 }
-</code></pre>
-
-<p>状況としては、</p>
-
+</code></pre><p>状況としては、</p>
 <ul>
-<li><code>A()</code> が終わるよりも先に <code>B()</code> 内の <code>panic</code> が先に実行されたときは、<code>A()</code> 内の <code>defer</code> は呼び出されないまま終わる。<br /></li>
-<li><code>panic</code> よりも <code>A()</code> が終了するほうが先なのであれば、<code>defer</code> は実行される。<br />
-<br /></li>
+<li><code>A()</code> が終わるよりも先に <code>B()</code> 内の <code>panic</code> が先に実行されたときは、<code>A()</code> 内の <code>defer</code> は呼び出されないまま終わる。</li>
+<li><code>panic</code> よりも <code>A()</code> が終了するほうが先なのであれば、<code>defer</code> は実行される。</li>
 </ul>
-
 <h3 id="channel">channel</h3>
-
 <p>channel については以下のような話題がとりあげられた。</p>
-
 <ul>
-<li>close は結構デリケート (使い方を誤るとすぐに動かなくなる) なので注意<br /></li>
-<li>RW、R only、W only という属性を持たせられる<br /></li>
-<li>select. default で non-blocking にできる<br />
-<br /></li>
+<li>close は結構デリケート (使い方を誤るとすぐに動かなくなる) なので注意</li>
+<li>RW、R only、W only という属性を持たせられる</li>
+<li>select. default で non-blocking にできる</li>
 </ul>
-
 <p>ところで、channel は close しないでほっとくような例もよく見るのであれが、close しなくて良いのだろうか？</p>
-
 <p><a href="https://groups.google.com/forum/#!msg/golang-nuts/pZwdYRGxCIk/qpbHxRRPJdUJ">golang-nuts でのやりとり</a> を見るにつけては、 使われなくなった channel は GC の対象になるため、あえて明示的に close する必要はないと言っている気がする。 channel を close すると受け手側にお知らせがいくので、どうやらそういう目的で使うらしい。</p>
-
 <h3 id="wait-処理">wait 処理</h3>
-
 <p>goroutine の終了を待ち合わせする例の紹介。</p>
-
 <ul>
-<li>channel で待つ<br />
-
+<li>channel で待つ
 <ul>
-<li>単なるお知らせであってお知らせ内容に意味がないのであれば、<code>struct{}{}</code> を使うのがメモリ効率が良い。<br /></li>
-</ul></li>
-<li>sync.WaitGroup<br />
-
-<ul>
-<li><code>sync.WaitGroup</code> で、複数の goroutine を待ち合わせしやすくなる<br /></li>
-<li><code>sync.WaitGroup</code> にエラー処理を生やしたみたいな <code>errgroup</code> なんかもある<br />
-<br /></li>
-</ul></li>
+<li>単なるお知らせであってお知らせ内容に意味がないのであれば、<code>struct{}{}</code> を使うのがメモリ効率が良い。</li>
 </ul>
-
+</li>
+<li>sync.WaitGroup
+<ul>
+<li><code>sync.WaitGroup</code> で、複数の goroutine を待ち合わせしやすくなる</li>
+<li><code>sync.WaitGroup</code> にエラー処理を生やしたみたいな <code>errgroup</code> なんかもある</li>
+</ul>
+</li>
+</ul>
 <h3 id="for-ループと-goroutine">for ループと goroutine</h3>
-
 <p>for 文の中で goroutine 立てる例。よくある罠。</p>
-
 <ul>
-<li>引数に渡して何とかする例<br /></li>
-<li>競合の解決<br />
-
+<li>引数に渡して何とかする例</li>
+<li>競合の解決
 <ul>
-<li>直列でええやん、という場合もある<br /></li>
-<li>排他制御に <code>sync.Mutex</code> 使う例。<code>RWMutex</code> もあるぞ<br /></li>
-<li><code>sync/atomic</code> というパッケージもあるぞ<br />
-<br /></li>
-</ul></li>
+<li>直列でええやん、という場合もある</li>
+<li>排他制御に <code>sync.Mutex</code> 使う例。<code>RWMutex</code> もあるぞ</li>
+<li><code>sync/atomic</code> というパッケージもあるぞ</li>
 </ul>
-
+</li>
+</ul>
 <h3 id="goroutine-のリーク">goroutine のリーク</h3>
-
 <ul>
-<li>goroutine の中でブロックしちゃうと goroutine がリークする<br />
-
+<li>goroutine の中でブロックしちゃうと goroutine がリークする
 <ul>
-<li><code>context.Context</code> 等を用いると goroutine を終わらせる処理を書きやすい<br />
-<br /></li>
-</ul></li>
+<li><code>context.Context</code> 等を用いると goroutine を終わらせる処理を書きやすい</li>
 </ul>
-
+</li>
+</ul>
 <h3 id="便利ツールの紹介">便利ツールの紹介</h3>
-
 <ul>
-<li>gotrace<br />
-
+<li>gotrace
 <ul>
-<li>goroutine と channel のやりとりを可視化できるぞ…！<br /></li>
-<li>docker image を使って動かしている<br />
-<br /></li>
-</ul></li>
+<li>goroutine と channel のやりとりを可視化できるぞ…！</li>
+<li>docker image を使って動かしている</li>
 </ul>
-
-<h2 id="チャネルのしくみ-by-knsh14-https-twitter-com-knsh14-さん">チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん</h2>
-
+</li>
+</ul>
+<h2 id="チャネルのしくみ-by-knsh14httpstwittercomknsh14-さん">チャネルのしくみ by <a href="https://twitter.com/knsh14">@knsh14</a> さん</h2>
 <div style="max-width: 800px">
 <script async class="speakerdeck-embed" data-id="3ca3b188d9904775b4281cfee7018c27" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
-
 <div style="margin-bottom:24px">
   <a href=/images/golang.tokyo-14/03.jpg><img src=/images/golang.tokyo-14/resized_03.jpg /></a>
   <div class="caption">knsh14 さん発表の様子。シュラスコと寿司で例えていく。</div>
 </div>
-
 <p>以下、LT</p>
-
-<h2 id="vgo-by-tanksuzuki-https-twitter-com-tanksuzuki-さん">vgo by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん</h2>
-
+<h2 id="vgo-by-tanksuzukihttpstwittercomtanksuzuki-さん">vgo by <a href="https://twitter.com/tanksuzuki">@tanksuzuki</a> さん</h2>
 <div style="max-width: 800px">
 <script async class="speakerdeck-embed" data-id="08cee61b8c56450d8ef618b378fcd6a0" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
 </div>
-
 <div style="margin-bottom:24px">
   <a href=/images/golang.tokyo-14/02.jpg><img src=/images/golang.tokyo-14/resized_02.jpg /></a>
   <div class="caption">tanksuzuki さん発表の様子。GOPATH なくなるのは胸熱。</div>
 </div>
-
 <p>vgo に関してはまだ使うのしんどい一面もあるものの、GOPATH、vendor が不要になるみたいな、Go を紹介するときに割と不評を買うところが改善されていくわけであり、今後に大いに期待である。</p>
-
-<h2 id="プロダクションに-go-を適用した話-by-kurikazu-https-twitter-com-kurikazu-さん">プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん</h2>
-
+<h2 id="プロダクションに-go-を適用した話-by-kurikazuhttpstwittercomkurikazu-さん">プロダクションに Go を適用した話 by <a href="https://twitter.com/kurikazu">@kurikazu</a> さん</h2>
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/lyY1i4CNbWM6jP" width="595" height="520" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen></iframe><div style="margin-bottom:5px"></div></iframe>
-
 <div style="margin-bottom:24px">
   <a href=/images/golang.tokyo-14/04.jpg><img src=/images/golang.tokyo-14/resized_04.jpg /></a>
   <div class="caption">kurikazu さん発表の様子。Go 導入してハッピーなのは良いね！</div>
 </div>
-
-<h2 id="linter-を作る話-by-dice-zu-https-twitter-com-dice-zu-さん">linter を作る話 by <a href="https://twitter.com/dice_zu">@dice_zu</a> さん</h2>
-
+<h2 id="linter-を作る話-by-dice_zuhttpstwittercomdice_zu-さん">linter を作る話 by <a href="https://twitter.com/dice_zu">@dice_zu</a> さん</h2>
 <p><a href="https://daisuzu.github.io/golang-tokyo-14/#1"><img src=/images/golang.tokyo-14/linter_by_dice_zu.jpg /></a></p>
-
 <div style="margin-bottom:24px">
   <a href=/images/golang.tokyo-14/01.jpg><img src=/images/golang.tokyo-14/resized_01.jpg /></a>
   <div class="caption">dice_zu さん発表の様子。lint を比較的容易に自作できるのも Go の良いところか。</div>
 </div>
-
-<p>プロジェクト独自のコーディングルールとかがあるのであれば、チームで lint を作って運用するのもありかもしれない。<br />
+<p>プロジェクト独自のコーディングルールとかがあるのであれば、チームで lint を作って運用するのもありかもしれない。
 個人的には named return value 禁止とかやりたいところであるが…？</p>
 
                     </div>
