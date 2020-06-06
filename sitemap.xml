@@ -4,19 +4,30 @@
   
   <url>
     <loc>https://pankona.github.io/categories/</loc>
-    <lastmod>2020-06-03T10:47:03+09:00</lastmod>
+    <lastmod>2020-06-06T12:09:43+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>https://pankona.github.io/categories/em/</loc>
+    <lastmod>2020-06-06T12:09:43+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pankona.github.io/blog/2020/06/06/em-dialy-2020-06-06/</loc>
+    <lastmod>2020-06-06T12:09:43+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://pankona.github.io/</loc>
-    <lastmod>2020-06-03T10:47:03+09:00</lastmod>
+    <lastmod>2020-06-06T12:09:43+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pankona.github.io/posts/</loc>
-    <lastmod>2020-06-03T10:47:03+09:00</lastmod>
+    <lastmod>2020-06-06T12:09:43+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -29,12 +40,6 @@
   <url>
     <loc>https://pankona.github.io/blog/2020/06/03/kichijojipm-22/</loc>
     <lastmod>2020-06-03T10:47:03+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://pankona.github.io/categories/em/</loc>
-    <lastmod>2020-05-30T12:30:16+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
