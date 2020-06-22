@@ -86,6 +86,56 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2018-01-02 13:32:34</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/02/my-first-post-by-hugo/">ブログ生成を Octopress から Hugo に移行</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-その他" href="https://pankona.github.io/categories/%E3%81%9D%E3%81%AE%E4%BB%96">その他</a><a class="post-category post-category-Octopress" href="https://pankona.github.io/categories/octopress">Octopress</a><a class="post-category post-category-Hugo" href="https://pankona.github.io/categories/hugo">Hugo</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>いままで本ブログは Octopress を使って生成していたのであるが、<br>
+久々に動かしたり別のPCでやったりするときに上手く動かないことがままあり、まあまあストレスであった。</p>
+<p>ということで、爆速サイトジェネレータとして高名な Hugo を使うように変えてみた。<br>
+なるほど、噂に違わぬ爆速サイトジェネレーティングである。しばらく使ってみよう。</p>
+<p>Octopress から Hugo への移行は概ねすんなり済んだ。以下のような作業を行った。<br>
+テーマ選びに大半の時間を費やしたものの、概ね丸一日の作業となった (7.5h くらい)</p>
+<ul>
+<li>Hugo の使い方確認 (ドキュメントを見る等して)</li>
+<li>Hugo でサイトを生成し、Octopress 時代に生成したポスト一式をコピー
+<ul>
+<li>ファイル名、各ポストのヘッダー等は若干適合しない部分があったので修正を加えた</li>
+</ul>
+</li>
+<li>各記事のパーマリンクを従来サイトと同じになるように設定</li>
+<li>Hugo の設定 (config.toml) に各種サイトの設定を記載 (ブログ名、Twitter、GitHub へのリンク等)</li>
+<li>BlackFriday をちょっとだけ設定し、hardLineBreak が有効になるように</li>
+<li>テーマ選び。ここがめちゃめちゃ時間が掛かった。結局シンプルなの選んである程度カスタマイズする方針に</li>
+</ul>
+<p>以下はもう少しやっておきたいところ。</p>
+<ul>
+<li>フォントがダサい。というか見にくい。のでもうちょっと目に優しいやつを選ぶ</li>
+<li>サイトマップというか記事一覧というか、みたいのが欲しい</li>
+<li>favicon 設定</li>
+<li>about.html 的なやつを置く</li>
+<li>(あまり利用の実績がないが) SNS へのシェアボタンを追加。ツイッターだけ置いておいた。はてぶも欲しい。</li>
+<li>(まったく利用の実績がないが) disqus を置く。利用実績がまったくないところからして置かなくていいかも。優先度低。</li>
+</ul>
+<p>昨年は勉強会レポートと ZenPad レビューと、みたいなどちらかというと受動的な強いられポストが多かったため、<br>
+今年はもっと能動的に日常的に息を吐くように記事を更新していきたい所存。今年もやっていくぞー。</p>
+
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2017-06-01 19:34:21</div>
                 <section >
                     <header class="post-header">
@@ -1968,53 +2018,6 @@ UbuntuとArch Linux、どちらのFirefoxでもデフォルト設定では横方
 <h2 id="ここまでやって">ここまでやって</h2>
 <p>とりあえず望む形（二本指で左スワイプで戻る、右スワイプで進む）に設定できた。結構ハードルあった。。<br>
 ちなみにこれ、Mac OS向けFirefoxならデフォルトの挙動な模様。何の差なのか。。。</p>
-
-                    </div>
-                </section>
-                
-                <div class="content-subhead">2014-07-23 21:54:58</div>
-                <section >
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/07/23/raspi-touch-panel/">PiTFTのタッチパネルを動作させる</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>前回に引き続き、PiTFTの話題。</p>
-<p>前回でPiTFTにコンソール画面だったりXの画面だったりを出力させるところまでいった。<br>
-タッチパネルの設定がまだだったので、手順を簡単に記しておく。</p>
-<p>例によって、Raspberry PiにはArch Linuxが載っている前提。</p>
-<h3 id="タッチパネルのドライバーをロードする">タッチパネルのドライバーをロードする</h3>
-<p>前回、FBTFTがビルトインされているカーネルを以下のコマンドでインストールした。</p>
-<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code></p>
-<p>これが正しく入っていれば、タッチパネルのドライバもカーネルに含まれているはず。<br>
-ただし、画面に何かを表示させる時と異なり、手動でドライバをロードする必要がある。</p>
-<p>以下のコマンドで、タッチパネルのドライバをロードする。</p>
-<p>@@@@ 忘れたのであとで追記する @@@@</p>
-<p>基本的にはこれだけで動作すると思われる。<br>
-例によって<a href="https://github.com/notro/fbtft/wiki">notroさんのところのWiki</a>に載っている内容だが、<br>
-notroさんのところは充実しすぎて逆に迷う気がするので、備忘録的に残しておくことにする。。</p>
-<h3 id="動いているか確かめる方法">動いているか確かめる方法</h3>
-<p>evtestを用いて確かめられる。<br>
-evtestを起動したのちにタッチパネルをぐりぐり触ってみると、<br>
-タッチイベントの詳細がコンソールに出力される。</p>
-<p>また、正常にドライバがロードされると、<code>/dev/input/touchpanel</code>なるファイルが現れるはずである。<br>
-ちなみにこれはeventXへのシンボリックリンクになっている。<br>
-このファイルの有無でもドライバのロードが正しく行われたか判断できると思われる。</p>
-<h3 id="要追記事項">要追記事項</h3>
-<ul>
-<li>ドライバロードのコマンドをちゃんと確認する。</li>
-<li>キャリブレーション（回転した画面への対応）の方法。</li>
-</ul>
 
                     </div>
                 </section>
