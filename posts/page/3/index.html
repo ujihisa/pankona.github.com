@@ -86,6 +86,91 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2014-07-17 21:11:11</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2014/07/17/pitft-on-arch-linux/">PiTFTをArch Linux on Raspberry Piで動かすのに苦戦</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p><strong>2014/07/23/Wed 追記</strong></p>
+<p>以下のポストに誤りがあることがわかったので、訂正。<br>
+誤っている部分には打ち消し線を入れておく。</p>
+<hr>
+<p><a href="http://www.adafruit.com/products/1601">PiTFT</a>を購入。<br>
+さっそくRaspberry Piで動かそうとしてみたところ、これがなかなかうまくいかず。<br>
+3日程粘ってようやく動いた。やり方を記載しておく。</p>
+<p>Raspberry Piには、Arch Linuxが載っている前提です。</p>
+<h3 id="参考になるページ">参考になるページ</h3>
+<p><a href="https://github.com/notro/fbtft/wiki">notroさんのfbtftに関するWiki</a>。本当に感謝。Great。<br>
+ただ、ここに書いてある手順を踏んだだけではうまく動かなかった。<br>
+以下、顛末と動かすまでの手順。</p>
+<h4 id="rpi-updateが使える状態にする">rpi-updateが使える状態にする</h4>
+<p>以下、Raspberry Pi上でのコマンド入力。<br>
+以下のコマンドでrpi-updateを取得＆実行可能権限付与。</p>
+<p><code>$ wget https://raw.github.com/Hexxeh/rpi-update/master/rpi-update</code><br>
+<code>$ chmod +x ./rpi-update</code></p>
+<p>rpi-updateは適当な場所に移しておく。パスが通っているところに置いておくと便利。<br>
+以下、rpi-updateがある場所にパスが通っている前提で記載。</p>
+<h3 id="rpi-updateを使ってkernelをアップデート">rpi-updateを使ってKernelをアップデート</h3>
+<p>FBTFTドライバがビルトインされているとされるバージョンにしてみる。</p>
+<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code></p>
+<p>なんやかや起こったあと、リブート。</p>
+<p><code>$ sudo reboot</code></p>
+<p>これでFBTFTドライバが準備オッケーになっているはず、なのだが…？</p>
+<h3 id="fbtft_deviceがない"><del>fbtft_deviceがない</del></h3>
+<p><del>fbtft_deviceを有効にするために、modprobeしてみる。</del></p>
+<p><code>$ sudo modprobe fbtft_device name=adafruit22</code></p>
+<p><del>すると帰ってきた答えは、</del></p>
+<p><code>FATAL: Module fbtft_device not found.</code></p>
+<p><del>とのこと。実際に探してみたところ、fbtft_device.koというモジュールは存在していない様子。</del></p>
+<hr>
+<p><strong>2014/07/23/Wed 訂正</strong></p>
+<p>結論から言うと上記の挙動であっていた。<br>
+<code>BRANCH=builtin</code>を選択した場合はfbtft_deviceがloadableなモジュールとして現れない、<br>
+つまり modprobe で見つからないと言われるのは正しかった。</p>
+<p>上記の状態で、あとは /boot/cmdline.txt に然るべき内容を追記するだけでOK。<br>
+その後PiTFTを接続し、Raspberry Piを再起動すれば画面に何か映るはず。</p>
+<p>よって以下の手順はすべて無駄であるが、<br>
+以下の手順が誤りであることを示すために残しておく。。</p>
+<p>以下、無駄な手順メモ。全く不要。</p>
+<hr>
+<h3 id="いろいろやってfbtft_deviceを用意する"><del>いろいろやってfbtft_deviceを用意する</del></h3>
+<p><del>fbtft_deviceを求めて色々さまよったところ、上述のKernelアップデートの際に、</del></p>
+<p><code>sudo REPO_URI=https://github.com/notro/rpi-firmware rpi-update</code></p>
+<p><del>とビルトインではなく、loadable moduleとしてfbtft_deviceが現れるやつをチョイスしてみたところ、</del><br>
+<code>sudo modprobe fbtft_device name=adafruit22</code>がnot foundではなく、別のエラーになった。<br>
+<del>探してみたところ、実際にモジュールは存在した。ただし正常にmodprobeできていない。</del></p>
+<p><del>FBTFTのモジュールは、</del><br>
+<code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><br>
+<del>に置かれている。これをどこか別の場所にコピーしておく。後々使う。</del></p>
+<h3 id="rpi-updateを使ってfbtftビルトインバージョンに戻す"><del>rpi-updateを使ってFBTFTビルトインバージョンに戻す</del></h3>
+<p><del>上で一回やってるやつをやって、FBTFTビルトインバージョンのKernelに戻す。</del></p>
+<p><code>$ sudo -E REPO_URI=https://github.com/notro/rpi-firmware BRANCH=builtin rpi-update</code><br>
+<code>$ sudo reboot</code></p>
+<h3 id="戻したのちコピーしておいたfbtftを所定の位置に戻す"><del>戻したのち、コピーしておいたfbtftを所定の位置に戻す</del></h3>
+<p><code>/lib/modules/$(uname -r)/kernel/video/fbtft</code><del>の位置に戻す。</del></p>
+<h3 id="depmodする"><del>depmodする。</del></h3>
+<p><code>sudo depmod -a</code></p>
+<h3 id="fbtft_deviceをmodprobeする"><del>fbtft_deviceをmodprobeする</del></h3>
+<p><del>not foundとは言われなくなり、ちゃんとロードされる。はず。</del></p>
+<h3 id="あとはnotroさんのところの手順に従う">あとはnotroさんのところの手順に従う</h3>
+<p>/boot/cmdline.txtであるとか、もろもろ変更する。<br>
+PiTFTはきっと動き出す。</p>
+
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2014-06-10 21:49:47</div>
                 <section >
                     <header class="post-header">
@@ -107,32 +192,32 @@
 <ul>
 <li>映像をWebページで配信しつつ。</li>
 <li>いま写してる絵を保存する（写真を撮るみたいな）。写真を撮るボタンもWebページに備える。</li>
-<li>撮った写真はRaspberry Piにとりあえず保存しておいて、Webページ越しに確認できる。
-というのをやってみた。
+<li>撮った写真はRaspberry Piにとりあえず保存しておいて、Webページ越しに確認できる。<br>
+というのをやってみた。<br>
 例によっていくつか躓いた点があるので、備忘録的に記しておく。</li>
 </ul>
 <h3 id="raspistillでの静止画撮影とmjpg-streamerでの動画配信は同時に行えない">raspistillでの静止画撮影とmjpg-streamerでの動画配信は同時に行えない？</h3>
-<p>どうやらそのようである。最初は、
-「Webページ上にボタンを用意し、押されたら <code>raspistill</code> コマンドを発行する。」というやり方でやろうと思ったので当てが外れた感じ。
-mjpg-streamerで動画を配信する状態になっている状態でraspistillコマンドを実行すると、エラーが吐かれてしまってうまくいかない。
+<p>どうやらそのようである。最初は、<br>
+「Webページ上にボタンを用意し、押されたら <code>raspistill</code> コマンドを発行する。」というやり方でやろうと思ったので当てが外れた感じ。<br>
+mjpg-streamerで動画を配信する状態になっている状態でraspistillコマンドを実行すると、エラーが吐かれてしまってうまくいかない。<br>
 mjpg-streamerにカメラデバイスを専有されてしまっているとか、そういう雰囲気でうまくいかないんだろうと予想。</p>
 <h3 id="mjpg-streamerのsnapshot機能を使う">mjpg-streamerのsnapshot機能を使う</h3>
-<p>ではどうするかと言うと、mjpg-streamerには静止画を撮影する機能があるので、これを使ってみた。
-<a href="https://code.google.com/p/mjpg-streamer/">mjpg-streamerのプロジェクトのページ</a>に少しサンプルがあって、例えば、mjpg-streamerを動作させている状態でもって、
-<code>http://[Raspberry PiのIPアドレス]:8080/?action=stream</code> というURLにアクセスすれば動画配信になり、
-<code>http://[Raspberry PiのIPアドレス]:8080/?action=snapshot</code> というURLにアクセスすれば、静止画の撮影になる。
+<p>ではどうするかと言うと、mjpg-streamerには静止画を撮影する機能があるので、これを使ってみた。<br>
+<a href="https://code.google.com/p/mjpg-streamer/">mjpg-streamerのプロジェクトのページ</a>に少しサンプルがあって、例えば、mjpg-streamerを動作させている状態でもって、<br>
+<code>http://[Raspberry PiのIPアドレス]:8080/?action=stream</code> というURLにアクセスすれば動画配信になり、<br>
+<code>http://[Raspberry PiのIPアドレス]:8080/?action=snapshot</code> というURLにアクセスすれば、静止画の撮影になる。<br>
 これらは、同時に行うことができる。つまり、これをうまく使えば動画を配信しながら静止画の撮影ができるのでは、と。</p>
 <h3 id="wgetで画像を保存する">wgetで画像を保存する</h3>
-<p>Webページ上にボタンを用意しておくところまでは同じで、ボタンが押されたら <code>raspistill</code> の代わりに、<code>wget</code> を発行する。
-例） <code>wget -O /tmp/picture.jpg http://[Raspberry PiのIPアドレス]:8080/?action=snapshot</code>
-上記の例では、/tmp/picture.jpgという名前でmjpg-streamerが出力している動画のスナップショットが保存される。
+<p>Webページ上にボタンを用意しておくところまでは同じで、ボタンが押されたら <code>raspistill</code> の代わりに、<code>wget</code> を発行する。<br>
+例） <code>wget -O /tmp/picture.jpg http://[Raspberry PiのIPアドレス]:8080/?action=snapshot</code><br>
+上記の例では、/tmp/picture.jpgという名前でmjpg-streamerが出力している動画のスナップショットが保存される。<br>
 なので一応、動画配信しながら写真を撮る、という目的は達成できた。</p>
-<p>できた、が、、、
-動画配信中の画像をそのまま静止画にするだけなので、例えば静止画の画質を動画のものより良くする、とか、画像サイズを変更する、アス比を変更する、とかできない。
+<p>できた、が、、、<br>
+動画配信中の画像をそのまま静止画にするだけなので、例えば静止画の画質を動画のものより良くする、とか、画像サイズを変更する、アス比を変更する、とかできない。<br>
 あくまで動画を一枚切り取っただけ、という感じ。まあ及第点か。。</p>
 <h3 id="撮った画像を確認するためにrailsアプリを作った">撮った画像を確認するためにRailsアプリを作った</h3>
-<p>Raspberry PiでRailsなんてどうなのか。でもちょっと作ってみた。
-目下作り途中だが。とりあえず動いてるのを見るのは楽しい。
+<p>Raspberry PiでRailsなんてどうなのか。でもちょっと作ってみた。<br>
+目下作り途中だが。とりあえず動いてるのを見るのは楽しい。<br>
 <a href="https://github.com/pankona/raspi_camera_server">https://github.com/pankona/raspi_camera_server</a></p>
 <ul>
 <li>あらかじめmjpg-streamerを起動した状態で、上記Railsアプリを動かす</li>
@@ -162,33 +247,33 @@ mjpg-streamerにカメラデバイスを専有されてしまっているとか�
                     </header>
 
                     <div class="post-description">
-                        <p>Raspberry PiにRailsを入れたときのこと。
-あまりすんなりとはいかなかったので、つまづいたところなんかをメモ。
+                        <p>Raspberry PiにRailsを入れたときのこと。<br>
+あまりすんなりとはいかなかったので、つまづいたところなんかをメモ。<br>
 （ちなみにRaspberry Piで動いているOSはArch Linuxです。）</p>
 <h2 id="第一の関門-railsのインストール">第一の関門 Railsのインストール</h2>
-<p>Raspberry Piにsshで接続し、<code>gem install rails</code> とやるだけでRailsのインストールが始まる。
-簡単、、、なのだがこれがなかなか終わらない。しかしこれはただ単純に待てばいいので難しいことは何もない。
+<p>Raspberry Piにsshで接続し、<code>gem install rails</code> とやるだけでRailsのインストールが始まる。<br>
+簡単、、、なのだがこれがなかなか終わらない。しかしこれはただ単純に待てばいいので難しいことは何もない。<br>
 終わるまで3時間程度。</p>
-<p>sshで接続してる場合、ほっとくとタイムアウトしてしまうと思われる。
-その場合は、screen というので対策できる。nohup というのもある。
+<p>sshで接続してる場合、ほっとくとタイムアウトしてしまうと思われる。<br>
+その場合は、screen というので対策できる。nohup というのもある。<br>
 とにかく長時間放置でタイムアウトしちゃってもいい（ログアウトしちゃってもいい）対策は必要。</p>
 <h2 id="第二の関門-bundle-install">第二の関門 bundle install</h2>
-<p>Railsアプリを動かす前準備で <code>bundle install</code> 。やると思います。
+<p>Railsアプリを動かす前準備で <code>bundle install</code> 。やると思います。<br>
 これがまた死ぬほど時間かかる上に、インストール中に、</p>
 <p>killed</p>
-<p>とだけ出て終了しちゃう。当然だが bundle install は終わってない。
+<p>とだけ出て終了しちゃう。当然だが bundle install は終わってない。<br>
 こっちのが問題だった。</p>
 <h3 id="killed-されちゃうのはメモリ不足のため">killed されちゃうのはメモリ不足のため</h3>
-<p>bundle install で Killed になっちゃうのは、メモリ不足のための模様。
-これは、スワップ領域を設定してあげることで回避できた。
-スワップ領域設定の方法については、例によってArch LinuxのWikiを参照した。
+<p>bundle install で Killed になっちゃうのは、メモリ不足のための模様。<br>
+これは、スワップ領域を設定してあげることで回避できた。<br>
+スワップ領域設定の方法については、例によってArch LinuxのWikiを参照した。<br>
 何でも載ってるね！ちなみ参照したページは<a href="https://wiki.archlinux.org/index.php/Swap_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">これ - Swap （日本語） - ArchWiki</a>。</p>
 <h3 id="killed-されなくなったけど超時間かかる">killed されなくなったけど、、、超時間かかる</h3>
-<p>killed されなくなったのはいいけど、Railsのインストールのときと同じく、やたら時間がかかる。。。
+<p>killed されなくなったのはいいけど、Railsのインストールのときと同じく、やたら時間がかかる。。。<br>
 9000秒くらいかかったので、実に3時間弱くらい。</p>
-<p>なんで時間かかるかというと、まず、 <strong>therubyracer</strong> をインストールしようとしてるのが原因。
-これ自体はいれたかったのでいいんだけど、どうやらこいつを入れるのに伴って、 <strong>libv8</strong> というのが入る模様。
-そんでこれがどうやら <strong>ソースとってきてビルドしている</strong> ようなのである。Raspberry Piになんてことさせるんや。。。
+<p>なんで時間かかるかというと、まず、 <strong>therubyracer</strong> をインストールしようとしてるのが原因。<br>
+これ自体はいれたかったのでいいんだけど、どうやらこいつを入れるのに伴って、 <strong>libv8</strong> というのが入る模様。<br>
+そんでこれがどうやら <strong>ソースとってきてビルドしている</strong> ようなのである。Raspberry Piになんてことさせるんや。。。<br>
 最近の割とパワーのあるPCなら10分程度で終わるらしいのだが。</p>
 <h2 id="まとめると">まとめると</h2>
 <p>RailsをRaspberry Piにインストールするためには、</p>
@@ -218,23 +303,23 @@ mjpg-streamerにカメラデバイスを専有されてしまっているとか�
                     </header>
 
                     <div class="post-description">
-                        <p>IMはずっとibusを使ってきたのだが、なかなか設定に融通が効かないというか、なんというか。
+                        <p>IMはずっとibusを使ってきたのだが、なかなか設定に融通が効かないというか、なんというか。<br>
 具体的な要望としては、</p>
 <ul>
 <li>mozcを使いたい</li>
 <li>Alt + Space でIMEを切り替えたい（Direct Inputと日本語入力をトグルする）</li>
 </ul>
-<p>という二点なのだが、後者の「Alt + Space」というキーバインドを設定する方法がわからず。。。
-きっとやり方があるというか、いままでごまかしごまかしやってきたのだが、
+<p>という二点なのだが、後者の「Alt + Space」というキーバインドを設定する方法がわからず。。。<br>
+きっとやり方があるというか、いままでごまかしごまかしやってきたのだが、<br>
 ついに気持ち悪さが先に立って、「やめてやるわ！」となったところ。</p>
-<p>で、IMとしてUIMを使ってみた。uim-mozc。
-そしたらいともたやすく Alt + Space でのトグルが設定できちゃったもんだから拍子抜けというか。
+<p>で、IMとしてUIMを使ってみた。uim-mozc。<br>
+そしたらいともたやすく Alt + Space でのトグルが設定できちゃったもんだから拍子抜けというか。<br>
 はじめからこれ使ってれば良かったね！しばらくこれでいきます。uim-mozc。</p>
-<p>備忘録的に、設定方法のメモ。
+<p>備忘録的に、設定方法のメモ。<br>
 Arch Linux向けです。</p>
 <h2 id="基本的にはwiki参照">基本的にはWiki参照</h2>
-<p>ブログに書いた内容というのはいずれ時代遅れになるので、、、
-やはり、Arch Wikiの<a href="https://wiki.archlinux.org/index.php/Input_Japanese_using_uim_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">uim-mozcの設定方法</a>を参照するのが確実。
+<p>ブログに書いた内容というのはいずれ時代遅れになるので、、、<br>
+やはり、Arch Wikiの<a href="https://wiki.archlinux.org/index.php/Input_Japanese_using_uim_(%E6%97%A5%E6%9C%AC%E8%AA%9E)">uim-mozcの設定方法</a>を参照するのが確実。<br>
 うちもこれでいけた。</p>
 <h2 id="インストールしたパッケージ">インストールしたパッケージ</h2>
 <ul>
@@ -256,12 +341,12 @@ export XMODIFIERS='@im=uim'
 <ul>
 <li>
 <p>「Global settings」の設定。</p>
-<p>&ndash; Specify Default IMにチェックを入れる。
+<p>&ndash; Specify Default IMにチェックを入れる。<br>
 &ndash; Default input method を Mozc にする。</p>
 </li>
 <li>
 <p>「Mozc」の設定。</p>
-<p>&ndash; Default Input modeはDirect Inputに。
+<p>&ndash; Default Input modeはDirect Inputに。<br>
 &ndash; ついでにVIM協調モードも有効にしておく。</p>
 </li>
 <li>
@@ -270,7 +355,7 @@ export XMODIFIERS='@im=uim'
 </li>
 </ul>
 <h3 id="ここまでで">ここまでで</h3>
-<p>Alt + Space でDirect Inputと日本語入力がトグルできるようになった。
+<p>Alt + Space でDirect Inputと日本語入力がトグルできるようになった。<br>
 チャンスがあれば、他のIMも試してみよっかな。</p>
 
                     </div>
@@ -294,27 +379,27 @@ export XMODIFIERS='@im=uim'
 
                     <div class="post-description">
                         <h2 id="自分のページがgoogle検索にヒットしない理由">自分のページがGoogle検索にヒットしない理由</h2>
-<p>なかなか自分のページ（ここのブログのこと）がGoogle検索に引っかからないので、
-いや、大層なことを書いているわけでもないから引っかからなくても怒ったりはしないが、
+<p>なかなか自分のページ（ここのブログのこと）がGoogle検索に引っかからないので、<br>
+いや、大層なことを書いているわけでもないから引っかからなくても怒ったりはしないが、<br>
 いやでもなんで引っかからないんだろう、と思って調査をしていたところ、</p>
 <h3 id="githubのリポジトリはgoogle日本の検索に引っかからない">GithubのリポジトリはGoogle日本の検索に引っかからない</h3>
-<p>といった記事を見つけた。ほんまかいな？
-もしかしてそのせいでうちのページはGoogleに引っかからないんじゃああるまいか？
+<p>といった記事を見つけた。ほんまかいな？<br>
+もしかしてそのせいでうちのページはGoogleに引っかからないんじゃああるまいか？<br>
 （Github pagesを使って公開しているページなので）</p>
 <p>等と考えつつ、調査を続行していったところ、、、</p>
 <h3 id="結論からするとgithubのリポジトリはgoogle日本の検索にちゃんと引っかかる">結論からすると、GithubのリポジトリはGoogle日本の検索にちゃんと引っかかる。</h3>
 <p>ただし条件がある模様。それは（おそらく）、</p>
 <p><strong>ページ（リポジトリの場合はREADMEかな？）に日本語が含まれていること</strong></p>
-<p>つまり、Google日本の検索に引っかからない、というよりは、
-**&ldquo;日本語のページを検索&rdquo;**に引っかからない、ということである模様。
-全編英語で書いてたら英語のページと判断して、&ldquo;日本語のページを検索&quot;には載せない、ってことかなー。
+<p>つまり、Google日本の検索に引っかからない、というよりは、<br>
+**&ldquo;日本語のページを検索&rdquo;**に引っかからない、ということである模様。<br>
+全編英語で書いてたら英語のページと判断して、&ldquo;日本語のページを検索&quot;には載せない、ってことかなー。<br>
 そして、Google日本の検索は、おそらくデフォルトは&quot;日本語のページを検索&quot;になってる。という話。</p>
-<p>加えて、GithubのリポジトリのREADMEなんかは、英語だけで書かれているケースが多い。
+<p>加えて、GithubのリポジトリのREADMEなんかは、英語だけで書かれているケースが多い。<br>
 だからGoogle日本を使ってそのまま検索をしていると、Githubのページがあんまり出てこないという現象が。</p>
 <p>だので、英語だけで書かれたGithubのページも、検索オプションで言語に依らない検索にしてあげれば、Google日本の検索でも出てきます。</p>
 <h3 id="じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか">じゃあ日本の人にもリポジトリにリーチしてもらうにはどうするか？</h3>
-<p>自分のGithubのリポジトリに日本人を呼び込みたい！と思ったら、READMEに日本語をちょっと混ぜてあげればリーチできる人が増えるかも？
-と思っているがどうか。たぶん、おそらく、きっと、効果あると思われる。つまり自信ない。
+<p>自分のGithubのリポジトリに日本人を呼び込みたい！と思ったら、READMEに日本語をちょっと混ぜてあげればリーチできる人が増えるかも？<br>
+と思っているがどうか。たぶん、おそらく、きっと、効果あると思われる。つまり自信ない。<br>
 自分のリポジトリ使って実験してみます。そのうち調査結果を書きます。</p>
 
                     </div>
@@ -337,29 +422,29 @@ export XMODIFIERS='@im=uim'
                     </header>
 
                     <div class="post-description">
-                        <p>Vaio Pro 13にArch Linuxを入れて遊んでいる近頃である。
-概ね快適なLinuxライフを過ごせているのだが、一個だけ非常に不満な点がある。
+                        <p>Vaio Pro 13にArch Linuxを入れて遊んでいる近頃である。<br>
+概ね快適なLinuxライフを過ごせているのだが、一個だけ非常に不満な点がある。<br>
 それは「タッチパッドの手のひら検知」。パームディテクト、Palm Detection、等と呼ばれる機能。</p>
 <h3 id="手のひら検知">手のひら検知？</h3>
 <p>もはや手のひら検知について触れる必要もなさそうだが、一応。</p>
-<p>Vaio Pro 13のタッチパッドはなかなか大きい。
-これは最近のノートPC、MBPとか他のUltraBookにも採用されていて流行と言ったら流行。
+<p>Vaio Pro 13のタッチパッドはなかなか大きい。<br>
+これは最近のノートPC、MBPとか他のUltraBookにも採用されていて流行と言ったら流行。<br>
 これ自体は割と私は好みで、二本指、三本指でのスワイプなんかもやりやすくてなかなかいい。</p>
-<p>ただ大きいタッチパッドには弊害もあって、キーボードを打ってるときに親指の付け根のあたりで触れちゃうってこと。
-触れちゃうとどうなるかっていうと、クリックした扱いになってしまって、つまりカーソルが飛ぶ。
+<p>ただ大きいタッチパッドには弊害もあって、キーボードを打ってるときに親指の付け根のあたりで触れちゃうってこと。<br>
+触れちゃうとどうなるかっていうと、クリックした扱いになってしまって、つまりカーソルが飛ぶ。<br>
 編集中に予期せぬ場所にカーソルが飛んでしまって、あれ、これどうなった、みたいなことになる。</p>
-<p>それを解決してくれるのが、手のひら検知の仕組み。
+<p>それを解決してくれるのが、手のひら検知の仕組み。<br>
 つまり意図したタッチでないと思われるものは無視してくれるというやつで、考えた人凄いと思います。</p>
 <h3 id="arch-linux-on-vaio-pro-13の場合">Arch Linux on Vaio Pro 13の場合</h3>
-<p>件の手のひら検知を有効にする仕組みがある（デフォルトではオフ）。
-synclient、PalmDetect、あたりでぐぐると結構出てくる。具体的には、
+<p>件の手のひら検知を有効にする仕組みがある（デフォルトではオフ）。<br>
+synclient、PalmDetect、あたりでぐぐると結構出てくる。具体的には、<br>
 <code>synclient PalamDetect=1</code> とかってやって手のひら検知を有効にする。する、のだが。</p>
-<p>なんか全然効いてない気がするんですけど・・・。ということで調べてみた。
+<p>なんか全然効いてない気がするんですけど・・・。ということで調べてみた。<br>
 ほんとに効いてるのかどうかを。</p>
 <h3 id="結論からいうと効いてなかった">結論からいうと効いてなかった</h3>
 <p>効いてなかったです。ちくしょうめ。やっぱりか。</p>
-<p>ドライバのソースコードに簡単にログを仕込んで確認してみたところ、やっぱり効いてなかった。
-Arch Linuxでタッチパッドのドライバーは、Synapticsが使われている（というか大体どこでもSynapticsか）。
+<p>ドライバのソースコードに簡単にログを仕込んで確認してみたところ、やっぱり効いてなかった。<br>
+Arch Linuxでタッチパッドのドライバーは、Synapticsが使われている（というか大体どこでもSynapticsか）。<br>
 ソースコードはこれ。Githubに公開されている。<a href="git:anongit.freedesktop.org/xorg/driverxf86-input-synaptics">xf86-input-synaptics</a></p>
 <p>なんで効かないかと言うと、の前に、ソースコードからどうやって手のひら検知をしているかを調べてみたのでそれをメモ。</p>
 <h3 id="どうやって手のひら検知している">どうやって手のひら検知している？</h3>
@@ -369,21 +454,21 @@ Arch Linuxでタッチパッドのドライバーは、Synapticsが使われて�
 <li>PalmMinZがしきい値を超えているか（これも synclient PalmMinZ=XXX で設定できる）</li>
 <li>PalmMinWidthがしきい値を超えているか（これも synclient PalmMinWidth=XXX で設定できる）</li>
 </ul>
-<p>PalmMinZ は、どれくらい深く（強く？）タッチパッドが押されたら手のひらと判断するか、のしきい値。
+<p>PalmMinZ は、どれくらい深く（強く？）タッチパッドが押されたら手のひらと判断するか、のしきい値。<br>
 PalmMinWidth は、タッチの広さを見ていて、太すぎる指は手のひらとみなしましょう、という判断のためのしきい値。</p>
 <h3 id="arch-linux-on-vaio-pro-13-が手のひら検知をしてくれない理由">Arch Linux on Vaio Pro 13 が手のひら検知をしてくれない理由</h3>
-<p>上記のしきい値のうち、どうやらPalmMinWidthのほうがおかしいっぽくて、
-どんな触り方をしても常に「0」で判定されてしまっている模様。
-ちなみに、SynapticsはPalmMinWidthが0のときは手のひらとして判断しないように実装されている。
+<p>上記のしきい値のうち、どうやらPalmMinWidthのほうがおかしいっぽくて、<br>
+どんな触り方をしても常に「0」で判定されてしまっている模様。<br>
+ちなみに、SynapticsはPalmMinWidthが0のときは手のひらとして判断しないように実装されている。<br>
 なので、PalmDetect、PalmMinZ、PalmMinWidth、どれをどの値にしても手のひら検知は効かないということである。ちくしょうめ。</p>
 <h3 id="どうすれば解決するのか">どうすれば解決するのか？</h3>
 <h4 id="palmminwidthを正しく判定させる方法">PalmMinWidthを正しく判定させる方法</h4>
 <p>調査をしているが今のところわからない。。一般ピープルに手が及ぶ範囲なのかどうか。</p>
 <h4 id="それ以外の対処法">それ以外の対処法？</h4>
-<p>PalmMinWidthはもう一切判断に含めないようにソースコードを書き換えてみたが、、、
+<p>PalmMinWidthはもう一切判断に含めないようにソースコードを書き換えてみたが、、、<br>
 それってつまりタッチ深度だけで手のひらを検知するということであって、それはまあ微妙な感じ。</p>
 <h4 id="つまり">つまり</h4>
-<p>**残念ながら、手のひら検知がいまいちな件は解決できていない。**なんとかする方法の調査はTo Be Continuedである。
+<p>**残念ながら、手のひら検知がいまいちな件は解決できていない。**なんとかする方法の調査はTo Be Continuedである。<br>
 デュアルブートしているWindowsの側ではできているっぽいので、Arch Linux側でも出来ないことないと信じて。</p>
 
                     </div>
@@ -407,11 +492,11 @@ PalmMinWidth は、タッチの広さを見ていて、太すぎる指は手の�
 
                     <div class="post-description">
                         <h2 id="このポストは">このポストは</h2>
-<p>Windows8.1に対してWindows Updateしたところ、何だかわからないがデュアルブートしなくなって焦ったため、
+<p>Windows8.1に対してWindows Updateしたところ、何だかわからないがデュアルブートしなくなって焦ったため、<br>
 直し方というか、そもそもどうやってデュアルブートにしているかをメモしておくための記事。</p>
 <h3 id="件のpcについて">件のPCについて</h3>
 <p>以下のようなPCと、その中身の構成にしている。</p>
-<p>&ndash; PC本体：Vaio Pro 13
+<p>&ndash; PC本体：Vaio Pro 13<br>
 &ndash; OS：Arch LinuxとWindows8.1のデュアルブート</p>
 <h3 id="デュアルブートのためにしたこと---まずは普通にarch-linuxをインストール">デュアルブートのためにしたこと - まずは普通にArch Linuxをインストール</h3>
 <ul>
@@ -421,30 +506,30 @@ PalmMinWidth は、タッチの広さを見ていて、太すぎる指は手の�
 <ul>
 <li>Windowsを使ってLinux向けのパーティションを切る。</li>
 </ul>
-<p>「管理」を使ってやる。<a href="http://windows.microsoft.com/ja-jp/windows/create-boot-partition#1TC=windows-7">ブート パーティンションを作成する - Microsoftのページ</a>等が参考になる。
-とにかく何か領域が空いていればいい。うちの構成では180GB程度確保した。
+<p>「管理」を使ってやる。<a href="http://windows.microsoft.com/ja-jp/windows/create-boot-partition#1TC=windows-7">ブート パーティンションを作成する - Microsoftのページ</a>等が参考になる。<br>
+とにかく何か領域が空いていればいい。うちの構成では180GB程度確保した。<br>
 少なくとも30GBくらいいるかな？</p>
 <ul>
 <li>Arch Linux起動用のUSBを挿した状態でPCを起動し、USBからのブートを行う。</li>
 </ul>
-<p>あとは↑で作ったパーティションにArch Linuxをインストールしていく。詳しくはやはりArch LinuxのWiki参照。
-&ndash; パーティションのフォーマット。割り当て可能領域はすべて割り当て。EFIパーティションにする必要はない。普通ので。
-&ndash; /mnt にフォーマットしたパーティションをマウント。<code>mount /dev/sda5 /mnt</code> ← うちの環境の場合。
-&ndash; chrootする。<code>arch-chroot /mnt</code> で。
-&ndash; Arch Linuxのインストール。 <code>pacman -S base base-devel</code> とかやる。
-&ndash; genfstab とかそういったことをこまごま行う。
+<p>あとは↑で作ったパーティションにArch Linuxをインストールしていく。詳しくはやはりArch LinuxのWiki参照。<br>
+&ndash; パーティションのフォーマット。割り当て可能領域はすべて割り当て。EFIパーティションにする必要はない。普通ので。<br>
+&ndash; /mnt にフォーマットしたパーティションをマウント。<code>mount /dev/sda5 /mnt</code> ← うちの環境の場合。<br>
+&ndash; chrootする。<code>arch-chroot /mnt</code> で。<br>
+&ndash; Arch Linuxのインストール。 <code>pacman -S base base-devel</code> とかやる。<br>
+&ndash; genfstab とかそういったことをこまごま行う。<br>
 &ndash; ブートローダのインストール。ブートローダにはgummibootを採用した。</p>
 <pre><code>mount /dev/sda2 /boot/EFI
 cd /boot/EFI
 gummiboot install
-</code></pre><p>ここまでで勝手にデュアルブートしてくれたら嬉しかったが、そうはいかなかった（本来はこれだけでOKらしい）。
+</code></pre><p>ここまでで勝手にデュアルブートしてくれたら嬉しかったが、そうはいかなかった（本来はこれだけでOKらしい）。<br>
 Vaioのせいなのか、Windowsのせいなのか。。</p>
 <h3 id="デュアルブートのためにしたこと---無理やりgummibootを使わせる">デュアルブートのためにしたこと - 無理やりgummibootを使わせる</h3>
-<p>上記までで何が起きるかというと、、、
-どうやら、せっかくgummibootで設定したブートの設定がPC起動時になかったことにされてしまう模様。
+<p>上記までで何が起きるかというと、、、<br>
+どうやら、せっかくgummibootで設定したブートの設定がPC起動時になかったことにされてしまう模様。<br>
 つまりWindowsが問答無用で起動される状態に戻ってしまう。VaioのせいなのかWindowsのせいなのか。。。</p>
-<p>この点をちゃんと解決するのは諦めました。
-諦めて、Windowsの起動に使われるファイルをgummibootのものと置き換えることでデュアルブートを実現。。
+<p>この点をちゃんと解決するのは諦めました。<br>
+諦めて、Windowsの起動に使われるファイルをgummibootのものと置き換えることでデュアルブートを実現。。<br>
 一応、やれればいいや、ということで。</p>
 <ul>
 <li>先ほどのUSBからArch Linuxを起動し、無理やりgummibootを使わせるようにしにいく</li>
@@ -452,12 +537,12 @@ Vaioのせいなのか、Windowsのせいなのか。。</p>
 <p>&ndash; まず、EFIのパーティションをマウントする。</p>
 <pre><code>mount /dev/sda2 /mnt/boot/EFI
 </code></pre><p>&ndash; Windows起動用のファイルとgummiboot起動用のファイルを置き換える。</p>
-<p>&mdash; Windows起動用のファイル &hellip; /boot/EFI/Microsoft/boot/bootmgrfw.efi
+<p>&mdash; Windows起動用のファイル &hellip; /boot/EFI/Microsoft/boot/bootmgrfw.efi<br>
 &mdash; gummiboot起動用のファイル &hellip; /boot/EFI/gummiboot/gummibootx64.efi</p>
-<p>上記のWindows起動用のファイルを、gummiboot起動用のファイルで上書きしてやると、、、
+<p>上記のWindows起動用のファイルを、gummiboot起動用のファイルで上書きしてやると、、、<br>
 次回のPC起動時には、OS選択の画面が表示されるはず。上書きする前にバックアップしてあげてね。。。</p>
 <h3 id="windowsアップデートのときにbootmgrfwefiが更新されちゃうことがあるっぽい">Windowsアップデートのときに、bootmgrfw.efiが更新されちゃうことがあるっぽい</h3>
-<p>だのでWindowsアップデートでデュアルブートができなくなったりするんだろう。
+<p>だのでWindowsアップデートでデュアルブートができなくなったりするんだろう。<br>
 デュアルブートできなくなったら、いちいちgummibootx64.efiをWindows起動用のファイルに上書きしてやる必要がある。</p>
 <h2 id="これでwindowsアップデートも怖くない">これでWindowsアップデートも怖くない！</h2>
 
@@ -481,18 +566,18 @@ Vaioのせいなのか、Windowsのせいなのか。。</p>
                     </header>
 
                     <div class="post-description">
-                        <p>Raspberry Piにカメラモジュールを接続し、映像をWebで配信させてみた。
-いろいろ悩んだ点もあったので、やり方の結論をメモしておく。
+                        <p>Raspberry Piにカメラモジュールを接続し、映像をWebで配信させてみた。<br>
+いろいろ悩んだ点もあったので、やり方の結論をメモしておく。<br>
 ちなみに、Raspberry PiにはArch Linux (ARM版) を載せている。</p>
 <h2 id="良さそうな例">良さそうな例</h2>
-<p>参考にしたウェブサイトは↓。結論からするとここだけでOKだった。
+<p>参考にしたウェブサイトは↓。結論からするとここだけでOKだった。<br>
 <a href="https://github.com/jacksonliam/mjpg-streamer">https://github.com/jacksonliam/mjpg-streamer</a></p>
 <h2 id="上記のリポジトリの情報を元にやったこと">上記のリポジトリの情報を元にやったこと</h2>
 <h3 id="mjpg-streamerのインストール">mjpg-streamerのインストール。</h3>
-<p>上記のリポジトリからソースコードをもってきてビルド。ビルド方法も上記のリポジトリのREADMEに記載されている。
+<p>上記のリポジトリからソースコードをもってきてビルド。ビルド方法も上記のリポジトリのREADMEに記載されている。<br>
 pacmanであったりyaourtで取得できるmjpg-streamerのパッケージは使わない。それらはinput_raspicam.soを作ってくれないため。</p>
 <h3 id="超簡単にhtmlを書く">超簡単にhtmlを書く。</h3>
-<p>下記のような。とりあえずサンプルなので、簡単に。。
+<p>下記のような。とりあえずサンプルなので、簡単に。。<br>
 書いたHTMLは、任意の場所におく。ここではひとまず、<code>~/www/index.html</code>として置いたとする。</p>
 <pre><code>&lt;html&gt;
   &lt;body&gt;
@@ -501,10 +586,10 @@ pacmanであったりyaourtで取得できるmjpg-streamerのパッケージは�
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre><h3 id="配信するコマンドを実行する">配信するコマンドを実行する。</h3>
-<p>このコマンドも件のリポジトリに記載されているが、一応。
+<p>このコマンドも件のリポジトリに記載されているが、一応。<br>
 ライブラリ（.so）へのパスが通ってなかったら、LD_LIBRARY_PATHを設定してライブラリへのパスを通すか、もしくはライブラリをフルパスで指定する。</p>
 <p><code>mjpg_streamer -o &quot;output_http.so -w ./www&quot; -i &quot;input_raspicam.so -x 1280 -y 720 -fps 15 -ex night&quot;</code></p>
-<p>こんな感じに入力してやると、カメラが動き出して動画配信が始まる。
+<p>こんな感じに入力してやると、カメラが動き出して動画配信が始まる。<br>
 別のPC等からブラウザで、</p>
 <p><code>http://[Raspberry PiのIPアドレス]:8080/</code></p>
 <p>にアクセスしてあげると、カメラが写してる画像が配信されているのが確認できると思われる。</p>
@@ -532,33 +617,33 @@ pacmanであったりyaourtで取得できるmjpg-streamerのパッケージは�
                         <p>Octopressのカスタマイズを続けていく。</p>
 <h2 id="fenced-code-block-がうまく表示されない">Fenced Code Block がうまく表示されない</h2>
 <p>具体的にどのようにうまく表示されないかというと、</p>
-<p>{% codeblock %}
-{% raw %}
-{% hogehoge %}
-{% endraw %}
+<p>{% codeblock %}<br>
+{% raw %}<br>
+{% hogehoge %}<br>
+{% endraw %}<br>
 {% endcodeblock %}</p>
-<p>といった表記。％で囲まれてる部分も Fenced Code Block を使って表示してもらいたいところであったが、<br>
+<p>といった表記。％で囲まれてる部分も Fenced Code Block を使って表示してもらいたいところであったが、<br><br>
 コメントとしてみなされてしまっているようで、表示してもらえないという感じに。</p>
 <p>結果として、</p>
-<p>{% codeblock %}
-{% raw %}
-{% codeblock %}
-{% raw %}
-{% hogehoge %}
-{% endraw %}
-{% endcodeblock %}
-{% endraw %}
+<p>{% codeblock %}<br>
+{% raw %}<br>
+{% codeblock %}<br>
+{% raw %}<br>
+{% hogehoge %}<br>
+{% endraw %}<br>
+{% endcodeblock %}<br>
+{% endraw %}<br>
 {% endcodeblock %}</p>
-<p>というので書くことができた。raw ~ endraw というのを使う。<br>
-ただ、↑に書いている通り、ネストさせることができなかったのでバックスラッシュ突っ込んでお茶を濁した。。<br>
+<p>というので書くことができた。raw ~ endraw というのを使う。<br><br>
+ただ、↑に書いている通り、ネストさせることができなかったのでバックスラッシュ突っ込んでお茶を濁した。。<br><br>
 ネストさせるのはどうやればいいのかな？</p>
 <h2 id="fenced-code-block-にファイル名が表示できない">Fenced Code Block にファイル名が表示できない</h2>
 <p>Fenced Code Block を書くときに、↓のような書き方をするとコードブロックにちょっとした注釈が出る。</p>
 <p><code>{% raw %}{% codeblock %}{% endraw %}</code><br></p>
 <p>出るという触れ込みだったのだが、なかなかどうして出なかった。</p>
-<p>結論からすると、これはうちのArchlinuxがpython3を使おうとしているためだった。<br>
+<p>結論からすると、これはうちのArchlinuxがpython3を使おうとしているためだった。<br><br>
 PygmentsというやつがPython2.7を求めているところを、違うバージョンのPythonが使われちゃって失敗してた感じ。</p>
-<p>修正方法は以下のページを参考にしました。というかそのまま使わせていただきました。多謝。
+<p>修正方法は以下のページを参考にしました。というかそのまま使わせていただきました。多謝。<br>
 <a href="http://www.nonsenseby.me/blog/2013/04/13/arch-linux/">Arch Linux, Octopress, and misbehaving Pygments - Nonsense By Me</a></p>
 
                     </div>
@@ -583,14 +668,14 @@ PygmentsというやつがPython2.7を求めているところを、違うバー
                     <div class="post-description">
                         <p>引き続きOctopressをカスタマイズしていく。</p>
 <h3 id="サイドバーにgravatarの画像を出すように">サイドバーにGravatarの画像を出すように</h3>
-<p>京都で食べた抹茶パンケーキ（←旨い）の画像を載せるように。
+<p>京都で食べた抹茶パンケーキ（←旨い）の画像を載せるように。<br>
 自分のブログ感が出て良い。</p>
 <p>以下のGravatarプラグインを使わせてもらいました。多謝。</p>
 <p><a href="https://github.com/joet3ch/gravatar-octopress">joet3ch/gravatar-octopress</a></p>
-<p>↑を導入すると、Gravatarの画像をimgタグ的にひっぱってこれるようになるので、
+<p>↑を導入すると、Gravatarの画像をimgタグ的にひっぱってこれるようになるので、<br>
 それを参考にしつつ、souce/_include/custom/asides/about.html を編集してった感じ。</p>
 <p>about.html はこんな感じに。</p>
-<p>{% codeblock %}
+<p>{% codeblock %}<br>
 {% raw %}</p>
 <section>
   <h1>About Me</h1>
@@ -603,7 +688,7 @@ PygmentsというやつがPython2.7を求めているところを、違うバー
 {% endraw %}
 {% endcodeblock %}
 <h3 id="commentをかけるようにdisqusを設定">CommentをかけるようにDisqusを設定</h3>
-<p>各ポストにコメントがかけるような感じにしてみた。いかにもブラグらしい。<br>
+<p>各ポストにコメントがかけるような感じにしてみた。いかにもブラグらしい。<br><br>
 設定方法をざっくり書いておくと、</p>
 <span>
 1. Disqusのアカウントを作り、ブログサイトに関する情報を登録するとshort nameが取得できる
@@ -631,9 +716,9 @@ PygmentsというやつがPython2.7を求めているところを、違うバー
                     </header>
 
                     <div class="post-description">
-                        <p>Octopressにプラグインを追加して、tag_cloundとcategory_listを表示できるようにしてみた。
+                        <p>Octopressにプラグインを追加して、tag_cloundとcategory_listを表示できるようにしてみた。<br>
 見た目デフォルトのままというのも微妙なので、徐々にカスタマイズしていこう。</p>
-<p>tag_cloud、category_listの追加については以下のページを参考にさせていただきました。多謝。
+<p>tag_cloud、category_listの追加については以下のページを参考にさせていただきました。多謝。<br>
 <a href="http://rcmdnk.github.io/blog/2013/03/23/octopress/">http://rcmdnk.github.io/blog/2013/03/23/octopress/</a></p>
 <p>次はサイドバーに筆者プロフィールをGravatarと共に載せる、みたいな感じにしてみようかな。</p>
 
@@ -657,10 +742,10 @@ PygmentsというやつがPython2.7を求めているところを、違うバー
                     </header>
 
                     <div class="post-description">
-                        <p>ちょっと長めの通勤時間を有効活用するため、軽く技術的な内容の備忘録というか、日記をつけてみることにした。
+                        <p>ちょっと長めの通勤時間を有効活用するため、軽く技術的な内容の備忘録というか、日記をつけてみることにした。<br>
 マークダウンの書き方すらよくわかっていないが、徐々にいろいろと進歩させていこうと思う。</p>
-<p>私は一応プログラマをやっている。なので色々困ったことにでくわし、そのたびに解決方法を調べつつ業務にあたっている。
-きっと私が困ったところは、おそらく世の中の誰かが同じように困っているであろうと信じ、本ブログがその助けになることを願うと共に、
+<p>私は一応プログラマをやっている。なので色々困ったことにでくわし、そのたびに解決方法を調べつつ業務にあたっている。<br>
+きっと私が困ったところは、おそらく世の中の誰かが同じように困っているであろうと信じ、本ブログがその助けになることを願うと共に、<br>
 基本的には日々の調査結果なんかをここにアウトプットしていきたいと思っている。</p>
 <p>細く、長く、続けて行ければ。</p>
 
