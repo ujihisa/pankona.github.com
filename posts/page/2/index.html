@@ -86,6 +86,62 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2018-01-06 23:09:05</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
+<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br>
+以下、準備しておこうと思う内容のメモ。</p>
+<ul>
+<li>ネタは gomobile でゲーム作った話。<br>
+<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。</li>
+<li>DroidKaigi なので、主に Android 向けの開発について触れる。</li>
+<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。
+<ul>
+<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。</li>
+<li>特に SharedPreference 使ったデータの保存を盛り込む。<br>
+(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)</li>
+</ul>
+</li>
+<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。
+<ul>
+<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。</li>
+</ul>
+</li>
+</ul>
+<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
+<ul>
+<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。</li>
+<li>召喚可能なユニット数に上限を設ける。</li>
+<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。</li>
+<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。</li>
+<li>そもそもちゃんと Android 端末上で動くようにしとく…。</li>
+</ul>
+<p>その他、可能であれば行いたい細かい点の改善。</p>
+<ul>
+<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。</li>
+<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。</li>
+</ul>
+<p>DroidKaigi までもう残り一ヶ月程度。<br>
+コツコツやっていくぞー。今年も頑張るぞー。</p>
+
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2018-01-02 13:32:34</div>
                 <section >
                     <header class="post-header">
@@ -1957,67 +2013,6 @@ Octopressに読書メーターのブログパーツを追加する方法。</p>
 <p>最近読んだ本がサイドバーに表示されるように。<br>
 ITっぽい本を並べたりすると、なんとなく技術的なブログな雰囲気が出て、<br>
 とてもいいんではないでしょうか。</p>
-
-                    </div>
-                </section>
-                
-                <div class="content-subhead">2014-09-15 00:30:08</div>
-                <section >
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/09/15/histryback-by-swipe-on-firefox/">二本指スワイプに戻る／進むを割り当てる方法 for Firefox on Arch Linux</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-ArchLinux" href="https://pankona.github.io/categories/archlinux">ArchLinux</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>ブラウザはFirefoxを好んで使っている。<br>
-VimperatorとかPentadactylがあるおかげである。</p>
-<p>いままで放置していた問題があって、それは二本指スワイプの挙動設定。</p>
-<p>二本指で左右にスワイプしたときに、ヒストリーバック・ヒストリーフォワード、<br>
-いわゆる「戻る」「進む」をやってほしいんだけど、これの設定がいまいちわからず、放置していた。<br>
-ようやく設定方法がわかったので記しておく。そっこー忘れそうであるので。</p>
-<p>ちなみに、「on Arch Linux」と題しているが、おそらくArchに限らないLinux全般の話ではないかと想像。<br>
-UbuntuとArch Linux、どちらのFirefoxでもデフォルト設定では横方向二本指スワイプが仕事をしてくれなかったので。</p>
-<p>では、以下設定手順。</p>
-<h2 id="synclientの確認と設定">synclientの確認と設定</h2>
-<p>そもそもタッチパッドのドライバーレベルで横方向スクロールが無効になっている可能性がある。というかなってた。<br>
-なので、確認方法と設定変更方法。</p>
-<h4 id="synclientコマンドを打って水平方向二本指スクロールの設定を確認する">synclientコマンドを打って水平方向二本指スクロールの設定を確認する</h4>
-<p>以下のコマンドで現在の設定を確認できる。</p>
-<p><code>$ synclient</code></p>
-<p>ずらずらっと出てくる内容のうち、<code>HorizTwoFingerScroll</code> が確認対象の項目。<br>
-値が「0」だったら無効になっている。有効にしない限り、いくら頑張って横スワイプしても効かない。</p>
-<h4 id="synclientコマンドで水平方向二本指スクロールを有効にする">synclientコマンドで水平方向二本指スクロールを有効にする</h4>
-<p>上の確認で有効だったらここは飛ばしてOK。無効だった場合、有効にするのは以下のコマンド。</p>
-<p><code>$ synclient HorizTwoFingerScroll=1</code></p>
-<p>synclientのほうはこれでOK。</p>
-<h2 id="firefoxの設定">Firefoxの設定</h2>
-<p>さらにFirefoxの設定を変えてやる必要がある。<br>
-設定内容は<a href="https://wiki.archlinux.org/index.php/Touchpad_Synaptics">Touchpad Synaptics - Arch Linux Wiki</a>、Firefox 17.0 and laterの項を参考にした。</p>
-<p>about:configを開く。設定内容は以下。</p>
-<h4 id="マウスホイールのアクションを変更する">マウスホイールのアクションを変更する</h4>
-<p><code>mousewheel.default.action.override_x = 2</code> とした。<br>
-あんまりよく調べていないが、「2」が戻るアクションに対応している数字らしい。</p>
-<h4 id="スワイプ方向を逆にする">スワイプ方向を逆にする</h4>
-<p>デフォルトでは、左スワイプが「進む」、右スワイプが「戻る」になっている。<br>
-逆な気がする。設定してこれを逆転させる。</p>
-<p><code>mousewheel.default.delta_multiplier_x = -100</code> とした。</p>
-<h4 id="感度を落とす">感度を落とす</h4>
-<p>デフォルトではものすごく感度がよい。<br>
-良すぎてしまって縦スワイプがちょっと横にぶれただけで戻ったり進んだりする。<br>
-やりにくいので感度を落とす。</p>
-<p><code>mousewheel.default.delta_multiplier_x = -10</code> とした。</p>
-<h2 id="ここまでやって">ここまでやって</h2>
-<p>とりあえず望む形（二本指で左スワイプで戻る、右スワイプで進む）に設定できた。結構ハードルあった。。<br>
-ちなみにこれ、Mac OS向けFirefoxならデフォルトの挙動な模様。何の差なのか。。。</p>
 
                     </div>
                 </section>

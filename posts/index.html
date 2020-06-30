@@ -86,6 +86,81 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2020-06-30 20:44:40</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2020/06/30/gaming-pc-on-gcp/">GCP 上にゲーミング PC をこさえてみた</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-GCP" href="https://pankona.github.io/categories/gcp">GCP</a><a class="post-category post-category-ゲーム" href="https://pankona.github.io/categories/%E3%82%B2%E3%83%BC%E3%83%A0">ゲーム</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>GCP 上にゲーム目的で Windows server を立ててみた話。</p>
+<p>ゲームをやるための PC がほしい！と兼ねてより思っていてちょいちょい自作 PC パーツの値段をウォッチしたりしていた。<br>
+あれらっていうのはやっぱりそこそこ高くて、ストレスなく遊べるようなスペックを求めると 10 万円くらいは見といたほうが良いということがわかってきた。</p>
+<p>10 万円かけて買うことは不可能ではないのだけれど、それの耐用年数がどれくらいかって言われたら長くて 5 年くらいなのかねぇ？<br>
+いくらパーツだけ取り替えて延命できてコスパがいいんだって言っても、どうせいずれマザーボードから取り替えないといけなくなって総取っ替えしたくなっちゃうんでしょ、というような気もしている。</p>
+<h2 id="クラウドゲーミングの時代">クラウドゲーミングの時代</h2>
+<p>それで、最近は <a href="https://cloudgaming.mb.softbank.jp">GeForce NOW</a> というのも出てきて、平たくいえば「マシンはクラウド上にあって、手元の (ヘボい) PC に画面をストリーミングしてプレイできるよ、グラボいらないよ」というようなことができるようになってきている。GeForce NOW のお値段は毎月 1,800 円 (本記事執筆時点ではまだ正式サービス前であるが)。たとえば Steam が対応しているけど全部のゲームができるわけじゃなくて、一部のゲームが対応しているというような感じ。<br>
+実際に試してみたけれど遅延はまあまあ。快適かと言われるとちょっと微妙、くらいの雰囲気。</p>
+<h2 id="geforce-now-は自作-pc-より安いのか">GeForce NOW は自作 PC より安いのか</h2>
+<p>さて、前段で「ゲーミング PC こさえるなら 10 万円くらい」と書いたけれど、GeForce NOW するのとコスパを比べるとどうか、ということを考えた。</p>
+<p>10 万円かけて耐用年数 5 年 (つまり 5 年後に買い換える想定) だとすると、年に換算すると 2 万円/年。月に換算すると 1,666 円/月。GeForce NOW が 1,800 円であることを思うと、この前提だとちょっとだけ自作したほうが安い。<br>
+けど、GeForce NOW のようなものは「マシンが壊れない」、「デスクトップ PC をあらたにこさえる必要がない (場所をとらない)」、あとは「自分の PC は省電力で済む」等のメリットがあるっちゃあるので、必ずしも自作したほうがお得かっていうとそうでもないような気もする。トントンくらいか、故障したときの話とかあるいはマシン廃棄のコストを考えたら実は GeForce NOW のほうが安いだろうみたいな考えもできる気がする。</p>
+<h2 id="windows-server-を-gcp-上に立てる試み">Windows server を GCP 上に立てる試み</h2>
+<p>GeForce NOW の欠点は対応ゲームが少ないということ。<br>
+現在 (2020-06-30) はまだ正式サービス前なのでこれからいっぱい増えていく可能性は大いに期待しつつ、とはいえ今はまだ対応ゲームが少ない。</p>
+<p>ということで、であれば自分で GCP 上に Windows ゲーミングマシンを立ててみたらどうかと思い、とりあえずちょっと試してみた。自分で生 Windows を立てるのであるから、原理上は Windows 対応のゲームであればなんでも動かせるはずである。GCP ならマシンスペックもまあまあ選びたい放題になるはずである。</p>
+<h2 id="参考にさせていただいたサイト">参考にさせていただいたサイト</h2>
+<p>以下のウェブサイトを参考にさせていただいて作業を行ったところ、実際にゲームを動かすところまでこぎつけることができた。</p>
+<ul>
+<li><a href="https://troches.jp/contents/tech/781">GCP にゲーミング PC を作成する方法 - icecream</a>
+<ul>
+<li>主な作業内容はこちらを参考にさせていただいた。感謝。</li>
+</ul>
+</li>
+<li><a href="https://qiita.com/y_kani/items/ddb7c4a5ca6fdf36cac4">GCP の Deep Learning VM インスタンスを立ち上げる - Qiita</a>
+<ul>
+<li>先述のサイトの解説では GPU の割当がうまくいかないところがあったのだけど、本記事を参考にしたところ解決できた。</li>
+</ul>
+</li>
+<li><a href="https://www.ryadel.com/en/install-google-chrome-with-powershell-script/">Install Google Chrome on Windows Server with a Powershell Script</a>
+<ul>
+<li>Windows server に Chrome をインストールするワンライナー。やるときは PowerShell を管理者権限で立ち上げる必要がある。</li>
+</ul>
+</li>
+<li><a href="https://www.vb-audio.com/Cable/">VB-Audio Virtual Cable</a>
+<ul>
+<li>選んだ OS は Windows server 2019 datacentor だったのだけど、サウンドカードがなくて音が出ないという憂き目にあった。</li>
+<li>仮想サウンドカードとして機能する VB-Audio Virtual Cable をインストールしたところ、音を出すことができた。便利。</li>
+</ul>
+</li>
+</ul>
+<h2 id="体験としてどうか">体験としてどうか</h2>
+<p><a href="https://parsecgaming.com">Parsec</a> というツールを使って GCP 上の Windows の画面を手元の PC (Mac) にストリーミングしているのだが、驚くべき低遅延。<br>
+ほとんど手元で実機を動かしている感覚と変わらないと言っていいかもしれない。何なら GeForce NOW より低遅延まであるかもしれない。これは凄い…。</p>
+<p>動かすマシンがなかったという理由で積むだけ積んどいたスチームゲーのうち、<a href="https://store.steampowered.com/app/287700/METAL_GEAR_SOLID_V_THE_PHANTOM_PAIN/?l=japanese">メタルギアソリッド TPP</a> を試しに動かしてみたけどもうヌルッヌル動く。ヌルヌルである。たぶんちゃんと 60 FPS でている。手元のマシンのファンがうねりを上げることもない。これは革命では…！</p>
+<p>ここんところあんまりゲームをやっていなかったのだけど、ちょいちょいゲームやりたい気持ちになる程度にはヌルヌルであった。コントローラー買ってこなきゃ…！ (キーボードとトラックボールでは操作が厳しいことがあるので)</p>
+<p>ヌルヌルなんだけども、なぜか不定期にカクカクしちゃうことがある。何事かと思って調べてみると、どうもネットワークの遅延が原因である模様 (Parsec はネットワークのレイテンシを常時表示してくれる。便利)。<br>
+これは無線 LAN を使っていることが原因であるかもしれない。やむなし。有線 LAN にしたら解決するのかもしれないけど家の構造上きびしい。</p>
+<h2 id="なおコスパ">なおコスパ</h2>
+<p>2〜3 時間ほど設定に費やし、その後もろもろテストプレイに 2〜3 時間費やしたところ、現在の請求はおよそ 800 円であった。Oh、800 円か&hellip;！<br>
+概ね 5 時間くらい VM を起動したことになろうか。5 時間で 800 円。何もしなくても消費される課金もあるのでそこまで単純ではないものの。1 時間あたり 160 円？<br>
+preemptive (意図せず VM が落ちることがあるが、お値段がとても安い) を選んでいてもこれである。</p>
+<p>ゲーセンに行くと思えばコスパは断然良いのだが…。どんだけプレイするかにも依るけれど、この分だと月に 5,000 円くらい掛かったりするような気がしないでもない。<br>
+えっ、高くないですか？そんなに？これなら 10 万円 PC 買ったほうが全然安い気がしてくるんだけどどうなのか&hellip;？</p>
+<p>とはいえ便利なことに違いはないので、ひとまず一ヶ月間様子を見てみて、お値段がおいくらになるのか検証してみたいと思う…！</p>
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2020-06-22 14:56:41</div>
                 <section >
                     <header class="post-header">
@@ -1513,62 +1588,6 @@ Java に手を入れていく手法は有り難いのであるが、追っての
 Kokeshi Scramble の改善まではちょっと手が付けられないだろうという感じかな。</p>
 <p>という感じで作業を何となくでも洗い出しておくと、いざ着手したときにスムーズに作業が進められるよね、という期待を込めて。<br>
 DroidKaigi、気合い入れていくぞ。</p>
-
-                    </div>
-                </section>
-                
-                <div class="content-subhead">2018-01-06 23:09:05</div>
-                <section >
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2018/01/06/my-first-post-2018/">DroidKaigi 2018 に向けて</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <h2 id="droidkaigi-2018-に向けての準備">DroidKaigi 2018 に向けての準備</h2>
-<p>DroidKaigi 2018 にはしゃべる側で参加する予定である。<br>
-以下、準備しておこうと思う内容のメモ。</p>
-<ul>
-<li>ネタは gomobile でゲーム作った話。<br>
-<a href="http://pankona.github.io/slides/golang_tokyo_201709.html">golang-tokyo #9 にて発表済みの内容</a> をリファインする。</li>
-<li>DroidKaigi なので、主に Android 向けの開発について触れる。</li>
-<li>gomobile build のハマりどころは、概ねの内容はそのまま使う。
-<ul>
-<li>インテントを投げる、トーストを出す、アイコンのセット、あたりは新たに実際に動くコードを示すようにする。</li>
-<li>特に SharedPreference 使ったデータの保存を盛り込む。<br>
-(これができるようになるだけでだいぶ開発しやすさが変わると思われる。)</li>
-</ul>
-</li>
-<li>引き合いに出す予定の <a href="http://pankona.github.io/slides/golang_tokyo_201709.html">Kokeshi Scramble</a> は、できれば Google Play にあげとく。
-<ul>
-<li>できればもう少し遊べるようにしとく (ゲームバランス的な意味で) 。</li>
-</ul>
-</li>
-</ul>
-<p>DroidKaigi までに行う Kokeshi Scramble の改修は以下を想定。</p>
-<ul>
-<li><a href="https://github.com/pankona/gomo-simra">gomo-simra</a> の最新版に追従する。gomo-simra の API を変えてしまったので頑張って追従する。</li>
-<li>召喚可能なユニット数に上限を設ける。</li>
-<li>もっと体力を多めにしてユニット一体一体を大事に扱うゲームデザインにする。</li>
-<li>もう少しプレイヤーに介入させるべく、ドラッグアンドドロップによるユニットの移動を導入する。</li>
-<li>そもそもちゃんと Android 端末上で動くようにしとく…。</li>
-</ul>
-<p>その他、可能であれば行いたい細かい点の改善。</p>
-<ul>
-<li>ユニットの攻撃モーションを作る。剣であれば振る、魔法であれば詠唱から発動、など。</li>
-<li>敵の残数を表示する。現状はいつまで続けていいか分からないので。</li>
-</ul>
-<p>DroidKaigi までもう残り一ヶ月程度。<br>
-コツコツやっていくぞー。今年も頑張るぞー。</p>
 
                     </div>
                 </section>
