@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go on make clean; make</title>
+    <title>Go on make clean; make</title>
     <link>https://pankona.github.io/categories/go/</link>
-    <description>Recent content in go on make clean; make</description>
+    <description>Recent content in Go on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 31 Jan 2018 16:30:10 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2020 00:54:06 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/categories/go/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>fiddle を使って Ruby から Go を呼ぶ</title>
+      <link>https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/</link>
+      <pubDate>Thu, 23 Jul 2020 00:54:06 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/</guid>
+      <description>&lt;p&gt;2020-07-22 に行われた「社内ゆるい Ruby LT 会」にて、「Ruby から Go を呼ぶ」というネタで話をした。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>gomobile (build) で作るアプリでファイルを保存する</title>

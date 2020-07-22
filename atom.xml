@@ -5,10 +5,19 @@
     <link>https://pankona.github.io/</link>
     <description>Recent content on make clean; make</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 30 Jun 2020 20:44:40 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2020 00:54:06 +0900</lastBuildDate>
     
 	<atom:link href="https://pankona.github.io/atom.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>fiddle を使って Ruby から Go を呼ぶ</title>
+      <link>https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/</link>
+      <pubDate>Thu, 23 Jul 2020 00:54:06 +0900</pubDate>
+      
+      <guid>https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/</guid>
+      <description>&lt;p&gt;2020-07-22 に行われた「社内ゆるい Ruby LT 会」にて、「Ruby から Go を呼ぶ」というネタで話をした。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>GCP 上にゲーミング PC をこさえてみたが 2 日で 800 円だよ</title>

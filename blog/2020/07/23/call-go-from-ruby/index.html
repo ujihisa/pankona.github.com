@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fiddle を使って Ruby から Go を呼ぶ - make clean; make</title>
+
+    <meta name="description" content="Good poem">
+
+    <meta name="generator" content="Hugo 0.72.0" />
+    <meta name="twitter:card" content="summary">
+    
+    <meta name="twitter:title" content="fiddle を使って Ruby から Go を呼ぶ - make clean; make">
+    <meta name="twitter:description" content="Good poem">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="fiddle を使って Ruby から Go を呼ぶ - make clean; make">
+    <meta property="og:description" content="Good poem">
+    <meta property="og:image" content="https://avatars1.githubusercontent.com/u/6533008?s=460&amp;v=4" />
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Oxygen:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://pankona.github.io/css/syntax.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
+    <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="alternate" type="application/rss+xml" title="make clean; make" href="https://pankona.github.io/atom.xml" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <hgroup>
+            <h1 class="brand-title"><a href="https://pankona.github.io">make clean; make</a></h1>
+        </hgroup>
+
+        <nav class="nav">
+            <ul class="nav-list">
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://twitter.com/@pankona"><i class="fa fa-twitter"></i> Twitter</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://github.com/pankona "><i class="fa fa-github-alt"></i> GitHub</a>
+                </li>
+                
+                
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="pure-button" href="https://pankona.github.io/categories"></i> Categories</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            
+            <div class="posts">
+                <h1 class="content-subhead">2020-07-23 00:54:06</h1>
+                <section class="post">
+                    <header class="post-header">
+                        <a href="https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/" class="post-title">fiddle を使って Ruby から Go を呼ぶ</a>
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Go" href="https://pankona.github.io/categories/go">Go</a><a class="post-category post-category-Ruby" href="https://pankona.github.io/categories/ruby">Ruby</a>
+                            
+                        </p>
+                    </header>
+                    <div class="post-description">
+                        <p>2020-07-22 に行われた「社内ゆるい Ruby LT 会」にて、「Ruby から Go を呼ぶ」というネタで話をした。</p>
+<p>資料を用意しないで、実際にコードを書いて実行する様を見てもらうという感じの発表形式をとったもので「残るもの」がない。だので、資料の代わりと言ってはあれだが何をどう話したかというのを記念に本記事に記しておく。</p>
+<h2 id="fiddle">fiddle</h2>
+<p>Ruby から Go を呼ぶと言っても色々やり方があり、たとえば、</p>
+<ul>
+<li>Go で作った実行バイナリを Ruby から <code>system</code> 的なもので呼び出す</li>
+<li>Go で作った HTTP Server を Ruby の HTTP Client を用いて呼び出す</li>
+</ul>
+<p>みたいなのも広い意味では Ruby から Go を呼ぶのに該当しそうな気がする。<br>
+が、今回はもうちょっと泥っぽく、「Go で書いたソースコードを共有ライブラリ化したものを用いて、Ruby からそのライブラリに含まれている関数を呼び出す」という形式を披露した。役に立つかはさておき、一番映えそうだったからである。うふふ。</p>
+<p>Ruby にはこういう「共有ライブラリを読み込むための機能」が標準で用意されていて、それが <code>fiddle</code> と呼ばれているやつである。<br>
+同じような機能を提供するライブラリとして <code>ffi</code> とかそういうのもあるけど、まあ「標準」という言葉に弱い僕であるので、とりあえず <code>fiddle</code> を試していくことにした。</p>
+<h2 id="何はともあれ-go-で共有ライブラリを作る">何はともあれ Go で共有ライブラリを作る</h2>
+<p>まずは呼び出される側の共有ライブラリを作る作業を行った。<br>
+ソースコードは以下。<code>lib.go</code> というファイル名で保存した。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Add
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>何かのチュートリアルに出てきそうな至極シンプルな足し算をする関数。<br>
+一応、普通の Go と違う点としては cgo のための諸々 (<code>import &quot;C&quot;</code> しているところと <code>export Add</code> というコメントを付与しているところ) が追記されていることかしら。</p>
+<p>これを以下のコマンドでビルドする。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go build -buildmode<span class="o">=</span>c-shared -o lib.so lib.go
+</code></pre></div><p>すると、<code>lib.h</code> と <code>lib.so</code> が出力される (今回、ヘッダーは使わない)。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ls
+go.mod  lib.go  lib.h  lib.so
+</code></pre></div><h2 id="ruby-から読み込む">Ruby から読み込む</h2>
+<p>出力された <code>lib.so</code> を、Ruby のコード内から読み込む。<br>
+このような感じで <code>lib.so</code> をロードし、その中の <code>Add</code> 関数を <code>extern</code> を使って呼び出せる状態にしている。</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;fiddle/import&#39;</span>
+
+<span class="k">module</span> <span class="nn">M</span>
+  <span class="kp">extend</span> <span class="no">Fiddle</span><span class="o">::</span><span class="no">Importer</span>
+  <span class="n">dlload</span> <span class="s1">&#39;lib.so&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;int Add(int, int)&#39;</span>
+<span class="k">end</span>
+
+<span class="nb">p</span> <span class="n">M</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># 実際に呼び出しているのはココ</span>
+</code></pre></div><p>実行結果は以下のようになる。期待通り。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ruby ./main.rb
+<span class="m">4</span>
+</code></pre></div><p>晴れて Ruby から Go を呼び出すことができた。便利！</p>
+<h2 id="ライトニングトークで触れなかった補足など">ライトニングトークで触れなかった補足など</h2>
+<p>ライトニングトークでは、時間の都合上、上記の部分までの話しかしなかった (5 分という縛りだった) のだが、本手法は便利な話ばかりでもなくて不都合だとかやりにくいところだとかが色々ある。そもそも Ruby と Go に限らず、言語間バインディングなんて問題の巣窟になること請け合いであるというのが僕の印象であってだな。</p>
+<p>上記のように <code>int</code> を使っている間は特に問題がないのだけれども、もう少し便利に使おうと思ったら他の型 (特に byte array みたいなものとか string) を使いたくなるのが人情かと思う。<br>
+実はこのへんを扱うのは割と面倒で、何が面倒って「メモリの確保と解放」をそれなりに意識してやる必要が出てくる。</p>
+<p>例えば、Go から文字列を返してやろうと思ったら以下のようなコードになる。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Fullname
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Fullname</span><span class="p">(</span><span class="nx">firstname</span><span class="p">,</span> <span class="nx">lastname</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span> <span class="p">{</span>
+    <span class="nx">fullname</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">firstname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">lastname</span><span class="p">)</span>
+    <span class="nx">p</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">fullname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">firstname</span> <span class="o">+</span> <span class="nx">lastname</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>このコードをざっくり解説すると、</p>
+<ul>
+<li><code>Fullname</code> 関数は、<code>lastname</code> と <code>firstname</code> を受け取って、連結したもの (つまり <code>fullname</code>) を返す関数。</li>
+<li>引数、および戻り値の型で <code>string</code> を使うようなところでは、代わりに <code>*C.char</code> を使うようにしている。<code>string</code> を扱おうと思うと Ruby 側では構造体を扱う必要が出てきて少し面倒になってしまうので、生々しいが単なる <code>*char</code> を扱うほうが簡単になる (と思う)。</li>
+<li><code>*C.char</code> はそのままでは Go の <code>string</code> として扱えないので、いったん <code>C.GoString</code> に食わせて <code>string</code> に変換している。</li>
+<li><code>string</code> に対して一通りやりたい処理をやったあとに、<code>string</code> を戻り値の型である <code>*C.char</code> に変換する必要がある。</li>
+<li><code>C.CString</code> に <code>string</code> を食わせると <code>*C.char</code> 型になって出てきてくれるのだが、<code>C.CString</code> を使って生成した文字列は「メモリ解放」をしなければならない。しないとメモリリークになってしまう。</li>
+<li>メモリ解放をして良いタイミングは Go 側からはわからないので、Ruby の側からメモリ解放のための関数を呼んであげる必要がある。</li>
+</ul>
+<p>そこまでケアすると以下のような感じになる。</p>
+<p>Go の側。メモリ解放のための関数を追加した。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Fullname
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Fullname</span><span class="p">(</span><span class="nx">firstname</span><span class="p">,</span> <span class="nx">lastname</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span> <span class="p">{</span>
+    <span class="nx">fullname</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">firstname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">lastname</span><span class="p">)</span>
+    <span class="nx">p</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">fullname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nx">p</span>
+<span class="p">}</span>
+
+<span class="c1">//export Free
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Free</span><span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">C</span><span class="p">.</span><span class="nf">free</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>Ruby の側。メモリ解放のための関数を呼び出すように変更。</p>
+<div class="highlight"><pre class="chroma"><code class="language-rb" data-lang="rb"><span class="nb">require</span> <span class="s1">&#39;fiddle/import&#39;</span>
+
+<span class="k">module</span> <span class="nn">M</span>
+  <span class="kp">extend</span> <span class="no">Fiddle</span><span class="o">::</span><span class="no">Importer</span>
+  <span class="n">dlload</span> <span class="s1">&#39;lib.so&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;char* Fullname(char* p0, char* p1)&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;void Free(char* p0)&#39;</span>
+<span class="k">end</span>
+
+<span class="n">ptr</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">Fullname</span><span class="p">(</span><span class="s1">&#39;pan&#39;</span><span class="p">,</span> <span class="s1">&#39;kona&#39;</span><span class="p">)</span>
+
+<span class="nb">p</span> <span class="n">ptr</span><span class="o">.</span><span class="n">to_s</span>
+
+<span class="n">M</span><span class="o">.</span><span class="n">Free</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+</code></pre></div><p>実行結果は以下。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ruby ./main.rb
+<span class="s2">&#34;pan kona&#34;</span>
+</code></pre></div><p>おそらくこれでメモリリークはしない状態になっている、はず。</p>
+<h2 id="つまり">つまり</h2>
+<p>言語間バインディングは用法と用量を守って使うのだ。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://golang.org/cmd/cgo/">cgo - The Go Programming Language</a></li>
+<li><a href="https://docs.ruby-lang.org/ja/latest/library/fiddle.html">library fiddle - Ruby 2.7.0 リファレンスマニュアル</a></li>
+</ul>
+                    </div>
+                    
+                    <div class="post-share">
+                        <div class="post-share-links">
+                            <h4 style="">Share</h4>
+                            
+                            
+                            
+                            <a href="#" data-type="twitter" data-url="https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/" data-description="fiddle を使って Ruby から Go を呼ぶ - make clean; make" class="prettySocial fa fa-twitter"></a>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    
+                </section>
+            </div>
+            <div class="footer">
+    <div class="pure-menu pure-menu-horizontal pure-menu-open">
+        <ul>
+            <li>Powered by <a class="hugo" href="https://gohugo.io/" target="_blank">hugo</a></li>
+        </ul>
+    </div>
+</div>
+<script src="https://pankona.github.io/js/all.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://pankona.github.io/js/jquery.oembed.js"></script>
+<script>
+$(function(){
+    $("a.embed").oembed();
+});
+</script>
+<link rel="stylesheet" type="text/css" href="https://pankona.github.io/css/jquery.oembed.css"> 
+
+        </div>
+    </div>
+</div>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-48476608-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

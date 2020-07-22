@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
 
+    <link rel="stylesheet" href="https://pankona.github.io/css/syntax.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -85,6 +86,78 @@
         <div>
             
             <div class="posts">
+                
+                <div class="content-subhead">2018-01-08 23:10:33</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/08/droidkaigi-2018-todo/">DroidKaigi 2018 に向けて (その2)</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>DroidKaigi 2018 に向けての準備を改めて整理した。<br>
+プレゼンで伝えたいことは、<strong><code>gomobile build</code> で Android 向けゲームを作るときのTIPS集</strong> みたいなことなので、<br>
+そこまで Kokeshi Scramble はフィーチャーしないほうがいいよね、と思いを改め。</p>
+<h2 id="伝えたいこと">伝えたいこと</h2>
+<ul>
+<li>まず、開発の進め方を紹介。
+<ul>
+<li>まず PC 版で作っていって → Android 上でテストする、みたいな流れ。</li>
+<li>ついでに Mac 版、Windows 版、Linux 版も作れてお得、みたいな話もする。</li>
+</ul>
+</li>
+<li><code>gomobile build</code> でいきなり APK 吐けて楽なのは良いものの、いざ作っていくとこんなハマり事があるよ、っていう紹介。
+<ul>
+<li>ハマり事の回避方法の紹介。</li>
+<li>ハマり事をいちいち回避しなくても、うちのライブラリを使えばいいかもよ、という宣伝。<br>
+あわせて、よそのライブラリも紹介。</li>
+</ul>
+</li>
+<li>おまけで、Kokeshi Scramble の話を入れておく。</li>
+</ul>
+<p>みたいな感じの流れが良いかな、ということをうすらぼんやり考え。</p>
+<h2 id="本番までの作業">本番までの作業</h2>
+<p>だいたい残り 1 ヶ月であり、作業に使えない日もあるだろうことを考えると、<br>
+作業に使える日数は 20 日程度と考えるべきかと思う。<br>
+1 日 1 〜 2 時間捻出したら 20 〜 40 時間。だいたい 3 〜 6 人日ってところだろうか。<br>
+ここに収まる中で準備を進めないといけないが、以下のような対応をしておきたい。</p>
+<ul>
+<li>gomo-simra 拡張。以下の機能を加える (各々についてサンプルも追加) 。
+<ul>
+<li>アイコンを設定する (これは gomo-simra 拡張は不要の予定なので設定方法を記載する)。</li>
+<li>トーストを出す。</li>
+<li>SharedPreference を使う。</li>
+<li>指定の URL をブラウザで読み込む (広告クリック的な機能を想定) 。</li>
+</ul>
+</li>
+<li>以下の改善も予定。
+<ul>
+<li>README.md をもう少し詳しく書く。使い方の例が分かるような。</li>
+</ul>
+</li>
+<li>その上で、スライドを更新。
+<ul>
+<li>各ハマり事への解決策をコードを踏まえて紹介する。</li>
+</ul>
+</li>
+<li>あとは発表の練習。</li>
+</ul>
+<p>トータルで 5 人日くらいになりそうな作業見積だがどうか。<br>
+Kokeshi Scramble の改善まではちょっと手が付けられないだろうという感じかな。</p>
+<p>という感じで作業を何となくでも洗い出しておくと、いざ着手したときにスムーズに作業が進められるよね、という期待を込めて。<br>
+DroidKaigi、気合い入れていくぞ。</p>
+
+                    </div>
+                </section>
                 
                 <div class="content-subhead">2018-01-06 23:09:05</div>
                 <section >
@@ -1961,58 +2034,6 @@ ifconfig | grep inet<br>
 <li>カメラと合わせて、水やりしつつ、草の成長記録をツイッターに投稿する、というのもいいかもしれない。</li>
 <li>ツイッター越しに命令（水やり、写真撮影、等）を発行できるようにしてもいいかもしれない。</li>
 </ul>
-
-                    </div>
-                </section>
-                
-                <div class="content-subhead">2014-10-01 22:41:26</div>
-                <section >
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/10/01/dokusho-meter/">Octopressカスタマイズで読書メーターのブログパーツを追加</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-Octopressカスタマイズ" href="https://pankona.github.io/categories/octopress%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA">Octopressカスタマイズ</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>たまにはブログのカスタマイズをしてみる。<br>
-今回は読書メーターのブログパーツを追加してみた。</p>
-<p>サイドバーに「最近読んだ本」なんてのが現れるようにしてみた。<br>
-文字ばっかだったブログにちょっと賑やかし感があって良い。</p>
-<p>例によって備忘録的にやり方を残しておく。<br>
-Octopressに読書メーターのブログパーツを追加する方法。</p>
-<h3 id="読書メーターのアカウントを取得する">読書メーターのアカウントを取得する</h3>
-<p><a href="http://book.akahoshitakuya.com/">読書メーターのウェブページ</a>からどうぞ。</p>
-<h3 id="ブログパーツを選ぶ">ブログパーツを選ぶ</h3>
-<p>読書メーターにログイン後、マイページに行ってみると、<br>
-**「ブログパーツ」**と書いてあるところがある。<br>
-そこを見ると各種ブログパーツを見つけることが出来る。</p>
-<h3 id="octopressをカスタマイズしてサイドバーに出るように">Octopressをカスタマイズして、サイドバーに出るように</h3>
-<p>ここからはOctopress側の編集。</p>
-<h4 id="読書メーター用のhtmlを書く">読書メーター用のHTMLを書く。</h4>
-<p>中身は上記ブログパーツの内容をコピペしたものだが。<br>
-ブログパーツとして「最近読んだ本」をチョイス。</p>
-<pre><code>&lt;section&gt;
-&lt;a href=&quot;http://book.akahoshitakuya.com/u/{人によって違うID}&quot; title=&quot;{人の名前}の最近読んだ本&quot;&gt;&lt;img src=&quot;http://img.bookmeter.com/bp_image/640/509/{人によって違うID}.jpg&quot; border=&quot;0&quot; alt=&quot;{人の名前}の最近読んだ本&quot;&gt;&lt;/a&gt;
-&lt;/section&gt;
-</code></pre><h4 id="_configymlを編集してサイドバーにパーツを追加">_config.ymlを編集して、サイドバーにパーツを追加</h4>
-<p>_config.ymlのdefault_asidesを変更。読書メーター用HTMLファイルを指定。</p>
-<pre><code>default_asides: [custom/asides/about.html, asides/recent_posts.html, asides/github.html, asides/delicious.html, 
-                 asides/pinboard.html, asides/googleplus.html, custom/asides/tag_cloud.html, custom/asides/category_list.html,
-                 custom/asides/dokusho_meter.html]
-</code></pre><h4 id="deployしたら完了">deployしたら完了</h4>
-<p><code>bundle exec rake gen_deploy</code> 的なことをやってデプロイする。</p>
-<h3 id="ここまでで">ここまでで</h3>
-<p>最近読んだ本がサイドバーに表示されるように。<br>
-ITっぽい本を並べたりすると、なんとなく技術的なブログな雰囲気が出て、<br>
-とてもいいんではないでしょうか。</p>
 
                     </div>
                 </section>

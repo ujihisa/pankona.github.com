@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
 
+    <link rel="stylesheet" href="https://pankona.github.io/css/syntax.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -109,63 +110,63 @@ gomobile 関連で色々調べて分かったことを書いておく。</p>
 <p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。<br>
 (下記はエラーチェックを省略している)</p>
 <p>先に書いておくと、下記のコードは正しく動作しない。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">toast</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">toast</span>
 
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static int
-</span><span style="color:#75715e">showToast(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx, char* text) {
-</span><span style="color:#75715e">    JNIEnv* env = (JNIEnv*)jni_env;
-</span><span style="color:#75715e">    jobject ctx = (jobject)jni_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // Toast クラスの取得 ... 1
-</span><span style="color:#75715e">    jclass toast = (*env)-&gt;FindClass(env, &#34;android/widget/Toast&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドの ID を取得 ... 2
-</span><span style="color:#75715e">    jmethodID makeText = (*env)-&gt;GetStaticMethodID(env, toast, &#34;makeText&#34;,
-</span><span style="color:#75715e">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // String を生成 ... 3
-</span><span style="color:#75715e">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // makeText メソッドを呼び出し ... 4
-</span><span style="color:#75715e">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
-</span><span style="color:#75715e">        ctx, jstr, 0); // 0 = Toast.LENGTH_SHORT
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッド の IDの を取得 ... 5
-</span><span style="color:#75715e">    jmethodID methodShow = (*env)-&gt;GetMethodID(env, toastobj, &#34;show&#34;, &#34;()V&#34;);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    // show メソッドを呼び出し ... 6
-</span><span style="color:#75715e">    (*env)-&gt;CallVoidMethod(env, toastobj, methodShow);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">    return 0;
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+<span class="cm">/*
+</span><span class="cm">#include &lt;jni.h&gt;
+</span><span class="cm">#include &lt;stdlib.h&gt;
+</span><span class="cm">
+</span><span class="cm">static int
+</span><span class="cm">showToast(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx, char* text) {
+</span><span class="cm">    JNIEnv* env = (JNIEnv*)jni_env;
+</span><span class="cm">    jobject ctx = (jobject)jni_ctx;
+</span><span class="cm">
+</span><span class="cm">    // Toast クラスの取得 ... 1
+</span><span class="cm">    jclass toast = (*env)-&gt;FindClass(env, &#34;android/widget/Toast&#34;);
+</span><span class="cm">
+</span><span class="cm">    // makeText メソッドの ID を取得 ... 2
+</span><span class="cm">    jmethodID makeText = (*env)-&gt;GetStaticMethodID(env, toast, &#34;makeText&#34;,
+</span><span class="cm">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
+</span><span class="cm">
+</span><span class="cm">    // String を生成 ... 3
+</span><span class="cm">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
+</span><span class="cm">
+</span><span class="cm">    // makeText メソッドを呼び出し ... 4
+</span><span class="cm">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
+</span><span class="cm">        ctx, jstr, 0); // 0 = Toast.LENGTH_SHORT
+</span><span class="cm">
+</span><span class="cm">    // show メソッド の IDの を取得 ... 5
+</span><span class="cm">    jmethodID methodShow = (*env)-&gt;GetMethodID(env, toastobj, &#34;show&#34;, &#34;()V&#34;);
+</span><span class="cm">
+</span><span class="cm">    // show メソッドを呼び出し ... 6
+</span><span class="cm">    (*env)-&gt;CallVoidMethod(env, toastobj, methodShow);
+</span><span class="cm">
+</span><span class="cm">    return 0;
+</span><span class="cm">}
+</span><span class="cm">*/</span>
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
 
-<span style="color:#f92672">import</span> (
-    <span style="color:#e6db74">&#34;fmt&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
 
-    <span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/jni&#34;</span>
-)
+    <span class="s">&#34;github.com/pankona/gomo-simra/simra/jni&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">t</span> <span style="color:#66d9ef">struct</span>{}
+<span class="kd">type</span> <span class="nx">t</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewToaster</span>() <span style="color:#a6e22e">Toaster</span> {
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">t</span>{}
-}
+<span class="kd">func</span> <span class="nf">NewToaster</span><span class="p">()</span> <span class="nx">Toaster</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">t</span><span class="p">{}</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">t</span>) <span style="color:#a6e22e">Show</span>(<span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
-    <span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
-        <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
-            <span style="color:#a6e22e">ret</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">showToast</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">CString</span>(<span style="color:#a6e22e">text</span>))
-            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;ret = %d\n&#34;</span>, <span style="color:#a6e22e">ret</span>)
-            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-        })
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">t</span><span class="p">)</span> <span class="nf">Show</span><span class="p">(</span><span class="nx">text</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="nx">jni</span><span class="p">.</span><span class="nf">RunOnJVM</span><span class="p">(</span>
+        <span class="kd">func</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">env</span><span class="p">,</span> <span class="nx">ctx</span> <span class="kt">uintptr</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+            <span class="nx">ret</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">showToast</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">vm</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">env</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">ctx</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;ret = %d\n&#34;</span><span class="p">,</span> <span class="nx">ret</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">nil</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
 </code></pre></div><p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br>
 <del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br>
 <del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
@@ -186,11 +187,11 @@ gomobile 関連で色々調べて分かったことを書いておく。</p>
 Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
 <p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br>
 定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">activity<span style="color:#f92672">.</span><span style="color:#a6e22e">runOnUiThread</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>activity<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello&#34;</span><span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">});</span>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">activity</span><span class="o">.</span><span class="na">runOnUiThread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">activity</span><span class="o">,</span> <span class="s">&#34;Hello&#34;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">});</span>
 </code></pre></div><p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br>
 無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br>
 とりあえず試みてみようとは思う。</p>
@@ -200,18 +201,18 @@ CharSequence を取らずに Toast を出すメソッドを Java レイヤに準
 それを JNI から呼び出すようなコードを書いた場合は無事に Toast が出力される。</p>
 <p>以下のようなコードをあらかじめ Java のレイヤに書いておき、<br>
 それを上記の JNI と同様のノリで呼び出すようにする。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// static Activity goNativeActivity;
-</span><span style="color:#75715e">// onCreate にて goNativeActivity = this;
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showToast</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Handler h <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">getApplication</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getMainLooper</span><span style="color:#f92672">());</span>
-    h<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Runnable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#a6e22e">@Override</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-            Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">makeText</span><span style="color:#f92672">(</span>goNativeActivity<span style="color:#f92672">,</span> message<span style="color:#f92672">,</span> Toast<span style="color:#f92672">.</span><span style="color:#a6e22e">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#a6e22e">show</span><span style="color:#f92672">();</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">});</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// static Activity goNativeActivity;
+</span><span class="c1">// onCreate にて goNativeActivity = this;
+</span><span class="c1"></span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">showToast</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Handler</span> <span class="n">h</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">goNativeActivity</span><span class="o">.</span><span class="na">getApplication</span><span class="o">().</span><span class="na">getMainLooper</span><span class="o">());</span>
+    <span class="n">h</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">goNativeActivity</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+<span class="o">}</span>
 </code></pre></div><p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br>
 Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
 

@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>go</title>
+    <title>Go</title>
 
     <meta name="description" content="Good poem">
 
     <meta name="generator" content="Hugo 0.72.0" />
     <meta name="twitter:card" content="summary">
     
-    <meta name="twitter:title" content="go">
+    <meta name="twitter:title" content="Go">
     <meta name="twitter:description" content="Good poem">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="go">
+    <meta property="og:title" content="Go">
     <meta property="og:description" content="Good poem">
     <meta property="og:image" content="https://avatars1.githubusercontent.com/u/6533008?s=460&amp;v=4" />
 
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
 
+    <link rel="stylesheet" href="https://pankona.github.io/css/syntax.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/poole.css">
     <link rel="stylesheet" href="https://pankona.github.io/css/all.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -86,6 +87,146 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2020-07-23 00:54:06</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2020/07/23/call-go-from-ruby/">fiddle を使って Ruby から Go を呼ぶ</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-Go" href="https://pankona.github.io/categories/go">Go</a><a class="post-category post-category-Ruby" href="https://pankona.github.io/categories/ruby">Ruby</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>2020-07-22 に行われた「社内ゆるい Ruby LT 会」にて、「Ruby から Go を呼ぶ」というネタで話をした。</p>
+<p>資料を用意しないで、実際にコードを書いて実行する様を見てもらうという感じの発表形式をとったもので「残るもの」がない。だので、資料の代わりと言ってはあれだが何をどう話したかというのを記念に本記事に記しておく。</p>
+<h2 id="fiddle">fiddle</h2>
+<p>Ruby から Go を呼ぶと言っても色々やり方があり、たとえば、</p>
+<ul>
+<li>Go で作った実行バイナリを Ruby から <code>system</code> 的なもので呼び出す</li>
+<li>Go で作った HTTP Server を Ruby の HTTP Client を用いて呼び出す</li>
+</ul>
+<p>みたいなのも広い意味では Ruby から Go を呼ぶのに該当しそうな気がする。<br>
+が、今回はもうちょっと泥っぽく、「Go で書いたソースコードを共有ライブラリ化したものを用いて、Ruby からそのライブラリに含まれている関数を呼び出す」という形式を披露した。役に立つかはさておき、一番映えそうだったからである。うふふ。</p>
+<p>Ruby にはこういう「共有ライブラリを読み込むための機能」が標準で用意されていて、それが <code>fiddle</code> と呼ばれているやつである。<br>
+同じような機能を提供するライブラリとして <code>ffi</code> とかそういうのもあるけど、まあ「標準」という言葉に弱い僕であるので、とりあえず <code>fiddle</code> を試していくことにした。</p>
+<h2 id="何はともあれ-go-で共有ライブラリを作る">何はともあれ Go で共有ライブラリを作る</h2>
+<p>まずは呼び出される側の共有ライブラリを作る作業を行った。<br>
+ソースコードは以下。<code>lib.go</code> というファイル名で保存した。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Add
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>何かのチュートリアルに出てきそうな至極シンプルな足し算をする関数。<br>
+一応、普通の Go と違う点としては cgo のための諸々 (<code>import &quot;C&quot;</code> しているところと <code>export Add</code> というコメントを付与しているところ) が追記されていることかしら。</p>
+<p>これを以下のコマンドでビルドする。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ go build -buildmode<span class="o">=</span>c-shared -o lib.so lib.go
+</code></pre></div><p>すると、<code>lib.h</code> と <code>lib.so</code> が出力される (今回、ヘッダーは使わない)。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ls
+go.mod  lib.go  lib.h  lib.so
+</code></pre></div><h2 id="ruby-から読み込む">Ruby から読み込む</h2>
+<p>出力された <code>lib.so</code> を、Ruby のコード内から読み込む。<br>
+このような感じで <code>lib.so</code> をロードし、その中の <code>Add</code> 関数を <code>extern</code> を使って呼び出せる状態にしている。</p>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;fiddle/import&#39;</span>
+
+<span class="k">module</span> <span class="nn">M</span>
+  <span class="kp">extend</span> <span class="no">Fiddle</span><span class="o">::</span><span class="no">Importer</span>
+  <span class="n">dlload</span> <span class="s1">&#39;lib.so&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;int Add(int, int)&#39;</span>
+<span class="k">end</span>
+
+<span class="nb">p</span> <span class="n">M</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># 実際に呼び出しているのはココ</span>
+</code></pre></div><p>実行結果は以下のようになる。期待通り。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ruby ./main.rb
+<span class="m">4</span>
+</code></pre></div><p>晴れて Ruby から Go を呼び出すことができた。便利！</p>
+<h2 id="ライトニングトークで触れなかった補足など">ライトニングトークで触れなかった補足など</h2>
+<p>ライトニングトークでは、時間の都合上、上記の部分までの話しかしなかった (5 分という縛りだった) のだが、本手法は便利な話ばかりでもなくて不都合だとかやりにくいところだとかが色々ある。そもそも Ruby と Go に限らず、言語間バインディングなんて問題の巣窟になること請け合いであるというのが僕の印象であってだな。</p>
+<p>上記のように <code>int</code> を使っている間は特に問題がないのだけれども、もう少し便利に使おうと思ったら他の型 (特に byte array みたいなものとか string) を使いたくなるのが人情かと思う。<br>
+実はこのへんを扱うのは割と面倒で、何が面倒って「メモリの確保と解放」をそれなりに意識してやる必要が出てくる。</p>
+<p>例えば、Go から文字列を返してやろうと思ったら以下のようなコードになる。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Fullname
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Fullname</span><span class="p">(</span><span class="nx">firstname</span><span class="p">,</span> <span class="nx">lastname</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span> <span class="p">{</span>
+    <span class="nx">fullname</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">firstname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">lastname</span><span class="p">)</span>
+    <span class="nx">p</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">fullname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">firstname</span> <span class="o">+</span> <span class="nx">lastname</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>このコードをざっくり解説すると、</p>
+<ul>
+<li><code>Fullname</code> 関数は、<code>lastname</code> と <code>firstname</code> を受け取って、連結したもの (つまり <code>fullname</code>) を返す関数。</li>
+<li>引数、および戻り値の型で <code>string</code> を使うようなところでは、代わりに <code>*C.char</code> を使うようにしている。<code>string</code> を扱おうと思うと Ruby 側では構造体を扱う必要が出てきて少し面倒になってしまうので、生々しいが単なる <code>*char</code> を扱うほうが簡単になる (と思う)。</li>
+<li><code>*C.char</code> はそのままでは Go の <code>string</code> として扱えないので、いったん <code>C.GoString</code> に食わせて <code>string</code> に変換している。</li>
+<li><code>string</code> に対して一通りやりたい処理をやったあとに、<code>string</code> を戻り値の型である <code>*C.char</code> に変換する必要がある。</li>
+<li><code>C.CString</code> に <code>string</code> を食わせると <code>*C.char</code> 型になって出てきてくれるのだが、<code>C.CString</code> を使って生成した文字列は「メモリ解放」をしなければならない。しないとメモリリークになってしまう。</li>
+<li>メモリ解放をして良いタイミングは Go 側からはわからないので、Ruby の側からメモリ解放のための関数を呼んであげる必要がある。</li>
+</ul>
+<p>そこまでケアすると以下のような感じになる。</p>
+<p>Go の側。メモリ解放のための関数を追加した。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="c1">//export Fullname
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Fullname</span><span class="p">(</span><span class="nx">firstname</span><span class="p">,</span> <span class="nx">lastname</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span> <span class="p">{</span>
+    <span class="nx">fullname</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">firstname</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34; &#34;</span> <span class="o">+</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">lastname</span><span class="p">)</span>
+    <span class="nx">p</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">fullname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nx">p</span>
+<span class="p">}</span>
+
+<span class="c1">//export Free
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Free</span><span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">C</span><span class="p">.</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">C</span><span class="p">.</span><span class="nf">free</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{}</span>
+</code></pre></div><p>Ruby の側。メモリ解放のための関数を呼び出すように変更。</p>
+<div class="highlight"><pre class="chroma"><code class="language-rb" data-lang="rb"><span class="nb">require</span> <span class="s1">&#39;fiddle/import&#39;</span>
+
+<span class="k">module</span> <span class="nn">M</span>
+  <span class="kp">extend</span> <span class="no">Fiddle</span><span class="o">::</span><span class="no">Importer</span>
+  <span class="n">dlload</span> <span class="s1">&#39;lib.so&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;char* Fullname(char* p0, char* p1)&#39;</span>
+  <span class="n">extern</span> <span class="s1">&#39;void Free(char* p0)&#39;</span>
+<span class="k">end</span>
+
+<span class="n">ptr</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">Fullname</span><span class="p">(</span><span class="s1">&#39;pan&#39;</span><span class="p">,</span> <span class="s1">&#39;kona&#39;</span><span class="p">)</span>
+
+<span class="nb">p</span> <span class="n">ptr</span><span class="o">.</span><span class="n">to_s</span>
+
+<span class="n">M</span><span class="o">.</span><span class="n">Free</span><span class="p">(</span><span class="nb">p</span><span class="p">)</span>
+</code></pre></div><p>実行結果は以下。</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">$ ruby ./main.rb
+<span class="s2">&#34;pan kona&#34;</span>
+</code></pre></div><p>おそらくこれでメモリリークはしない状態になっている、はず。</p>
+<h2 id="つまり">つまり</h2>
+<p>言語間バインディングは用法と用量を守って使うのだ。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://golang.org/cmd/cgo/">cgo - The Go Programming Language</a></li>
+<li><a href="https://docs.ruby-lang.org/ja/latest/library/fiddle.html">library fiddle - Ruby 2.7.0 リファレンスマニュアル</a></li>
+</ul>
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2018-01-31 16:30:10</div>
                 <section >
                     <header class="post-header">
@@ -118,201 +259,201 @@ Go から Android SDK の API に触れるのである。</p>
 <h2 id="android-アプリ作成におけるファイル保存領域の取得">Android アプリ作成におけるファイル保存領域の取得</h2>
 <p>ググればさっさと出てくるが、Android アプリを作る際には以下のようなコードを書くと、<br>
 ファイルを永続保存できる領域へのディレクトリパスを取得できる (アプリアンインストールと共に削除される) 。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
-    <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        String dir <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCacheDir</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getAbsolutePath</span><span style="color:#f92672">();</span>
-        <span style="color:#75715e">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getCacheDir</span><span class="o">().</span><span class="na">getAbsolutePath</span><span class="o">();</span>
+        <span class="c1">// dir にはファイル保存可能領域 (internal storage) への絶対パスが入る
+</span><span class="c1"></span>    <span class="o">}</span>
+<span class="o">}</span>
 </code></pre></div><h2 id="gomobile-build-アプリ作成時におけるファイル保存領域の取得">gomobile (build) アプリ作成時におけるファイル保存領域の取得</h2>
 <p>つまりは上記と同様の処理を JNI で書いてやれば良い。<br>
 以下のようになる。</p>
 <h3 id="jni-パッケージ-go言語--c言語">jni パッケージ (Go言語 + C言語)</h3>
 <p>指定した関数を JNI 上で実行する関数 <code>RunOnJVM</code> を定義しているパッケージ。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
-</span><span style="color:#75715e"></span>
-<span style="color:#f92672">package</span> <span style="color:#a6e22e">jni</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// +build android
+</span><span class="c1"></span>
+<span class="kn">package</span> <span class="nx">jni</span>
 
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#cgo LDFLAGS: -landroid
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">JavaVM* current_vm;
-</span><span style="color:#75715e">jobject current_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static char *
-</span><span style="color:#75715e">_lockJNI(uintptr_t* envp, int* attachedp) {
-</span><span style="color:#75715e">	JNIEnv* env;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	if (current_vm == NULL) {
-</span><span style="color:#75715e">		return &#34;no current JVM&#34;;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	*attachedp = 0;
-</span><span style="color:#75715e">	switch ((*current_vm)-&gt;GetEnv(current_vm, (void**)&amp;env, JNI_VERSION_1_6)) {
-</span><span style="color:#75715e">	case JNI_OK:
-</span><span style="color:#75715e">		break;
-</span><span style="color:#75715e">	case JNI_EDETACHED:
-</span><span style="color:#75715e">		if ((*current_vm)-&gt;AttachCurrentThread(current_vm, &amp;env, 0) != 0) {
-</span><span style="color:#75715e">			return &#34;cannot attach to JVM&#34;;
-</span><span style="color:#75715e">		}
-</span><span style="color:#75715e">		*attachedp = 1;
-</span><span style="color:#75715e">		break;
-</span><span style="color:#75715e">	case JNI_EVERSION:
-</span><span style="color:#75715e">		return &#34;bad JNI version&#34;;
-</span><span style="color:#75715e">	default:
-</span><span style="color:#75715e">		return &#34;unknown JNI error from GetEnv&#34;;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	*envp = (uintptr_t)env;
-</span><span style="color:#75715e">	return NULL;
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static char *
-</span><span style="color:#75715e">_checkException(uintptr_t jnienv) {
-</span><span style="color:#75715e">	jthrowable exc;
-</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jnienv;
-</span><span style="color:#75715e">	if (!(*env)-&gt;ExceptionCheck(env)) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	exc = (*env)-&gt;ExceptionOccurred(env);
-</span><span style="color:#75715e">	(*env)-&gt;ExceptionClear(env);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass clazz = (*env)-&gt;FindClass(env, &#34;java/lang/Throwable&#34;);
-</span><span style="color:#75715e">	jmethodID toString = (*env)-&gt;GetMethodID(env, clazz, &#34;toString&#34;, &#34;()Ljava/lang/String;&#34;);
-</span><span style="color:#75715e">	jobject msgStr = (*env)-&gt;CallObjectMethod(env, exc, toString);
-</span><span style="color:#75715e">	return (char*)(*env)-&gt;GetStringUTFChars(env, msgStr, 0);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">void
-</span><span style="color:#75715e">_unlockJNI() {
-</span><span style="color:#75715e">	(*current_vm)-&gt;DetachCurrentThread(current_vm);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+<span class="cm">/*
+</span><span class="cm">#cgo LDFLAGS: -landroid
+</span><span class="cm">#include &lt;jni.h&gt;
+</span><span class="cm">#include &lt;stdlib.h&gt;
+</span><span class="cm">
+</span><span class="cm">JavaVM* current_vm;
+</span><span class="cm">jobject current_ctx;
+</span><span class="cm">
+</span><span class="cm">static char *
+</span><span class="cm">_lockJNI(uintptr_t* envp, int* attachedp) {
+</span><span class="cm">	JNIEnv* env;
+</span><span class="cm">
+</span><span class="cm">	if (current_vm == NULL) {
+</span><span class="cm">		return &#34;no current JVM&#34;;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	*attachedp = 0;
+</span><span class="cm">	switch ((*current_vm)-&gt;GetEnv(current_vm, (void**)&amp;env, JNI_VERSION_1_6)) {
+</span><span class="cm">	case JNI_OK:
+</span><span class="cm">		break;
+</span><span class="cm">	case JNI_EDETACHED:
+</span><span class="cm">		if ((*current_vm)-&gt;AttachCurrentThread(current_vm, &amp;env, 0) != 0) {
+</span><span class="cm">			return &#34;cannot attach to JVM&#34;;
+</span><span class="cm">		}
+</span><span class="cm">		*attachedp = 1;
+</span><span class="cm">		break;
+</span><span class="cm">	case JNI_EVERSION:
+</span><span class="cm">		return &#34;bad JNI version&#34;;
+</span><span class="cm">	default:
+</span><span class="cm">		return &#34;unknown JNI error from GetEnv&#34;;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	*envp = (uintptr_t)env;
+</span><span class="cm">	return NULL;
+</span><span class="cm">}
+</span><span class="cm">
+</span><span class="cm">static char *
+</span><span class="cm">_checkException(uintptr_t jnienv) {
+</span><span class="cm">	jthrowable exc;
+</span><span class="cm">	JNIEnv* env = (JNIEnv*)jnienv;
+</span><span class="cm">	if (!(*env)-&gt;ExceptionCheck(env)) {
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	exc = (*env)-&gt;ExceptionOccurred(env);
+</span><span class="cm">	(*env)-&gt;ExceptionClear(env);
+</span><span class="cm">
+</span><span class="cm">	jclass clazz = (*env)-&gt;FindClass(env, &#34;java/lang/Throwable&#34;);
+</span><span class="cm">	jmethodID toString = (*env)-&gt;GetMethodID(env, clazz, &#34;toString&#34;, &#34;()Ljava/lang/String;&#34;);
+</span><span class="cm">	jobject msgStr = (*env)-&gt;CallObjectMethod(env, exc, toString);
+</span><span class="cm">	return (char*)(*env)-&gt;GetStringUTFChars(env, msgStr, 0);
+</span><span class="cm">}
+</span><span class="cm">
+</span><span class="cm">void
+</span><span class="cm">_unlockJNI() {
+</span><span class="cm">	(*current_vm)-&gt;DetachCurrentThread(current_vm);
+</span><span class="cm">}
+</span><span class="cm">*/</span>
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
 
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;errors&#34;</span>
-	<span style="color:#e6db74">&#34;runtime&#34;</span>
-	<span style="color:#e6db74">&#34;unsafe&#34;</span>
-)
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;errors&#34;</span>
+	<span class="s">&#34;runtime&#34;</span>
+	<span class="s">&#34;unsafe&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">RunOnJVM</span>(<span style="color:#a6e22e">fn</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span>) <span style="color:#66d9ef">error</span> {
-	<span style="color:#a6e22e">errch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">error</span>)
-	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
-		<span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">LockOSThread</span>()
-		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">UnlockOSThread</span>()
+<span class="kd">func</span> <span class="nf">RunOnJVM</span><span class="p">(</span><span class="nx">fn</span> <span class="kd">func</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">env</span><span class="p">,</span> <span class="nx">ctx</span> <span class="kt">uintptr</span><span class="p">)</span> <span class="kt">error</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="nx">errch</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">error</span><span class="p">)</span>
+	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">runtime</span><span class="p">.</span><span class="nf">LockOSThread</span><span class="p">()</span>
+		<span class="k">defer</span> <span class="nx">runtime</span><span class="p">.</span><span class="nf">UnlockOSThread</span><span class="p">()</span>
 
-		<span style="color:#a6e22e">env</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#ae81ff">0</span>)
-		<span style="color:#a6e22e">attached</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.int(<span style="color:#ae81ff">0</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_lockJNI</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">env</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">attached</span>); <span style="color:#a6e22e">errStr</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">errStr</span>))
-			<span style="color:#66d9ef">return</span>
-		}
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">attached</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> {
-			<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_unlockJNI</span>()
-		}
+		<span class="nx">env</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+		<span class="nx">attached</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nb">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">errStr</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">_lockJNI</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">env</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">attached</span><span class="p">);</span> <span class="nx">errStr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">errch</span> <span class="o">&lt;-</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">errStr</span><span class="p">))</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="nx">attached</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="k">defer</span> <span class="nx">C</span><span class="p">.</span><span class="nf">_unlockJNI</span><span class="p">()</span>
+		<span class="p">}</span>
 
-		<span style="color:#a6e22e">vm</span> <span style="color:#f92672">:=</span> uintptr(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_vm</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fn</span>(<span style="color:#a6e22e">vm</span>, uintptr(<span style="color:#a6e22e">env</span>), uintptr(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">current_ctx</span>)); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">err</span>
-			<span style="color:#66d9ef">return</span>
-		}
+		<span class="nx">vm</span> <span class="o">:=</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nx">current_vm</span><span class="p">))</span> <span class="c1">// #nosec
+</span><span class="c1"></span>		<span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">fn</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">env</span><span class="p">),</span> <span class="nb">uintptr</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nx">current_ctx</span><span class="p">));</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">errch</span> <span class="o">&lt;-</span> <span class="nx">err</span>
+			<span class="k">return</span>
+		<span class="p">}</span>
 
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exc</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">_checkException</span>(<span style="color:#a6e22e">env</span>); <span style="color:#a6e22e">exc</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">errors</span>.<span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">exc</span>))
-			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">exc</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span>
-		}
-		<span style="color:#a6e22e">errch</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">nil</span>
-	}()
-	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">errch</span>
-}
+		<span class="k">if</span> <span class="nx">exc</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">_checkException</span><span class="p">(</span><span class="nx">env</span><span class="p">);</span> <span class="nx">exc</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">errch</span> <span class="o">&lt;-</span> <span class="nx">errors</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">exc</span><span class="p">))</span>
+			<span class="nx">C</span><span class="p">.</span><span class="nf">free</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">exc</span><span class="p">))</span> <span class="c1">// #nosec
+</span><span class="c1"></span>			<span class="k">return</span>
+		<span class="p">}</span>
+		<span class="nx">errch</span> <span class="o">&lt;-</span> <span class="kc">nil</span>
+	<span class="p">}()</span>
+	<span class="k">return</span> <span class="o">&lt;-</span><span class="nx">errch</span>
+<span class="p">}</span>
 </code></pre></div><h3 id="上記-jni-パッケージを使ってファイル保存領域を取得するメソッド-go言語--c言語">上記 jni パッケージを使ってファイル保存領域を取得するメソッド (Go言語 + C言語)</h3>
 <p>上記 jni パッケージを使って、ファイル保存領域を取得するための関数を jni 上で実行する。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// +build android
-</span><span style="color:#75715e"></span>
-<span style="color:#f92672">package</span> <span style="color:#a6e22e">storage</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// +build android
+</span><span class="c1"></span>
+<span class="kn">package</span> <span class="nx">storage</span>
 
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">#include &lt;jni.h&gt;
-</span><span style="color:#75715e">#include &lt;stdlib.h&gt;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">static const char *
-</span><span style="color:#75715e">getFilesDir(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx) {
-</span><span style="color:#75715e">	JNIEnv* env = (JNIEnv*)jni_env;
-</span><span style="color:#75715e">	jobject ctx = (jobject)jni_ctx;
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass context = (*env)-&gt;FindClass(env, &#34;android/content/Context&#34;);
-</span><span style="color:#75715e">	if(context == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">	jmethodID getFilesDir = (*env)-&gt;GetMethodID(env, context, &#34;getFilesDir&#34;, &#34;()Ljava/io/File;&#34;);
-</span><span style="color:#75715e">	if(getFilesDir == NULL){
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jobject f = (*env)-&gt;CallObjectMethod(env, ctx, getFilesDir);
-</span><span style="color:#75715e">	if (f == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jclass file = (*env)-&gt;FindClass(env, &#34;java/io/File&#34;);
-</span><span style="color:#75715e">	if (file == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jmethodID getAbsolutePath = (*env)-&gt;GetMethodID(env, file, &#34;getAbsolutePath&#34;, &#34;()Ljava/lang/String;&#34;);
-</span><span style="color:#75715e">	if (getAbsolutePath == NULL) {
-</span><span style="color:#75715e">		return NULL;
-</span><span style="color:#75715e">	}
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">	jstring path = (jstring)(*env)-&gt;CallObjectMethod(env, f, getAbsolutePath);
-</span><span style="color:#75715e">	return (*env)-&gt;GetStringUTFChars(env, path, 0);
-</span><span style="color:#75715e">}
-</span><span style="color:#75715e">*/</span>
-<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;C&#34;</span>
+<span class="cm">/*
+</span><span class="cm">#include &lt;jni.h&gt;
+</span><span class="cm">#include &lt;stdlib.h&gt;
+</span><span class="cm">
+</span><span class="cm">static const char *
+</span><span class="cm">getFilesDir(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx) {
+</span><span class="cm">	JNIEnv* env = (JNIEnv*)jni_env;
+</span><span class="cm">	jobject ctx = (jobject)jni_ctx;
+</span><span class="cm">
+</span><span class="cm">	jclass context = (*env)-&gt;FindClass(env, &#34;android/content/Context&#34;);
+</span><span class="cm">	if(context == NULL) {
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">	jmethodID getFilesDir = (*env)-&gt;GetMethodID(env, context, &#34;getFilesDir&#34;, &#34;()Ljava/io/File;&#34;);
+</span><span class="cm">	if(getFilesDir == NULL){
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	jobject f = (*env)-&gt;CallObjectMethod(env, ctx, getFilesDir);
+</span><span class="cm">	if (f == NULL) {
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	jclass file = (*env)-&gt;FindClass(env, &#34;java/io/File&#34;);
+</span><span class="cm">	if (file == NULL) {
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	jmethodID getAbsolutePath = (*env)-&gt;GetMethodID(env, file, &#34;getAbsolutePath&#34;, &#34;()Ljava/lang/String;&#34;);
+</span><span class="cm">	if (getAbsolutePath == NULL) {
+</span><span class="cm">		return NULL;
+</span><span class="cm">	}
+</span><span class="cm">
+</span><span class="cm">	jstring path = (jstring)(*env)-&gt;CallObjectMethod(env, f, getAbsolutePath);
+</span><span class="cm">	return (*env)-&gt;GetStringUTFChars(env, path, 0);
+</span><span class="cm">}
+</span><span class="cm">*/</span>
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
 
-<span style="color:#f92672">import</span> (
-	<span style="color:#e6db74">&#34;unsafe&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;unsafe&#34;</span>
 
-	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/internal/jni&#34;</span>
-	<span style="color:#e6db74">&#34;github.com/pankona/gomo-simra/simra/simlog&#34;</span>
-)
+	<span class="s">&#34;github.com/pankona/gomo-simra/simra/internal/jni&#34;</span>
+	<span class="s">&#34;github.com/pankona/gomo-simra/simra/simlog&#34;</span>
+<span class="p">)</span>
 
-<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">storageAndroid</span> <span style="color:#66d9ef">struct</span>{}
+<span class="kd">type</span> <span class="nx">storageAndroid</span> <span class="kd">struct</span><span class="p">{}</span>
 
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewStorage</span>() <span style="color:#a6e22e">Storager</span> {
-	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">storageAndroid</span>{}
-}
+<span class="kd">func</span> <span class="nf">NewStorage</span><span class="p">()</span> <span class="nx">Storager</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">storageAndroid</span><span class="p">{}</span>
+<span class="p">}</span>
 
-<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">path</span> <span style="color:#66d9ef">string</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="kt">string</span>
 
-<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">storageAndroid</span>) <span style="color:#a6e22e">DirectoryPath</span>() <span style="color:#66d9ef">string</span> {
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#34;&#34;</span> {
-		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
-	}
-	<span style="color:#a6e22e">jni</span>.<span style="color:#a6e22e">RunOnJVM</span>(
-		<span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">vm</span>, <span style="color:#a6e22e">env</span>, <span style="color:#a6e22e">ctx</span> <span style="color:#66d9ef">uintptr</span>) <span style="color:#66d9ef">error</span> {
-			<span style="color:#a6e22e">cpath</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">getFilesDir</span>(<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">vm</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">env</span>), <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">uintptr_t</span>(<span style="color:#a6e22e">ctx</span>))
-			<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">cpath</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
-				<span style="color:#a6e22e">simlog</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;failed to get FilesDir!&#34;</span>)
-			}
-			<span style="color:#a6e22e">path</span> = <span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">GoString</span>(<span style="color:#a6e22e">cpath</span>)
-			<span style="color:#a6e22e">C</span>.<span style="color:#a6e22e">free</span>(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#a6e22e">cpath</span>)) <span style="color:#75715e">// #nosec
-</span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
-		})
-	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>
-}
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">storageAndroid</span><span class="p">)</span> <span class="nf">DirectoryPath</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">path</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">path</span>
+	<span class="p">}</span>
+	<span class="nx">jni</span><span class="p">.</span><span class="nf">RunOnJVM</span><span class="p">(</span>
+		<span class="kd">func</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">env</span><span class="p">,</span> <span class="nx">ctx</span> <span class="kt">uintptr</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+			<span class="nx">cpath</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">getFilesDir</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">vm</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">env</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">ctx</span><span class="p">))</span>
+			<span class="k">if</span> <span class="nx">cpath</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="nx">simlog</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;failed to get FilesDir!&#34;</span><span class="p">)</span>
+			<span class="p">}</span>
+			<span class="nx">path</span> <span class="p">=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">GoString</span><span class="p">(</span><span class="nx">cpath</span><span class="p">)</span>
+			<span class="nx">C</span><span class="p">.</span><span class="nf">free</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">cpath</span><span class="p">))</span> <span class="c1">// #nosec
+</span><span class="c1"></span>			<span class="k">return</span> <span class="kc">nil</span>
+		<span class="p">})</span>
+	<span class="k">return</span> <span class="nx">path</span>
+<span class="p">}</span>
 </code></pre></div><h3 id="directorypath-を呼び出す部分-go言語">DirectoryPath() を呼び出す部分 (Go言語)</h3>
 <p>上記で準備した関数を呼び出す部分。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
-    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">storage</span>.<span style="color:#a6e22e">NewStorage</span>().<span style="color:#a6e22e">DirectoryPath</span>()
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage: %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">dir</span> <span class="o">:=</span> <span class="nx">storage</span><span class="p">.</span><span class="nf">NewStorage</span><span class="p">().</span><span class="nf">DirectoryPath</span><span class="p">()</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;path to internal storage: %s&#34;</span><span class="p">,</span> <span class="nx">dir</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div><p>これで、ファイル保存領域へのディレクトリパスを取得できる。<br>
 あとは、取得したディレクトリパス配下に保存したいものを保存する。</p>
 <h2 id="余談-キャッシュディレクトリの取得">(余談) キャッシュディレクトリの取得</h2>
@@ -323,10 +464,10 @@ Go から Android SDK の API に触れるのである。</p>
 Android 端末の状況によっては削除され得る領域であることに気をつける必要がある。<br>
 が、ちょっと保存したいくらいの用途であれば耐えうるような気がする。<br>
 以下のようにして取得する。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
-    <span style="color:#a6e22e">dir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;TMPDIR&#34;</span>)
-    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;path to internal storage (for cache): %s&#34;</span>, <span style="color:#a6e22e">dir</span>)
-}
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">dir</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getenv</span><span class="p">(</span><span class="s">&#34;TMPDIR&#34;</span><span class="p">)</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;path to internal storage (for cache): %s&#34;</span><span class="p">,</span> <span class="nx">dir</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div>
                     </div>
                 </section>
