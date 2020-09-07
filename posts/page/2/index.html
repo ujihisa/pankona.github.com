@@ -85,6 +85,142 @@
             
             <div class="posts">
                 
+                <div class="content-subhead">2018-01-29 08:41:12</div>
+                <section >
+                    <header class="post-header">
+
+                        <a href="https://pankona.github.io/blog/2018/01/29/droidkaigi-2018-3/">gomobile build で JNI から Toast を出せなかった話</a>
+
+                        <p class="post-meta">
+                            
+                            
+                                under 
+                                
+                                <a class="post-category post-category-DroidKaigi" href="https://pankona.github.io/categories/droidkaigi">DroidKaigi</a>
+                            
+                        </p>
+                    </header>
+
+                    <div class="post-description">
+                        <p>本日は 2018/01/29 であり、DroidKaigi 本番 (2018/02/08) までもう二週間もないところまできた。<br>
+来週の木曜日である。ヤバイ。準備捗ってない…。</p>
+<p>とはいえ色々調査は進めている。<br>
+gomobile 関連で色々調べて分かったことを書いておく。</p>
+<h2 id="jni-だけで-toast-を出すのは無理な気がする">JNI だけで Toast を出すのは無理な気がする</h2>
+<p><code>Toast.makeText(this, &quot;hogehoge&quot;, Toast.LENGTH_SHORT);</code></p>
+<p>「Java でやるなら」、上のような書き方をすれば Toast は出る。実に簡単。</p>
+<p>これと同じことを gomobile with JNI でやろうと思うと、以下のようなコードになる。<br>
+(下記はエラーチェックを省略している)</p>
+<p>先に書いておくと、下記のコードは正しく動作しない。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">toast</span>
+
+<span class="cm">/*
+</span><span class="cm">#include &lt;jni.h&gt;
+</span><span class="cm">#include &lt;stdlib.h&gt;
+</span><span class="cm">
+</span><span class="cm">static int
+</span><span class="cm">showToast(uintptr_t java_vm, uintptr_t jni_env, uintptr_t jni_ctx, char* text) {
+</span><span class="cm">    JNIEnv* env = (JNIEnv*)jni_env;
+</span><span class="cm">    jobject ctx = (jobject)jni_ctx;
+</span><span class="cm">
+</span><span class="cm">    // Toast クラスの取得 ... 1
+</span><span class="cm">    jclass toast = (*env)-&gt;FindClass(env, &#34;android/widget/Toast&#34;);
+</span><span class="cm">
+</span><span class="cm">    // makeText メソッドの ID を取得 ... 2
+</span><span class="cm">    jmethodID makeText = (*env)-&gt;GetStaticMethodID(env, toast, &#34;makeText&#34;,
+</span><span class="cm">        &#34;(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;&#34;);
+</span><span class="cm">
+</span><span class="cm">    // String を生成 ... 3
+</span><span class="cm">    jstring jstr = (*env)-&gt;NewStringUTF(env, &#34;hogehoge&#34;);
+</span><span class="cm">
+</span><span class="cm">    // makeText メソッドを呼び出し ... 4
+</span><span class="cm">    jobject toastobj = (*env)-&gt;CallStaticObjectMethod(env, toast, makeText,
+</span><span class="cm">        ctx, jstr, 0); // 0 = Toast.LENGTH_SHORT
+</span><span class="cm">
+</span><span class="cm">    // show メソッド の IDの を取得 ... 5
+</span><span class="cm">    jmethodID methodShow = (*env)-&gt;GetMethodID(env, toastobj, &#34;show&#34;, &#34;()V&#34;);
+</span><span class="cm">
+</span><span class="cm">    // show メソッドを呼び出し ... 6
+</span><span class="cm">    (*env)-&gt;CallVoidMethod(env, toastobj, methodShow);
+</span><span class="cm">
+</span><span class="cm">    return 0;
+</span><span class="cm">}
+</span><span class="cm">*/</span>
+<span class="kn">import</span> <span class="s">&#34;C&#34;</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;fmt&#34;</span>
+
+    <span class="s">&#34;github.com/pankona/gomo-simra/simra/jni&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">t</span> <span class="kd">struct</span><span class="p">{}</span>
+
+<span class="kd">func</span> <span class="nf">NewToaster</span><span class="p">()</span> <span class="nx">Toaster</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">t</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">t</span><span class="p">)</span> <span class="nf">Show</span><span class="p">(</span><span class="nx">text</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+    <span class="nx">jni</span><span class="p">.</span><span class="nf">RunOnJVM</span><span class="p">(</span>
+        <span class="kd">func</span><span class="p">(</span><span class="nx">vm</span><span class="p">,</span> <span class="nx">env</span><span class="p">,</span> <span class="nx">ctx</span> <span class="kt">uintptr</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+            <span class="nx">ret</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">.</span><span class="nf">showToast</span><span class="p">(</span><span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">vm</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">env</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">uintptr_t</span><span class="p">(</span><span class="nx">ctx</span><span class="p">),</span> <span class="nx">C</span><span class="p">.</span><span class="nf">CString</span><span class="p">(</span><span class="nx">text</span><span class="p">))</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;ret = %d\n&#34;</span><span class="p">,</span> <span class="nx">ret</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">nil</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></div><p>上記のコードは、「4」のところが正しく動作しないようである。<code>toastobj</code> には NULL が返却される。<br>
+<del>いまのところ原因はよく分かっていないが、<code>makeText</code> の第二引数が <code>CharSequence</code> であることと、</del><br>
+<del>そこに <code>jstring</code> を渡している、ということで、型があってないというのが原因なのではないかと想像する。</del></p>
+<p><del><code>jstring</code> は <code>java/lang/String</code> と同じものという理解でおり、であれば <code>CharSequence</code> として扱っても</del><br>
+<del>良いのではないかという気がしないでもない (<code>String</code> は <code>CharSequence</code> のサブクラスなので) のだが、</del><br>
+<del>事実、正しく動作していないところを鑑みるには、やっぱりダメなんじゃないかという気がしている。</del></p>
+<p><del>Java のレイヤでは書ける以下のような例は、</del><br>
+<del>JNI のレイヤでは表現することができないと思われる。</del></p>
+<p><del><code>CharSequence cs = new String(&quot;hogehoge&quot;);</code></del></p>
+<p><del>ちなみに、「AndroidNDKプログラミング第二版」には、JNI から Toast を出す例が掲載されていたが、</del><br>
+<del>肝心の CharSequence に関しては Java のレイヤで生成されたものを JNI に引き渡す構成になっており、</del><br>
+<del>もう少し原因究明に届かなかった。</del></p>
+<p>(2018/01/31 追記)</p>
+<p>上記は完全にウソだった。勘違いであった。申し訳ございません！</p>
+<p>ちゃんとどのようなエラーが (4) で吐かれているか補足してみたところ、以下の例外が投げられていた。</p>
+<pre><code>java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
+</code></pre><p>つまり Toast を出そうとはしているようであるが、UI スレッド以外から呼び出すことはできない、ということで<br>
+Toast の出力に失敗しているようである。<code>CharSequence</code> は完全に無罪であった。すまん、<code>CharSequence</code>。</p>
+<p>さて、上記のエラーを解消するためには、Toast を UI スレッド上で実行する必要がある。<br>
+定番のやり方は <code>Handler</code> を用いるやり方である。例えば以下のようなやり方。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">activity</span><span class="o">.</span><span class="na">runOnUiThread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">activity</span><span class="o">,</span> <span class="s">&#34;Hello&#34;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</code></pre></div><p>これを JNI で表現するにはどうすれば良いかを考えれば良い。<br>
+無名クラスとか出てきていてやっぱり無理なんじゃないかっていう気がしているが、<br>
+とりあえず試みてみようとは思う。</p>
+<h2 id="java-のレイヤに-charsequence-をとらないメソッドを定義すればいけるが">Java のレイヤに CharSequence をとらないメソッドを定義すればいけるが…</h2>
+<p>上記の原因の仮説を若干補強するものとして、<br>
+CharSequence を取らずに Toast を出すメソッドを Java レイヤに準備しておき、<br>
+それを JNI から呼び出すようなコードを書いた場合は無事に Toast が出力される。</p>
+<p>以下のようなコードをあらかじめ Java のレイヤに書いておき、<br>
+それを上記の JNI と同様のノリで呼び出すようにする。</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="c1">// static Activity goNativeActivity;
+</span><span class="c1">// onCreate にて goNativeActivity = this;
+</span><span class="c1"></span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">showToast</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Handler</span> <span class="n">h</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Handler</span><span class="o">(</span><span class="n">goNativeActivity</span><span class="o">.</span><span class="na">getApplication</span><span class="o">().</span><span class="na">getMainLooper</span><span class="o">());</span>
+    <span class="n">h</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">goNativeActivity</span><span class="o">,</span> <span class="n">message</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+<span class="o">}</span>
+</code></pre></div><p>今回、DroidKaigi 向けには gomobile build を使って Go だけで Android アプリを書いてみようという試みであるので、<br>
+Java に手を入れていく手法は有り難いのであるが、追っての調査はまた別の機会にとっておくことにする。</p>
+
+                    </div>
+                </section>
+                
                 <div class="content-subhead">2018-01-08 23:10:33</div>
                 <section >
                     <header class="post-header">
@@ -1975,63 +2111,6 @@ ifconfig | grep inet<br>
 <h3 id="ipアドレスがわかるようになったがpitftがもったいない感">IPアドレスがわかるようになったがPiTFTがもったいない感</h3>
 <p>PiTFTだとちょっとやりすぎなので、もっと小さい画面モジュールでやってもいいと思う。<br>
 というか早く無線化しようね。次の目標は無線化です。それでは。</p>
-
-                    </div>
-                </section>
-                
-                <div class="content-subhead">2014-11-25 22:16:43</div>
-                <section >
-                    <header class="post-header">
-
-                        <a href="https://pankona.github.io/blog/2014/11/25/remote-ltika/">Raspberry Piにて、リモートからLチカさせてみた</a>
-
-                        <p class="post-meta">
-                            
-                            
-                                under 
-                                
-                                <a class="post-category post-category-RaspberryPi" href="https://pankona.github.io/categories/raspberrypi">RaspberryPi</a>
-                            
-                        </p>
-                    </header>
-
-                    <div class="post-description">
-                        <p>Raspberry Piをリモートから制御する第一歩として、<br>
-ネットワーク越しに、AndroidアプリからLチカさせてみる、をやってみた。<br>
-いまのところ実にしょうもないレベルであるが、最初は誰もがしょうもなかったと言い聞かせつつ、<br>
-やったことを公開しつつ、どんなあんばいだったか記録しておこうと思う。<br>
-ちなみに、ここでいっているLEDとは、Raspberry Piボード上のLED &ldquo;ACT&rdquo; を指している。<br>
-ブレッドボードやらそういった類の何かは使っていない。</p>
-<h3 id="構成">構成</h3>
-<ul>
-<li>Raspberry Pi （OSはArch Linux） 有線LAN接続
-<ul>
-<li>Railsが動いていて、REST APIを公開している。</li>
-<li>REST APIを叩くことで、LEDのON/OFFを制御するスクリプトが動作し、Lチカを実現する。</li>
-</ul>
-</li>
-<li>Androidアプリ
-<ul>
-<li>ボタンが2個ついてるだけの超絶シンプルアプリ</li>
-<li>ONボタンを押すとLEDを点けるほうのREST APIを叩きにいく。</li>
-<li>同様に、OFFボタンを押すとLEDを消すREST APIを叩きにいく。</li>
-<li>対向機のIPアドレスはまさかのハードコーディング。</li>
-</ul>
-</li>
-</ul>
-<h3 id="ソースコード">ソースコード</h3>
-<ul>
-<li>Raspberry Pi側のソースコードは<a href="https://github.com/pankona/raspi_remote_blink">こちら</a>。Railsアプリ。</li>
-<li>Android側のアプリは後ほどアップロード（手元になかった）。</li>
-</ul>
-<h3 id="今後に向けてメモ">今後に向けてメモ</h3>
-<ul>
-<li>Railsアプリは、スクリプトへのパスがハードコードされていたりしてだいぶ恥ずかしいので、そのうち直す。</li>
-<li>というかファイルI/OすればLチカできることがわかったので、もはやスクリプトを使う必要はなかった。そのうち直す。</li>
-<li>応用して、自動草花への水やり機の作成を目論んでおく。できたら画像と共にアップロードしよう。</li>
-<li>カメラと合わせて、水やりしつつ、草の成長記録をツイッターに投稿する、というのもいいかもしれない。</li>
-<li>ツイッター越しに命令（水やり、写真撮影、等）を発行できるようにしてもいいかもしれない。</li>
-</ul>
 
                     </div>
                 </section>
